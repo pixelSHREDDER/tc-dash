@@ -11,22 +11,29 @@ class NewInstance extends Component {
       disabled: false,
       title: '',
       description: '',
+      id: '',
     };
   }
 
   updateDescription(value) {
     this.setState({
-      description: value,
+      description: value
     });
   }
 
   updateTitle(value) {
     this.setState({
-      title: value,
+      title: value
     });
   }
 
-  async submit() {
+  updateId(value) {
+    this.setState({
+      id: value,
+    });
+  }
+
+  /*async submit() {
     this.setState({
       disabled: true,
     });
@@ -34,14 +41,21 @@ class NewInstance extends Component {
     await axios.post('http://localhost:8081', {
       title: this.state.title,
       description: this.state.description,
+      id: this.state.id,
     }, {
       headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
     });
 
     this.props.history.push('/');
+  }*/
+
+  async submit() {
+
   }
 
   render() {
+    const {onSubmit} = this.props;
+
     return (
       <div className="container">
         <div className="row">
@@ -69,10 +83,25 @@ class NewInstance extends Component {
                     placeholder="Give more context to your instance."
                   />
                 </div>
+                <div className="form-group">
+                  <label htmlFor="exampleInputEmail1">User Id:</label>
+                  <input
+                    disabled={this.state.disabled}
+                    type="text"
+                    onBlur={(e) => {this.updateId(e.target.value)}}
+                    className="form-control"
+                    placeholder="Give more context to your instance."
+                  />
+                </div>
                 <button
                   disabled={this.state.disabled}
                   className="btn btn-primary"
-                  onClick={() => {this.submit()}}>
+                  onClick={() => {this.props.onSubmit({
+                    'id': this.state.id,
+                    'title': this.state.title,
+                    'description': this.state.description,
+                  })}}>
+                  {/*onClick={() => {this.submit()}}>*/}
                   Submit
                 </button>
               </div>

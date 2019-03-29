@@ -54,8 +54,9 @@ app.get('/', (req, res) => {
 
 // get a specific instance
 app.get('/:id', checkJwt, (req, res) => {
-  const instance = instances.filter(i => (i.id === parseInt(req.params.id)));
-  //if (req.user.name !== i.owner) return res.status(403).send();
+  if (req.user.sub !== req.params.id) return res.status(403).send();
+  //const instance = instances.filter(i => (i.id === parseInt(req.params.id)));
+  const instance = instances.filter(i => (i.id === req.params.id));
   if (instance.length > 1) return res.status(500).send();
   if (instance.length === 0) return res.status(404).send();
   res.send(instance[0]);
@@ -67,11 +68,46 @@ app.get('/:id', checkJwt, (req, res) => {
   res.send(instance[0]);
 });*/
 
+// update an instance
+app.put('/:id', checkJwt, (req, res) => {
+  if (req.user.sub !== req.params.id) return res.status(403).send();
+  //const {instance} = req.body;
+  var instance = instances.filter(i => (i.id === req.params.id));
+  if (instance.length > 1) return res.status(500).send();
+  if (instance.length === 0) return res.status(404).send();
+
+  /*instance[0].answers.push({
+    answer,
+    owner: req.user.name,
+  });*/
+  //bear.name = req.body.name;
+  //instance = _.extend(instance, req.body);
+
+  //instance[0] = req.body;
+  for (var prop in req.body.instance) {
+    if (!req.body.instance.hasOwnProperty(prop)) continue;
+    var obj = req.body.instance[prop];
+    //if (!(obj in instance[0])) return res.status(500).send();
+    if ((obj in instance[0]) && (instance[0][key] !== obj)) {
+      instance[0][key] = obj;
+    }
+  };
+  /*instance.save(function(err) {
+      if (err)
+          res.send(err);
+
+      res.json({ message: 'Instance updated!' });
+  });*/
+
+  res.status(200).send();
+});
+
 // insert a new instance
 app.post('/', checkJwt, (req, res) => {
-  const {title, description} = req.body;
+  const {title, description, id} = req.body;
   const newInstance = {
-    id: instances.length + 1,
+    //id: req.user.sub,
+    id,
     title,
     description,
     answers: [],

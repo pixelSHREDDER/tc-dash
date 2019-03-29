@@ -1,0 +1,24 @@
+{
+  "name": "tc-dash",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"cd backend && node server.js\" \"cd frontend && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pixelSHREDDER/tc-dash.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pixelSHREDDER/tc-dash/issues"
+  },
+  "homepage": "https://github.com/pixelSHREDDER/tc-dash#readme",
+  "dependencies": {
+    "concurrently": "^4.1.0"
+  }
+}

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import SubmitAnswer from './SubmitAnswer';
+//import axios from 'axios';
+//import config from '../configuration.json';
+//import SubmitAnswer from './SubmitAnswer';
 import auth0Client from '../Auth';
 
 class Instance extends Component {
@@ -10,47 +11,58 @@ class Instance extends Component {
       instance: null,
     };
 
-    this.submitAnswer = this.submitAnswer.bind(this);
+    //this.submitAnswer = this.submitAnswer.bind(this);
   }
 
   async componentDidMount() {
-    await this.refreshQuestion();
+    //await this.refreshInstance();
   }
 
-  async refreshQuestion() {
+  /*async refreshInstance() {
     const { match: { params } } = this.props;
-    const instance = (await axios.get(`http://localhost:8081/${params.instanceId}`)).data;
-    this.setState({
-        instance,
-    });
-  }
+    try {
+      const token = await auth0Client.getIdToken();
+      const instance = (await axios.get(`http://${config.dataURL[config.env]}/${params.instanceId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })).data;
+      this.setState({
+          instance,
+      });
+    } catch (err) {
+      if (err.response.status===401 && err.config) {
 
-  async submitAnswer(answer) {
-    await axios.post(`http://localhost:8081/answer/${this.state.instance.id}`, {
+      }
+    }
+  }*/
+
+  /*async submitAnswer(answer) {
+    await axios.post(`http://${config.dataURL[config.env]}/answer/${this.state.instance.id}`, {
       answer,
     }, {
       headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
     });
-    await this.refreshQuestion();
-  }
+    await this.refreshInstance();
+  }*/
 
   render() {
-    const {instance} = this.state;
-    if (instance === null) return <p>Loading ...</p>;
+    const {instance} = this.props;
+    console.log(this.props);
+    //const {instance} = this.state;
+    if (this.props.instance === null) return <p>Loading ...</p>;
     return (
       <div className="container">
         <div className="row">
           <div className="jumbotron col-12">
-            <h1 className="display-3">{instance.title}</h1>
-            <p className="lead">{instance.description}</p>
+            <h1 className="display-3">{this.props.instance.title}</h1>
+            <p className="lead">{this.props.instance.description}</p>
             <hr className="my-4" />
-            <SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
+            {/*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
             <p>Answers:</p>
             {
               instance.answers.map((answer, idx) => (
                 <p className="lead" key={idx}>{answer.answer}</p>
               ))
-            }
+            }*/}
           </div>
         </div>
       </div>

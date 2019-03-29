@@ -1,13 +1,13 @@
 import auth0 from 'auth0-js';
+import config from './configuration.json';
 
 class Auth {
   constructor() {
     this.auth0 = new auth0.WebAuth({
-      // the following three lines MUST be updated
-      domain: 'dev-l142vg-3.auth0.com',
-      audience: 'https://dev-l142vg-3.auth0.com/userinfo',
-      clientID: 'tRG_31KtrHRR0PbHTP7dsWg9RWDEKxqO',
-      redirectUri: 'http://localhost:3000/callback',
+      domain: config.auth0[config.env].domain,
+      audience: config.auth0[config.env].audience,
+      clientID: config.auth0[config.env].clientID,
+      redirectUri: `http://${config.baseURL[config.env]}/callback`,
       responseType: 'id_token',
       scope: 'openid profile'
     });
@@ -57,8 +57,8 @@ class Auth {
 
   signOut() {
     this.auth0.logout({
-      returnTo: 'http://localhost:3000',
-      clientID: 'tRG_31KtrHRR0PbHTP7dsWg9RWDEKxqO',
+      returnTo: `http://${config.baseURL[config.env]}`,
+      clientID: config.auth0[config.env].clientID,
     });
   }
 

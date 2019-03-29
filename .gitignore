@@ -1,1 +1,4 @@
 tc-dash.code-workspace
+frontend/src/configuration.json
+backend/configuration.json
+node_modules
