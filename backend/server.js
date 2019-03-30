@@ -4,7 +4,6 @@ var cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const mongoSanitize = require('express-mongo-sanitize');
-const Bcrypt = require("bcryptjs");
 const logger = require('morgan');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -58,7 +57,6 @@ app.use(mongoSanitize({
   }))
 app.use(logger('dev'));
 
-// this is our get method
 // this method fetches all available data in our database
 router.get("/getData", checkJwt, (req, res) => {
   Data.find((err, data) => {
@@ -76,8 +74,6 @@ router.get("/instance/:owner", checkJwt, (req, res) => {
     });
   });
 
-// this is our update method
-// this method overwrites existing data in our database
 router.post("/updateInstance/:owner", checkJwt, (req, res) => {
     const owner = req.params.owner;
     const update = req.body.data;
@@ -92,8 +88,6 @@ router.post("/updateInstance/:owner", checkJwt, (req, res) => {
   });
 });
 
-// this is our delete method
-// this method removes existing data in our database
 router.delete("/deleteInstance", checkJwt, (req, res) => {
   const { owner } = req.body;
   Data.findOneAndDelete(owner, err => {
@@ -102,22 +96,21 @@ router.delete("/deleteInstance", checkJwt, (req, res) => {
   });
 });
 
-// this is our create methid
-// this method adds new data in our database
 router.post("/addInstance", checkJwt, (req, res) => {
   let data = new Data();
 
-  const { owner, title, description } = req.body;
+  //const { owner, title, description } = req.body;
+  const { owner } = req.body;
 
-  if ((!owner && owner !== 0) || !title || !description) {
+  /*if ((!owner && owner !== 0) || !title || !description) {
     return res.json({
       success: false,
       error: "INVALID INPUTS"
     });
-  }
+  }*/
   data.owner = owner;
-  data.title = title;
-  data.description = description;
+  /*data.title = title;
+  data.description = description;*/
   data.save(err => {
     if (err) return res.json({ success: false, error: err });
     return res.json({ success: true });

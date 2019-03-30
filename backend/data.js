@@ -38,6 +38,11 @@ function urlValidator(v) {
   return re.test(v);
 };
 
+function pwpushValidator(v) {
+  let re = new RegExp('^https:\/\/pwpush\.com\/p\/.*$');
+  return re.test(v);
+};
+
 function emailValidator(v) {
   let re = new RegExp('^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$');
   return re.test(v);
@@ -115,7 +120,10 @@ let InstanceSchema = new Schema(
       },
       hosting_provider: String,
       hosting_username: String,
-      hosting_password: String,
+      pwpush_url: {
+        type: String,
+        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
     },
     domain_choices: {
       type: [{
@@ -131,7 +139,7 @@ let InstanceSchema = new Schema(
         }],
       }],
     },*/
-    board: ObjectId,
+    board: Schema.Types.ObjectId,
     old_emails: {
       type: [{
         email_address: {
@@ -139,12 +147,18 @@ let InstanceSchema = new Schema(
           validate: [emailValidator, 'Not a valid email address'],
         },
         forwarding_to: String,
-        email_password: String,
+        email_pwpush_url: {
+          type: String,
+          validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+        },
       }],
     },
     mailchimp: {
       username: String,
-      password: String,
+      pwpush_url: {
+        type: String,
+        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
       two_factor: {
         name: String,
         email_address: {
@@ -172,7 +186,10 @@ let InstanceSchema = new Schema(
             type: String,
             validate: [emailValidator, 'Not a valid email address'],
           },
-          password: String,
+          pwpush_url: {
+            type: String,
+            validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+          },
           two_factor: {
             name: String,
             email_address: {
@@ -329,7 +346,10 @@ let InstanceSchema = new Schema(
         type: String,
         validate: [emailValidator, 'Not a valid email address'],
       },
-      password: String,
+      pwpush_url: {
+        type: String,
+        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
       two_factor: {
         name: {
           type: String,
@@ -346,7 +366,10 @@ let InstanceSchema = new Schema(
         type: String,
         validate: [emailValidator, 'Not a valid email address'],
       },
-      password: String,
+      pwpush_url: {
+        type: String,
+        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
       two_factor: {
         name: {
           type: String,
@@ -363,7 +386,10 @@ let InstanceSchema = new Schema(
         type: String,
         validate: [emailValidator, 'Not a valid email address'],
       },
-      password: String,
+      pwpush_url: {
+        type: String,
+        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
       two_factor: {
         name: {
           type: String,
