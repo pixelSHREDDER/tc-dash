@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 //import axios from 'axios';
 //import config from '../configuration.json';
 //import SubmitAnswer from './SubmitAnswer';
-import auth0Client from '../Auth';
+//import auth0Client from '../Auth';
 
 class Instance extends Component {
   constructor(props) {

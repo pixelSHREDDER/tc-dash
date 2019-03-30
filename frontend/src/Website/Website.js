@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import auth0Client from '../Auth';
+//import axios from 'axios';
+//import auth0Client from '../Auth';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+//import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     root: {

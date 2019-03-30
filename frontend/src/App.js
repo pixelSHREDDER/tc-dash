@@ -16,7 +16,7 @@ import WebsiteWritePost from './Website/WritePost';
 import Instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
+import deepPurple from '@material-ui/core/colors/deepPurple';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
 //import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -59,7 +59,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue,
+    primary: deepPurple,
     secondary: green,
     error: red
   },
@@ -279,9 +279,9 @@ class App extends Component {
       /*.then((res) => console.log(res.data));*/
   };
 
-  async getInstance(idToGet) {
+  async getInstance(owner) {
     const token = await auth0Client.getIdToken();
-    const data = (await axios.get(`http://${config.dataURL[config.env]}/instance/${idToGet}`,
+    const data = (await axios.get(`http://${config.dataURL[config.env]}/instance/${owner}`,
     { headers: { 'Authorization': `Bearer ${token}`}}
     )).data;
     this.setState({
@@ -292,7 +292,7 @@ class App extends Component {
 
   async addInstance(instance) {
     const token = await auth0Client.getIdToken();
-    const id = instance.id;
+    //const owner = instance.owner;
     /*let currentIds = this.state.instances.map(data => data.id);
       let idToBeAdded = 0;
       while (currentIds.includes(idToBeAdded)) {
@@ -303,42 +303,35 @@ class App extends Component {
       );
   };
 
-  async deleteInstance(idToDelete) {
+  async deleteInstance(owner) {
     const token = await auth0Client.getIdToken();
-    /*let objIdToDelete = null;
+    /*let objOwnerToDelete = null;
     this.state.instances.forEach(ins => {
-      if (ins.id == idToDelete) {
-        objIdToDelete = ins._id;
+      if (ins.owner == owner) {
+        objOwnerToDelete = ins.owner;
       }
     });*/
 
     axios.delete(`http://${config.dataURL[config.env]}/deleteInstance`, {
       data: {
-        //id: objIdToDelete
-        id: idToDelete
+        //owner: objOwnerToDelete
+        owner: owner
       },
       headers: { 'Authorization': `Bearer ${token}` }}
     );
   };
 
-  async updateInstance(idToUpdate, updateToApply) {
+  async updateInstance(owner, update) {
     try {
       const token = await auth0Client.getIdToken();
-      const update = updateToApply;
-      /*let objIdToUpdate = null;
+      /*let objOwnerToUpdate = null;
       this.state.instances.forEach(ins => {
-        if (ins.id == idToUpdate) {
-          objIdToUpdate = ins._id;
+        if (ins.owner == ownerToUpdate) {
+          objOwnerToUpdate = ins.owner;
         }
       });*/
 
-      /*axios.post(`http://${config.dataURL[config.env]}/updateData`, {
-        headers: { 'Authorization': `Bearer ${token}` }, 
-        //id: objIdToUpdate,
-        id: idToUpdate,
-        update: { message: updateToApply }
-      });*/
-      const data = (await axios.post(`http://${config.dataURL[config.env]}/updateInstance/${idToUpdate}`,
+      const data = (await axios.post(`http://${config.dataURL[config.env]}/updateInstance/${owner}`,
         { data: update },
         { headers: { 'Authorization': `Bearer ${token}` }}
       )).data;
@@ -514,7 +507,7 @@ class App extends Component {
               this.state.live &&
                 <ListItem button
                           component={Link}
-                          to={"/website:" + auth0Client.getProfile().sub}
+                          to={"/website"}
                           selected={pathname === "/website"}
                 >
                   <ListItemIcon>{<WebsiteIcon />}</ListItemIcon>

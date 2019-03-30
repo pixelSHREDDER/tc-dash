@@ -3,6 +3,8 @@ const express = require('express');
 var cors = require('cors');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const Bcrypt = require("bcryptjs");
 const logger = require('morgan');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
@@ -51,7 +53,10 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 // bodyParser, parses the request body to be a readable json format
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(logger("dev"));
+app.use(mongoSanitize({
+    replaceWith: '_-_'
+  }))
+app.use(logger('dev'));
 
 // this is our get method
 // this method fetches all available data in our database
@@ -62,10 +67,10 @@ router.get("/getData", checkJwt, (req, res) => {
   });
 });
 
-router.get("/instance/:id", checkJwt, (req, res) => {
-    //const { id } = req.body;
-    const id = req.params.id;
-    Data.find({ 'id': id }, (err, data) => {
+router.get("/instance/:owner", checkJwt, (req, res) => {
+    //const { owner } = req.body;
+    const owner = req.params.owner;
+    Data.find({ 'owner': owner }, (err, data) => {
       if (err) return res.json({ success: false, error: err });
       return res.json({ success: true, data: data });
     });
@@ -73,11 +78,11 @@ router.get("/instance/:id", checkJwt, (req, res) => {
 
 // this is our update method
 // this method overwrites existing data in our database
-router.post("/updateInstance/:id", checkJwt, (req, res) => {
-    const id = req.params.id;
+router.post("/updateInstance/:owner", checkJwt, (req, res) => {
+    const owner = req.params.owner;
     const update = req.body.data;
   Data.findOneAndUpdate(
-        { 'id': id },
+        { 'owner': owner },
         update,
         {new: true,
         runValidators: true},
@@ -90,8 +95,8 @@ router.post("/updateInstance/:id", checkJwt, (req, res) => {
 // this is our delete method
 // this method removes existing data in our database
 router.delete("/deleteInstance", checkJwt, (req, res) => {
-  const { id } = req.body;
-  Data.findOneAndDelete(id, err => {
+  const { owner } = req.body;
+  Data.findOneAndDelete(owner, err => {
     if (err) return res.send(err);
     return res.json({ success: true });
   });
@@ -102,15 +107,15 @@ router.delete("/deleteInstance", checkJwt, (req, res) => {
 router.post("/addInstance", checkJwt, (req, res) => {
   let data = new Data();
 
-  const { id, title, description } = req.body;
+  const { owner, title, description } = req.body;
 
-  if ((!id && id !== 0) || !title || !description) {
+  if ((!owner && owner !== 0) || !title || !description) {
     return res.json({
       success: false,
       error: "INVALID INPUTS"
     });
   }
-  data.id = id;
+  data.owner = owner;
   data.title = title;
   data.description = description;
   data.save(err => {
