@@ -12,7 +12,7 @@ import WebsiteEditPosts from './Website/EditPosts';
 import WebsiteViewPosts from './Website/ViewPosts';
 import WebsiteViewSiteStats from './Website/ViewSiteStats';
 import WebsiteWritePost from './Website/WritePost';
-//import RadioToggle from './RadioToggle/RadioToggle';
+import RadioToggle from './RadioToggle/RadioToggle';
 import Instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -1016,6 +1016,7 @@ class App extends Component {
             {/*
             auth0Client.isAuthenticated() &&*/}
               <div>
+                <RadioToggle/>
                 {/*<RadioToggle/>
                 <Route exact path='/' component={Instances}/>
                 <Route exact path='/instance/:instanceId' component={Instance}/>

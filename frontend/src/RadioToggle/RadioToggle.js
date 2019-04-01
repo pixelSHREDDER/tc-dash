@@ -1,12 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Radio from '@material-ui/core/Radio';
+import {
+  FormHelperText,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  TextField,
+  Radio,
+  RadioGroup
+} from '@material-ui/core';
+/*import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
+import TextField from '@material-ui/core/TextField';*/
 
 const styles = theme => ({
   root: {
@@ -55,6 +65,21 @@ class RadioButtonsGroup extends React.Component {
               label="No"
             />
           </RadioGroup>
+        {this.state.value === 'true' &&
+          <div>
+            <br></br>
+            <fieldset>
+              <TextField
+                id="standard-name"
+                label="Name"
+                //className={classes.textField}
+                //value={this.state.name}
+                //onChange={this.handleChange('name')}
+                margin="normal"
+              />
+            </fieldset>
+          </div>
+        }
         </FormControl>
       </div>
     );
