@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Link, Route, withRouter} from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
@@ -7,55 +7,96 @@ import auth0Client from './Auth';
 //import Callback from './Callback';
 import NewInstance from './NewInstance/NewInstance';
 import SecuredRoute from './SecuredRoute/SecuredRoute';
+import Board from './Board/Board';
+import GSSocialMedia from './SocialMedia/GSSocialMedia';
 import Website from './Website/Website';
 import WebsiteEditPosts from './Website/EditPosts';
 import WebsiteViewPosts from './Website/ViewPosts';
 import WebsiteViewSiteStats from './Website/ViewSiteStats';
 import WebsiteWritePost from './Website/WritePost';
-import RadioToggle from './RadioToggle/RadioToggle';
 import Instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
+
+import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import deepPurple from '@material-ui/core/colors/deepPurple';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
-//import AccountCircle from '@material-ui/icons/AccountCircle';
-import AnalyticsIcon from '@material-ui/icons/ShowChart';
 import AppBar from '@material-ui/core/AppBar';
-import BoardIcon from '@material-ui/icons/SupervisorAccount';
-import BrandingIcon from '@material-ui/icons/FormatPaint';
-import BylawsIcon from '@material-ui/icons/Gavel';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 //import Collapse from '@material-ui/core/Collapse';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
-import DoneIcon from '@material-ui/icons/Done';
 import Drawer from '@material-ui/core/Drawer';
-import EmailIcon from '@material-ui/icons/AlternateEmail';
-//import ExpandLess from '@material-ui/icons/ExpandLess';
-//import ExpandMore from '@material-ui/icons/ExpandMore';
-import GetStartedIcon from '@material-ui/icons/Build';
-import HelpIcon from '@material-ui/icons/Help';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import OrganizationInfoIcon from '@material-ui/icons/Business';
-import PaymentsIcon from '@material-ui/icons/AttachMoney';
-import PodcastingIcon from '@material-ui/icons/Mic';
-import SocialMediaIcon from '@material-ui/icons/TrackChanges';
+import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+
+//import AccountCircle from '@material-ui/icons/AccountCircle';
+import AddIcon from '@material-ui/icons/Add';
+import AnalyticsIcon from '@material-ui/icons/ShowChart';
+import BoardIcon from '@material-ui/icons/AssignmentInd';
+import BrandingIcon from '@material-ui/icons/FormatPaint';
+import DoneIcon from '@material-ui/icons/Done';
+import EditIcon from '@material-ui/icons/Edit';
+import EmailIcon from '@material-ui/icons/Email';
+//import ExpandLess from '@material-ui/icons/ExpandLess';
+//import ExpandMore from '@material-ui/icons/ExpandMore';
+import ExportIcon from '@material-ui/icons/SaveAlt';
+//import ExternalLinkIcon from '@material-ui/icons/OpenInNew';
+import GetStartedIcon from '@material-ui/icons/Build';
+import HelpIcon from '@material-ui/icons/Help';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import MembershipIcon from '@material-ui/icons/Group';
+import MenuIcon from '@material-ui/icons/Menu';
+import NewIcon from '@material-ui/icons/NewReleases';
+import OrganizationInfoIcon from '@material-ui/icons/Business';
+import PaymentsIcon from '@material-ui/icons/AttachMoney';
+import SocialMediaIcon from '@material-ui/icons/TrackChanges';
+//import ViewListIcon from '@material-ui/icons/ViewList';
 import WebsiteIcon from '@material-ui/icons/Web';
-import { withStyles } from '@material-ui/core/styles';
+
+import AddEventIcon from 'mdi-material-ui/CalendarPlus';
+import AddPostIcon from 'mdi-material-ui/FilePlus';
+import AddSocialMediaIcon from 'mdi-material-ui/MessagePlus';
+import AlumniIcon from 'mdi-material-ui/AccountTie';
+import BrandingColorsIcon from 'mdi-material-ui/Palette';
+import BrandingImagesIcon from 'mdi-material-ui/ImageMultiple';
+import BylawsIcon from 'mdi-material-ui/Bank';
+import ChangeBoardIcon from 'mdi-material-ui/ClipboardFlow';
+import ChangePasswordIcon from 'mdi-material-ui/LockReset';
+import DonationsIcon from 'mdi-material-ui/Gift';
+import DonorIcon from 'mdi-material-ui/AccountHeart';
+import EditEventsIcon from 'mdi-material-ui/CalendarEdit';
+import EditPostsIcon from 'mdi-material-ui/FileDocumentEdit';
+import EventIcon from 'mdi-material-ui/Calendar';
+import FacebookIcon from 'mdi-material-ui/Facebook'
+import ForgotPasswordIcon from 'mdi-material-ui/LockQuestion';
+import IveBeenHackedIcon from 'mdi-material-ui/AlertOctagon';
+import LaunchIcon from 'mdi-material-ui/Rocket';
+import MailingAddressIcon from 'mdi-material-ui/Mailbox';
+import MemberIcon from 'mdi-material-ui/Account';
+import MessengerIcon from 'mdi-material-ui/FacebookMessenger'
+import OtherSocialMediaIcon from 'mdi-material-ui/MessageProcessing';
+import PhoneNumberIcon from 'mdi-material-ui/Dialpad'
+import PodcastIcon from 'mdi-material-ui/Podcast';
+import PostsIcon from 'mdi-material-ui/FileDocument';
+import StartPodcastIcon from 'mdi-material-ui/Headset';
+import SustainerIcon from 'mdi-material-ui/AccountConvert';
+import TaglineDescriptionIcon from 'mdi-material-ui/FormatQuoteClose'
+import TwitterIcon from 'mdi-material-ui/Twitter'
+import UpdateBylawsIcon from 'mdi-material-ui/BankTransfer';
 
 const theme = createMuiTheme({
   palette: {
@@ -97,6 +138,13 @@ const styles = theme => ({
     width: 28,
     height: 28,
   },
+  drawerList: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  listSubheader: {
+    backgroundColor: deepPurple[500],
+    color: theme.palette.common.white,
+  },
   menuButton: {
     marginRight: 20,
     [theme.breakpoints.up('sm')]: {
@@ -105,6 +153,9 @@ const styles = theme => ({
   },
   rightIcon: {
     marginLeft: theme.spacing.unit,
+  },
+  smallIcon: {
+    fontSize: '0.75rem',
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
@@ -138,7 +189,7 @@ class App extends Component {
       //instances: [],
       instance: null,
       intervalIsSet: false,
-      live: true,
+      live: false,
       mobileOpen: false,
       //nestedOpen: false,
       //selected: null,
@@ -147,8 +198,7 @@ class App extends Component {
         "/website/write-post": "Write a Post",
         "/website/view-posts": "View Posts",
         "/website/edit-posts": "Edit Posts",
-        "/website/view-site-stats": "View Site Stats",
-        "/website/view-search-rankings": "View Search Rankings",
+        "/website/view-stats": "View Stats",
         "/board": "Board",
         "/board/edit-board": "Edit Board",
         "/membership": "Membership",
@@ -227,6 +277,463 @@ class App extends Component {
         "/get-started/branding-personalization": "Branding & Personalization",
         "/get-help": "Get Help",
       },
+      routes: {
+        live: [
+          {
+            url: 'website',
+            title: 'Website',
+            subtitle: '',
+            icon: <WebsiteIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'write-post',
+                title: 'Write a Post',
+                subtitle: '',
+                icon: <AddPostIcon />
+              },
+              {
+                url: 'view-posts',
+                title: 'View Posts',
+                subtitle: '',
+                icon: <PostsIcon />
+              },
+              {
+                url: 'edit-posts',
+                title: 'Edit Posts',
+                subtitle: '',
+                icon: <EditPostsIcon />
+              },
+              {
+                url: 'view-stats',
+                title: 'View Stats',
+                subtitle: '',
+                icon: <AnalyticsIcon />
+              },
+            ]
+          },
+          {
+            url: 'board',
+            title: 'Board',
+            subtitle: '',
+            icon: <BoardIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'view-board',
+                title: 'View Board',
+                subtitle: '',
+                icon: <BoardIcon />
+              },
+              {
+                url: 'change-board',
+                title: 'Change Board',
+                subtitle: '',
+                icon: <ChangeBoardIcon />
+              },
+            ]
+          },
+          {
+            url: 'membership',
+            title: 'Membership',
+            subtitle: '',
+            icon: <MembershipIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'view-members',
+                title: 'View Members',
+                subtitle: '',
+                icon: <MemberIcon />
+              },
+              {
+                url: 'export-members',
+                title: 'Export Members',
+                subtitle: '',
+                icon: <ExportIcon />
+              },
+              {
+                url: 'view-alumni',
+                title: 'View Alumni',
+                subtitle: '',
+                icon: <AlumniIcon />
+              },
+              {
+                url: 'export-alumni',
+                title: 'Export Alumni',
+                subtitle: '',
+                icon: <ExportIcon />
+              },
+              {
+                url: 'view-donors',
+                title: 'View Donors',
+                subtitle: '',
+                icon: <DonorIcon />
+              },
+              {
+                url: 'export-donors',
+                title: 'Export Donors',
+                subtitle: '',
+                icon: <ExportIcon />
+              },
+              {
+                url: 'view-sustainers',
+                title: 'View Sustainers',
+                subtitle: '',
+                icon: <SustainerIcon />
+              },
+              {
+                url: 'export-sustainers',
+                title: 'Export Sustainers',
+                subtitle: '',
+                icon: <ExportIcon />
+              },
+            ]
+          },
+          {
+            url: 'payments-finances',
+            title: 'Payments & Finances',
+            subtitle: '',
+            icon: <PaymentsIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'view-budget',
+                title: 'View Budget',
+                subtitle: '',
+                icon: <PaymentsIcon />
+              },
+              {
+                url: 'export-budget',
+                title: 'Export Budget',
+                subtitle: '',
+                icon: <ExportIcon />
+              },
+              {
+                url: 'view-donations',
+                title: 'View Donations',
+                subtitle: '',
+                icon: <DonationsIcon />
+              },
+              {
+                url: 'export-donations',
+                title: 'Export Donations',
+                subtitle: '',
+                icon: <ExportIcon />
+              }
+            ]
+          },
+          {
+            url: 'email',
+            title: 'Email',
+            subtitle: '',
+            icon: <EmailIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'email-members',
+                title: 'Email Members',
+                subtitle: '',
+                icon: <EmailIcon />
+              },
+              {
+                url: 'email-alumni',
+                title: 'Email Alumni',
+                subtitle: '',
+                icon: <EmailIcon />
+              },
+              {
+                url: 'email-donors',
+                title: 'Email Donors',
+                subtitle: '',
+                icon: <EmailIcon />
+              },
+              {
+                url: 'email-sustainers',
+                title: 'Email Sustainers',
+                subtitle: '',
+                icon: <EmailIcon />
+              },
+              {
+                url: 'view-stats',
+                title: 'View Stats',
+                subtitle: '',
+                icon: <AnalyticsIcon />
+              }
+            ]
+          },
+          {
+            url: 'social-media',
+            title: 'Social Media',
+            subtitle: '',
+            icon: <SocialMediaIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'post-to-facebook',
+                title: 'Post to Facebook',
+                subtitle: '',
+                icon: <FacebookIcon />
+              },
+              {
+                url: 'send-a-tweet',
+                title: 'Send a Tweet',
+                subtitle: '',
+                icon: <TwitterIcon />
+              },
+              {
+                url: 'chat-in-messenger',
+                title: 'Chat in Messenger',
+                subtitle: '',
+                icon: <MessengerIcon />
+              },
+              {
+                url: 'post-to-other-account',
+                title: 'Post To Other Account',
+                subtitle: '',
+                icon: <OtherSocialMediaIcon />
+              },
+              {
+                url: 'add-account',
+                title: 'Add Account',
+                subtitle: '',
+                icon: <AddSocialMediaIcon />
+              }
+            ]
+          },
+          {
+            url: 'events',
+            title: 'Events',
+            subtitle: '',
+            icon: <EventIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'create-an-event',
+                title: 'Create an Event',
+                subtitle: '',
+                icon: <AddEventIcon />
+              },
+              {
+                url: 'view-events',
+                title: 'View Events',
+                subtitle: '',
+                icon: <EventIcon />
+              },
+              {
+                url: 'edit-events',
+                title: 'Edit Events',
+                subtitle: '',
+                icon: <EditEventsIcon />
+              }
+            ]
+          },
+          {
+            url: 'security',
+            title: 'Security',
+            subtitle: '',
+            icon: <EventIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'forgot-a-password',
+                title: 'Forgot a Password?',
+                subtitle: '',
+                icon: <ForgotPasswordIcon />
+              },
+              {
+                url: 'change-password',
+                title: 'Change Password',
+                subtitle: '',
+                icon: <ChangePasswordIcon />
+              },
+              {
+                url: 'ive-been-hacked',
+                title: '"I\'ve Been Hacked!"',
+                subtitle: '',
+                icon: <IveBeenHackedIcon />
+              }
+            ]
+          },
+          {
+            url: 'bylaws-constitution',
+            title: 'Bylaws / Constitution',
+            subtitle: '',
+            icon: <BoardIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'view-bylaws-constitution',
+                title: 'View Bylaws / Constitution',
+                subtitle: '',
+                icon: <BylawsIcon />
+              },
+              {
+                url: 'update-bylaws-constitution',
+                title: 'Update Bylaws / Constitution',
+                subtitle: '',
+                icon: <UpdateBylawsIcon />
+              },
+            ]
+          },
+          {
+            url: 'podcasting',
+            title: 'Podcasting',
+            subtitle: '',
+            icon: <BoardIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'view-podcast',
+                title: 'View Podcast',
+                subtitle: '',
+                icon: <PodcastIcon />
+              },
+              {
+                url: 'start-a-podcast',
+                title: 'Start A Podcast',
+                subtitle: '',
+                icon: <StartPodcastIcon />
+              },
+            ]
+          },
+          {
+            url: 'branding-personalization',
+            title: 'Branding & Personalization',
+            subtitle: '',
+            icon: <BoardIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'change-branding-images',
+                title: 'Change Branding Images',
+                subtitle: '',
+                icon: <BrandingImagesIcon />
+              },
+              {
+                url: 'change-branding-colors',
+                title: 'Change Branding Colors',
+                subtitle: '',
+                icon: <BrandingColorsIcon />
+              },
+            ]
+          },
+          {
+            url: 'organization-info',
+            title: 'Organization Info',
+            subtitle: '',
+            icon: <BoardIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'change-tagline-description',
+                title: 'Change Tagline/Description',
+                subtitle: '',
+                icon: <TaglineDescriptionIcon />
+              },
+              {
+                url: 'change-mailing-address',
+                title: 'Change Mailing Address',
+                subtitle: '',
+                icon: <MailingAddressIcon />
+              },
+              {
+                url: 'change-phone-number',
+                title: 'Change Phone Number',
+                subtitle: '',
+                icon: <PhoneNumberIcon />
+              },
+            ]
+          },
+            /*
+            "/social-media/chat-on-discord": "Chat on Discord",
+            "/social-media/upload-to-flickr": "Upload to Flickr",
+            "/social-media/view-github": "View Github",
+            "/social-media/post-to-instagram": "Post to Instagram",
+            "/social-media/post-in-linkedin-group": "Post in LinkedIn Group",
+            "/social-media/post-in-meetup-group": "Post in Meetup Group",
+            "/social-media/post-to-medium": "Post to Medium",
+            "/social-media/chat-in-messenger-group": "Chat in Messenger Group",
+            "/social-media/post-to-pinterest": "Post to Pinterest",
+            "/social-media/post-on-subreddit": "Post on Subreddit",
+            "/social-media/chat-on-slack": "Chat on Slack",
+            "/social-media/new-snap": "New Snap",
+            "/social-media/post-to-tumblr": "Post to Tumblr",
+            "/social-media/upload-to-twitch": "Upload to Twitch",
+            "/social-media/chat-on-whatsapp": "Chat on WhatsApp",
+            "/social-media/upload-to-youtube": "Upload to YouTube",
+          */
+        ],
+        onboarding: [
+          {
+            url: 'get-started',
+            title: 'Get Started',
+            subtitle: '',
+            icon: <WebsiteIcon className="smallIcon" />,
+            children: [
+              {
+                url: 'organization-info',
+                title: 'Organization Info',
+                subtitle: '',
+                icon: <OrganizationInfoIcon />,
+                completed: 100,
+              },
+              {
+                url: 'website',
+                title: 'Website',
+                subtitle: '',
+                icon: <WebsiteIcon />,
+                completed: 2,
+              },
+              {
+                url: 'board',
+                title: 'Board',
+                subtitle: '',
+                icon: <BoardIcon />,
+                completed: 75,
+              },
+              {
+                url: 'email',
+                title: 'Email',
+                subtitle: '',
+                icon: <EmailIcon />,
+                completed: 10,
+              },
+              {
+                url: 'social-media',
+                title: 'Social Media',
+                subtitle: '',
+                icon: <SocialMediaIcon />,
+                completed: 25,
+              },
+              {
+                url: 'payments-finances',
+                title: 'Payments & Finances',
+                subtitle: '',
+                icon: <PaymentsIcon />,
+                completed: 2,
+              },
+              {
+                url: 'analytics-seo',
+                title: 'Analytics & SEO',
+                subtitle: '',
+                icon: <AnalyticsIcon />,
+                completed: 80,
+              },
+              {
+                url: 'podcasting',
+                title: 'Podcasting',
+                subtitle: '',
+                icon: <PodcastIcon />,
+                completed: 100,
+              },
+              {
+                url: 'bylaws-constitution',
+                title: 'Bylaws / Constitution',
+                subtitle: '',
+                icon: <BylawsIcon />,
+                completed: 2,
+              },
+              {
+                url: 'branding-personalization',
+                title: 'Branding & Personalization',
+                subtitle: '',
+                icon: <BrandingIcon />,
+                completed: 60,
+              },
+            ]
+          }
+        ],
+      },
+      status: 'onboarding'
     };
     this.updateInstance = this.updateInstance.bind(this);
   }
@@ -234,7 +741,7 @@ class App extends Component {
   async componentDidMount() {
     let instanceId = null;
     if (this.props.location.pathname === '/callback') {
-      this.setState({ checkingSession:false });
+      this.setState({checkingSession: false});
       return;
     }
     try {
@@ -249,7 +756,7 @@ class App extends Component {
     } catch (err) {
       if (err.error !== 'login_required') console.log(err.error);
     }
-    this.setState({checkingSession:false});
+    this.setState({checkingSession: false});
     //this.refreshInstance();
   }
 
@@ -428,7 +935,7 @@ class App extends Component {
 
   render() {
     const { classes } = this.props;
-    const { anchorEl, instance, pageTitles } = this.state;
+    const { anchorEl, instance, live, pageTitles, routes } = this.state;
     const { pathname } = this.props.location;
     const open = Boolean(anchorEl);
 
@@ -501,434 +1008,96 @@ class App extends Component {
             <Divider />
           }
           {
-          auth0Client.isAuthenticated() &&
-              <List component="nav">
-              {
-              this.state.live &&
-                <ListItem button
-                          component={Link}
-                          to={"/website"}
-                          selected={pathname === "/website"}
-                >
-                  <ListItemIcon>{<WebsiteIcon />}</ListItemIcon>
-                  <ListItemText inset primary={this.state.pageTitles["/website"]}/>
-                  {/*this.state.nestedOpen ? <ExpandLess /> : <ExpandMore />*/}
-                </ListItem>
-              }
-              {/*<Collapse in={this.state.nestedOpen} timeout="auto" unmountOnExit>*/}
-              {
-              this.state.live &&
-                <List component="div" disablePadding>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/website/write-post"
-                            //onClick={() => this.handleListItemClick(1)}
-                            //selected={(selected === 1) || (pathname === "/website/write-post")}
-                            selected={pathname === "/website/write-post"}
-                  >
-                    <ListItemIcon><OrganizationInfoIcon /></ListItemIcon>
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/website/write-post"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      Do the thing!
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/website/view-posts"
-                            selected={pathname === "/website/view-posts"}
-                  >
-                    <ListItemIcon><OrganizationInfoIcon /></ListItemIcon>
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/website/view-posts"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      Do the thing!
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/website/edit-posts"
-                            selected={pathname === "/website/edit-posts"}
-                  >
-                    <ListItemIcon><OrganizationInfoIcon /></ListItemIcon>
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/website/edit-posts"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      Do the thing!
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/website/view-site-stats"
-                            selected={pathname === "/website/view-site-stats"}
-                  >
-                    <ListItemIcon><OrganizationInfoIcon /></ListItemIcon>
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/website/view-site-stats"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      Do the thing!
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
+          (auth0Client.isAuthenticated() && this.state.live) &&
+              <List component="nav" className={classes.drawerList} subheader={<li />}>
+                {this.state.routes.live.map(sectionId => (
+                  <Slide direction="right" in={!this.state.checkingSession} mountOnEnter unmountOnExit>
+                    <li key={`section-${sectionId.url}`}>
+                        {/* <ListSubheader>{sectionId.icon} {sectionId.title}</ListSubheader> */}
+                        <ListSubheader className={classes.listSubheader} elevation={24}>{sectionId.title}</ListSubheader>
+                        <List component="div" disablePadding>
+                          {sectionId.children.map(item => (
+                            <ListItem button
+                                      key={`item-${sectionId.url}-${item.url}`}
+                                      alignItems="flex-start"
+                                      component={Link}
+                                      to={`/${sectionId.url}/${item.url}`}
+                                      //onClick={() => this.handleListItemClick(1)}
+                                      //selected={(selected === 1) || (pathname === `/${sectionId.url}/${item.url}`)}
+                                      selected={pathname === `/${sectionId.url}/${item.url}`}
+                            >
+                              <ListItemIcon>{item.icon}</ListItemIcon>
+                              <ListItemText inset
+                                            primary={item.title}
+                                            /* secondary={
+                                              <React.Fragment>
+                                                {item.subtitle}
+                                              </React.Fragment>
+                                            } */
+                              />
+                            </ListItem>
+                          ))}
+                        </List>
+                    </li>
+                  </Slide>
+                ))}
+              </List>
+            }
+            {
+            (auth0Client.isAuthenticated() && !this.state.live) &&
+                <List component="nav" className={classes.drawerList} subheader={<li />}>
+                  {this.state.routes.onboarding.map(sectionId => (
+                    <Slide direction="right" in={!this.state.checkingSession} mountOnEnter unmountOnExit>
+                      <li key={`section-${sectionId.url}`}>
+                          {/* <ListSubheader>{sectionId.icon} {sectionId.title}</ListSubheader> */}
+                          <ListSubheader className={classes.listSubheader} elevation={24}>{sectionId.title}</ListSubheader>
+                          <List component="div" disablePadding>
+                            {sectionId.children.map(item => (
+                              <ListItem button
+                                        key={`item-${sectionId.url}-${item.url}`}
+                                        alignItems="flex-start"
+                                        component={Link}
+                                        to={`/${sectionId.url}/${item.url}`}
+                                        //onClick={() => this.handleListItemClick(1)}
+                                        //selected={(selected === 1) || (pathname === `/${sectionId.url}/${item.url}`)}
+                                        selected={pathname === `/${sectionId.url}/${item.url}`}
+                              >
+                                {
+                                (item.completed < 100) &&
+                                  <ListItemIcon>{item.icon}</ListItemIcon>
+                                }
+                                {
+                                (item.completed === 100) &&
+                                  <ListItemIcon>
+                                    <DoneIcon color="secondary" />
+                                  </ListItemIcon>
+                                }
+                                <ListItemText inset
+                                              primary={item.title}
+                                              secondary={
+                                                <React.Fragment>
+                                                  {/*{item.subtitle}*/}
+                                                  {
+                                                  (item.completed < 100) &&
+                                                    <LinearProgress variant="determinate" value={item.completed} />
+                                                  }
+                                                </React.Fragment>
+                                              }
+                                />
+                              </ListItem>
+                            ))}
+                            <ListItem>
+                              <Button disabled variant="contained" color="secondary" size="large" className={classes.drawerButton}>
+                                Launch!
+                                <LaunchIcon className={classes.rightIcon} />
+                              </Button>
+                            </ListItem>
+                          </List>
+                      </li>
+                    </Slide>
+                  ))}
                 </List>
               }
-              {/*</Collapse>*/}
-              {
-              !this.state.live &&
-                <ListItem button
-                          component={Link}
-                          to="/get-started"
-                          selected={pathname === "/get-started"}
-                >
-                  <ListItemIcon>{<GetStartedIcon />}</ListItemIcon>
-                  <ListItemText inset primary={this.state.pageTitles["/get-started"]}/>
-                </ListItem>
-              }
-              {
-              !this.state.live &&
-                <List component="div" disablePadding>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/organization-info"
-                            selected={pathname === "/get-started/organization-info"}
-                  >
-                    {
-                    (this.state.completed.organizationInfo < 100) &&
-                      <ListItemIcon>
-                        <OrganizationInfoIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.organizationInfo === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/organization-info"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.organizationInfo < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.organizationInfo} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/website"
-                            selected={pathname === "/get-started/website"}
-                  >
-                    {
-                    (this.state.completed.website < 100) &&
-                      <ListItemIcon>
-                        <WebsiteIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.website === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/website"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.website < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.website} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/board-hierarchy"
-                            selected={pathname === "/get-started/board-hierarchy"}
-                  >
-                    {
-                    (this.state.completed.boardHierarchy < 100) &&
-                      <ListItemIcon>
-                        <BoardIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.boardHierarchy === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/board-hierarchy"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.boardHierarchy < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.boardHierarchy} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/email"
-                            selected={pathname === "/get-started/email"}
-                  >
-                    {
-                    (this.state.completed.email < 100) &&
-                      <ListItemIcon>
-                        <EmailIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.email === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/email"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.email < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.email} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/social-media"
-                            selected={pathname === "/get-started/social-media"}
-                  >
-                    {
-                    (this.state.completed.socialMedia < 100) &&
-                      <ListItemIcon>
-                        <SocialMediaIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.socialMedia === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/social-media"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.socialMedia < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.socialMedia} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/payments-finances"
-                            selected={pathname === "/get-started/payments-finances"}
-                  >
-                    {
-                    (this.state.completed.paymentsFinances < 100) &&
-                      <ListItemIcon>
-                        <PaymentsIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.paymentsFinances === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/payments-finances"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.paymentsFinances < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.paymentsFinances} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/analytics-seo"
-                            selected={pathname === "/get-started/analytics-seo"}
-                  >
-                    {
-                    (this.state.completed.analyticsSeo < 100) &&
-                      <ListItemIcon>
-                        <AnalyticsIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.analyticsSeo === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/analytics-seo"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.analyticsSeo < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.analyticsSeo} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/podcasting"
-                            selected={pathname === "/get-started/podcasting"}
-                  >
-                    {
-                    (this.state.completed.podcasting < 100) &&
-                      <ListItemIcon>
-                        <PodcastingIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.podcasting === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/podcasting"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.podcasting < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.podcasting} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/bylaws-constitution"
-                            selected={pathname === "/get-started/bylaws-constitution"}
-                  >
-                    {
-                    (this.state.completed.bylawsConstitution < 100) &&
-                      <ListItemIcon>
-                        <BylawsIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.bylawsConstitution === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/bylaws-constitution"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.bylawsConstitution < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.bylawsConstitution} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                  <ListItem button
-                            className={classes.nested}
-                            alignItems="flex-start"
-                            component={Link}
-                            to="/get-started/branding-personalization"
-                            selected={pathname === "/get-started/branding-personalization"}
-                  >
-                    {
-                    (this.state.completed.brandingPersonalization < 100) &&
-                      <ListItemIcon>
-                        <BrandingIcon />
-                      </ListItemIcon>
-                    }
-                    {
-                    (this.state.completed.brandingPersonalization === 100) &&
-                      <ListItemIcon>
-                        <DoneIcon color="secondary" />
-                      </ListItemIcon>
-                    }
-                    <ListItemText inset
-                                  primary={this.state.pageTitles["/get-started/branding-personalization"]}
-                                  secondary={
-                                    <React.Fragment>
-                                      {
-                                      (this.state.completed.brandingPersonalization < 100) &&
-                                        <LinearProgress variant="determinate" value={this.state.completed.brandingPersonalization} />
-                                      }
-                                    </React.Fragment>
-                                  }
-                    />
-                  </ListItem>
-                </List>
-              }
-              {
-              !this.state.live &&
-                <ListItem>
-                  <Button variant="contained" color="secondary" size="large" className={classes.drawerButton}>
-                    Launch!
-                    <WebsiteIcon className={classes.rightIcon} />
-                  </Button>
-                </ListItem>
-              }
-            </List>
-          }
           {
           auth0Client.isAuthenticated() &&
             <Divider />
@@ -936,12 +1105,6 @@ class App extends Component {
           {
           auth0Client.isAuthenticated() &&
             <List>
-              {/*['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon><SocialMediaIcon /></ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))*/}
               <ListItem button
                         component={Link}
                         to="/get-help"
@@ -1016,7 +1179,6 @@ class App extends Component {
             {/*
             auth0Client.isAuthenticated() &&*/}
               <div>
-                <RadioToggle/>
                 {/*<RadioToggle/>
                 <Route exact path='/' component={Instances}/>
                 <Route exact path='/instance/:instanceId' component={Instance}/>
@@ -1029,6 +1191,11 @@ class App extends Component {
                               component={NewInstance}
                               checkingSession={this.state.checkingSession}
                               onSubmit={this.addInstance} />
+                <SecuredRoute path='/board'
+                              component={Board}
+                              instance={this.state.instance}
+                              checkingSession={this.state.checkingSession}
+                              onSubmit={this.updateInstance} />
                 <SecuredRoute path='/website'
                               component={Website}
                               instance={this.state.instance}
@@ -1040,12 +1207,17 @@ class App extends Component {
                 <SecuredRoute path='/website/view-posts'
                               component={WebsiteViewPosts}
                               checkingSession={this.state.checkingSession} />
-                <SecuredRoute path='/website/view-site-stats'
+                <SecuredRoute path='/website/view-stats'
                               component={WebsiteViewSiteStats}
                               checkingSession={this.state.checkingSession} />
                 <SecuredRoute path='/website/write-post'
                               component={WebsiteWritePost}
                               checkingSession={this.state.checkingSession} />
+                <SecuredRoute path='/get-started/social-media'
+                              component={GSSocialMedia}
+                              instance={this.state.instance}
+                              checkingSession={this.state.checkingSession}
+                              onSubmit={this.updateInstance} />
               </div>
             {/*}*/}
           </main>

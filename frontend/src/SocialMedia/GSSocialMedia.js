@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-//import axios from 'axios';
-//import auth0Client from '../Auth';
+import RadioToggle from '../RadioToggle/RadioToggle';
 import { withStyles } from '@material-ui/core/styles';
+import SaveIcon from 'mdi-material-ui/ContentSave';
 import Button from '@material-ui/core/Button';
 //import Typography from '@material-ui/core/Typography';
 
@@ -13,13 +13,16 @@ const styles = theme => ({
       flexGrow: 1,
       padding: theme.spacing.unit * 3,
     },
-  });
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+});
 
-class Website extends Component {
+class GSSocialMedia extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      instance: null,
+      instance: null
     };
 
     //this.submitAnswer = this.submitAnswer.bind(this);
@@ -51,31 +54,20 @@ class Website extends Component {
   }*/
 
   render() {
-    const {instance, onSubmit} = this.props;
+    const {classes, instance, onSubmit} = this.props;
     if (this.props.instance === null) return <p>Loading ...</p>;
     this.state.instance = this.props.instance;
-    this.state.instance.title = "flerp";
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="jumbotron col-12">
-            <h1 className="display-3">{this.state.instance.title}</h1>
-            <p className="lead">{this.state.instance.description}</p>
-            <hr className="my-4" />
-            <Button onClick={() => {this.props.onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>Do</Button>
-            {/*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
-            <p>Answers:</p>
-            {
-              instance.answers.map((answer, idx) => (
-                <p className="lead" key={idx}>{answer.answer}</p>
-              ))
-            }*/}
-          </div>
+        <div style={{height: 400}}>
+            <RadioToggle/>
+            <Button variant="contained" color="primary" size="large" onClick={() => {this.props.onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>
+                Save
+                <SaveIcon className={classes.rightIcon} />
+            </Button>
         </div>
-      </div>
     )
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Website);
+export default withStyles(styles, { withTheme: true })(GSSocialMedia);
