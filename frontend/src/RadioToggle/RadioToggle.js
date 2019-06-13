@@ -2,31 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  FormHelperText,
   FormControl,
   FormControlLabel,
+  FormHelperText,
   FormLabel,
-  TextField,
   Radio,
-  RadioGroup
+  RadioGroup,
+  TextField
 } from '@material-ui/core';
-/*import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import TextField from '@material-ui/core/TextField';*/
 
 const styles = theme => ({
   root: {
     display: 'flex',
   },
   formControl: {
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing(3),
   },
   group: {
-    margin: `${theme.spacing.unit}px 0`,
+    margin: `${theme.spacing(1)}px 0`,
   },
 });
 

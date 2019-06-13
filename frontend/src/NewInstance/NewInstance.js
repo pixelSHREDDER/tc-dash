@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 //import auth0Client from '../Auth';
 //import axios from 'axios';
 
-class NewInstance extends Component {
+class NewInstance extends React.Component {
   constructor(props) {
     super(props);
 

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 //import axios from 'axios';
 //import config from '../configuration.json';
 //import SubmitAnswer from './SubmitAnswer';
 //import auth0Client from '../Auth';
 
-class Instance extends Component {
+class Instance extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

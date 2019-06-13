@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 //import axios from 'axios';
 //import auth0Client from '../Auth';
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-//import Typography from '@material-ui/core/Typography';
+//import { Button, Typography } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
@@ -11,11 +11,11 @@ const styles = theme => ({
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing(3),
     },
   });
 
-class Website extends Component {
+class Website extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,10 +53,14 @@ class Website extends Component {
   render() {
     const {instance, onSubmit} = this.props;
     if (this.props.instance === null) return <p>Loading ...</p>;
-    this.state.instance = this.props.instance;
-    this.state.instance.title = "flerp";
+    /*this.setState({
+      instance: this.props.instance,
+    });*/
+    //this.state.instance.title = "flerp";
+    //remove this whenever
+    return null;
 
-    return (
+    /*return (
       <div className="container">
         <div className="row">
           <div className="jumbotron col-12">
@@ -64,18 +68,18 @@ class Website extends Component {
             <p className="lead">{this.state.instance.description}</p>
             <hr className="my-4" />
             <Button onClick={() => {this.props.onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>Do</Button>
-            {/*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
+            {*//*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
             <p>Answers:</p>
             {
               instance.answers.map((answer, idx) => (
                 <p className="lead" key={idx}>{answer.answer}</p>
               ))
-            }*/}
+  }*//*}
           </div>
         </div>
       </div>
-    )
+    )*/
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Website);
+export default withRouter(withStyles(styles, { withTheme: true })(Website));

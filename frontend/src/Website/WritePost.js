@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import auth0Client from '../Auth';
+import ExternalLinkPanel from '../ExternalLinkPanel/ExternalLinkPanel';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -9,21 +11,21 @@ const styles = theme => ({
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing.unit * 3,
+      padding: theme.spacing(3),
     },
   });
 
-class WebsiteWritePost extends Component {
+class WebsiteWritePost extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      instance: null,
+      //instance: null,
     };
 
     //his.submitAnswer = this.submitAnswer.bind(this);
   }
 
-  async componentDidMount() {
+  /*async componentDidMount() {
     await this.refreshInstance();
   }
 
@@ -42,19 +44,22 @@ class WebsiteWritePost extends Component {
       headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
     });
     await this.refreshQuestion();
-  }
+  }*/
 
   render() {
-    const {instance} = this.state;
-    if (instance === null) return <p>Loading ...</p>;
+    const {instance} = this.props;
+    if (this.props.instance === null) return <p>Loading ...</p>;
+    //this.state.instance = this.props.instance;
+
     return (
       <div className="container">
-        <div className="row">
+      <ExternalLinkPanel instance={instance} />
+        {/*<div className="row">
           <div className="jumbotron col-12">
             <h1 className="display-3">{instance.title}</h1>
             <p className="lead">{instance.description}</p>
             <hr className="my-4" />
-            {/*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />*/}
+            <SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
             <p>Answers:</p>
             {
               instance.answers.map((answer, idx) => (
@@ -62,10 +67,10 @@ class WebsiteWritePost extends Component {
               ))
             }
           </div>
-        </div>
+          </div>*/}
       </div>
     )
   }
 }
 
-export default withStyles(styles, { withTheme: true })(WebsiteWritePost);
+export default withRouter(withStyles(styles, { withTheme: true })(WebsiteWritePost));

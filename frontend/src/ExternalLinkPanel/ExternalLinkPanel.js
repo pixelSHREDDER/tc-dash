@@ -1,0 +1,253 @@
+import React from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import DateRange from '../DateRange/DateRange';
+import { withStyles } from '@material-ui/core/styles';
+import {
+    Button,
+    Grid,
+    Paper,
+    Typography
+} from '@material-ui/core';
+import {
+    Email as EmailIcon,
+    OpenInNew as ExternalLinkIcon
+} from '@material-ui/icons';
+import {
+    GoogleAnalytics as GoogleAnalyticsIcon,
+    Facebook as FacebookIcon,
+    Google as GoogleIcon,
+    Paypal as PayPalIcon,
+    Wordpress as WordpressIcon
+} from 'mdi-material-ui';
+
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        textAlign: 'center',
+        ...theme.mixins.gutters(),
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
+    },
+    icon: {
+        color: theme.palette.primary.main,
+        fontSize: '4.0rem',
+        marginBottom: theme.spacing(2),
+    },
+    rightIcon: {
+        fontSize: '0.75rem',
+    },
+});
+
+class ExternalLinkPanel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            instance: null,
+            dateString: '',
+            routes: {
+                '/email/email-members': [{
+                    title: 'Email Your Members on Mailchimp',
+                    text: 'You can view a list of all of your chapter\'s active members via the Wordpress interface.',
+                    icon: <EmailIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/email/view-stats': [{
+                    title: 'View Your Email Stats on Mailchimp',
+                    text: 'You can view your emails\' stats on Mailchimp.',
+                    note: 'You may be redirected to log into your chapter\'s Mailchimp account first.',
+                    icon: <GoogleAnalyticsIcon className={this.props.classes.icon}/>,
+                    link: `https://admin.mailchimp.com/reports/`,
+                }],
+                '/membership/view-members': [{
+                    title: 'View Your Members on Wordpress',
+                    text: 'You can view a list of all of your chapter\'s active members via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/membership/export-members': [{
+                    title: 'Export Your Members from Wordpress',
+                    text: 'You can export your chapter\'s active member data via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin-ajax.php?action=memberslist_csv&s=&l=1`,
+                }],
+                '/membership/view-alumni': [{
+                    title: 'View Your Alumni on Wordpress',
+                    text: 'You can view a list of all of your chapter\'s alumni via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/membership/export-alumni': [{
+                    title: 'Export Your Alumni from Wordpress',
+                    text: 'You can export your chapter\'s alumni data via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/membership/view-donors': [{
+                    title: 'View Your Donors on Wordpress',
+                    text: 'You can view a list of all of your chapter\'s donors via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/membership/export-donors': [{
+                    title: 'Export Your Donors from Wordpress',
+                    text: 'You can export your chapter\'s donor data via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/membership/view-sustainers': [{
+                    title: 'View Your Sustainers on Wordpress',
+                    text: 'You can view a list of all of your chapter\'s sustainers via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/membership/export-sustainers': [{
+                    title: 'Export Your Sustainers from Wordpress',
+                    text: 'You can export your chapter\'s sustainer data via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/admin.php?l=1&page=pmpro-memberslist`,
+                }],
+                '/payments-finances/view-budget': [{
+                    title: 'View Your Budget on PayPal',
+                    text: 'You can view all transactions made through your website, as well as any transactions made through PayPal directly.',
+                    note: 'You may be redirected to log into your position\'s PayPal account first.',
+                    icon: <PayPalIcon className={this.props.classes.icon}/>,
+                    link: `https://www.paypal.com/listing/transactions?tab=bookkeeping#`,
+                }],
+                '/payments-finances/export-budget': [{
+                    title: 'Export Your Budget from PayPal',
+                    text: 'You can generate and export a report of all transactions made through your website, as well as any transactions made through PayPal directly.',
+                    note: 'You may be redirected to log into your position\'s PayPal account first.',
+                    icon: <PayPalIcon className={this.props.classes.icon}/>,
+                    link: `https://www.paypal.com/merchantdata/reportHome?reportType=DLOG`,
+                    dateFormat: 'UTC',
+                }],
+                '/payments-finances/view-donations': [{
+                    title: 'View Donations on Wordpress',
+                    text: 'You can view a list of all of your chapter\'s donations via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/edit.php?post_type=give_forms&page=give-payment-history`,
+                }],
+                '/payments-finances/export-donations': [{
+                    title: 'Export All Donations to CSV File',
+                    text: 'You can export all of your chapter\'s donation data into a CSV (comma-separated values) file.',
+                    note: 'You may be redirected to log into your Wordpress account first.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/edit.php?post_type=give_forms&page=give-tools&type=export_donations`,
+                }, {
+                    title: 'Export This Year\'s Donations to PDF File',
+                    text: 'You can export all of your chapter\'s donation data for the current year into a PDF file.',
+                    note: 'You may be redirected to log into your Wordpress account first.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/edit.php?post_type=give_forms&page=give-tools&give-action=generate_pdf`,
+                }],
+                '/social-media/post-to-facebook-page': [{
+                    title: 'Post to Facebook Page',
+                    text: 'You can post to your chapter\'s Facebook page here.',
+                    note: 'You may be redirected to log into Facebook first.',
+                    icon: <FacebookIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/edit.php?post_type=give_forms&page=give-payment-history`,
+                }],
+                '/website/edit-posts': [{
+                    title: 'Edit Your Posts on Wordpress',
+                    text: 'You can edit the posts on your website directly through the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/edit.php`,
+                }],
+                '/website/view-posts': [{
+                    title: 'View Your Posts on Wordpress',
+                    text: 'You can view a list of all the posts on your website via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/category/blog/`,
+                }],
+                '/website/view-stats': [{
+                    title: 'View Your Stats on Google Analytics',
+                    text: 'You can view your website\'s stats and traffic on Google Analytics.',
+                    note: 'You may be redirected to log into your position\'s Google account first.',
+                    icon: <GoogleAnalyticsIcon className={this.props.classes.icon}/>,
+                    link: 'https://analytics.google.com/analytics/web/#/report-home/',
+                }, {
+                    title: 'View Your Rankings on Google Search Console',
+                    text: 'You can view your website\'s search rankings and settings on Google Search Console.',
+                    note: 'You may be redirected to log into your position\'s Google account first.',
+                    icon: <GoogleIcon className={this.props.classes.icon}/>,
+                    link: `https://www.google.com/webmasters/tools/googlebot-fetch?hl=en&siteUrl=${this.props.instance.domain}/&authuser=0`,
+                }],
+                '/website/write-post': [{
+                    title: 'Write a Post on Wordpress',
+                    text: 'You can write a new post for your website via the Wordpress interface.',
+                    icon: <WordpressIcon className={this.props.classes.icon}/>,
+                    link: `https://${this.props.instance.domain}/wp-admin/post-new.php`,
+                }],
+            }
+        };
+    }
+
+    getDateRange = (data) => {
+        let dateString = '';
+        if ('dateFormat' in this.state.routes[this.props.location]) {
+            dateString = data;
+        }
+        console.log(data);
+        this.setState({dateString: dateString});
+    };
+
+    render() {
+        const {classes, instance} = this.props;
+        const {pathname} = this.props.location;
+        if ((this.props.instance === null) || !(pathname in this.state.routes)) return <p>Loading ...</p>;
+        /*this.setState({
+            instance: this.props.instance,
+        });*/
+
+        return (
+            <Grid container className={classes.root} spacing={2} justify="center">
+                {this.state.routes[pathname].map(item => (
+                    <Grid item md={8}>
+                        <Paper className={classes.paper} elevation={1}>
+                            {item.icon}
+                            <Typography component="p" gutterBottom>
+                            {item.text} Just follow the link below:
+                            </Typography>
+                            {
+                            item.note &&
+                                <Typography component="p" gutterBottom>
+                                    NOTE: {item.note}
+                                </Typography>
+                            }
+                            <br />
+                            {
+                            item.dateFormat &&
+                                <Grid container justify="center" spacing={2}>
+                                    <Grid item md={4}>
+                                        <DateRange sendDateRange={this.getDateRange} />
+                                    </Grid>
+                                    <Grid item md={8}>
+                                        <a href={item.link} target="_blank" rel="noopener noreferrer">
+                                            <Button size="large" color="primary" autoFocus>
+                                                {item.title}
+                                                <ExternalLinkIcon className={classes.rightIcon} />
+                                            </Button>
+                                        </a>
+                                    </Grid>
+                                </Grid>
+                            }
+                            {
+                            !item.dateFormat &&
+                                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                                    <Button size="large" color="primary" autoFocus>
+                                        {item.title}
+                                        <ExternalLinkIcon className={classes.rightIcon} />
+                                    </Button>
+                                </a>
+                            }
+                        </Paper>
+                    </Grid>
+                ))}
+            </Grid>
+        )
+    }
+}
+
+export default withRouter(withStyles(styles, { withTheme: true })(ExternalLinkPanel));

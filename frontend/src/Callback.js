@@ -1,8 +1,9 @@
-import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import auth0Client from './Auth';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-class Callback extends Component {
+class Callback extends React.Component {
   async componentDidMount() {
     await auth0Client.handleAuthentication();
     this.props.history.replace('/');
@@ -10,7 +11,7 @@ class Callback extends Component {
 
   render() {
     return (
-      <p>Loading profile...</p>
+      <CircularProgress />
     );
   }
 }
