@@ -9,11 +9,11 @@ import {
   CardActions,
   CardContent,
   CircularProgress,
-  FormControlLabel,
-  FormGroup,
+  //FormControlLabel,
+  //FormGroup,
   Grid,
-  IconButton,
-  Switch,
+  //IconButton,
+  //Switch,
   Typography
 } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
@@ -95,10 +95,10 @@ class Board extends React.Component {
   }*/
 
   render() {
-    const {classes, instance, onSubmit} = this.props;
-    if (this.props.instance === null) return <CircularProgress />;
+    const {classes, instance/*, onSubmit*/} = this.props;
+    if (instance === null) return <CircularProgress />;
     /*this.setState({
-      instance: this.props.instance,
+      instance: instance,
     });*/
 
     return (

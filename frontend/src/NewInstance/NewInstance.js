@@ -96,7 +96,7 @@ class NewInstance extends React.Component {
                 <button
                   disabled={this.state.disabled}
                   className="btn btn-primary"
-                  onClick={() => {this.props.onSubmit({
+                  onClick={() => {onSubmit({
                     'id': this.state.id,
                     'title': this.state.title,
                     'description': this.state.description,

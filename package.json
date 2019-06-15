@@ -20,5 +20,6 @@
   "homepage": "https://github.com/pixelSHREDDER/tc-dash#readme",
   "dependencies": {
     "concurrently": "^4.1.0"
-  }
+  },
+  "devDependencies": {}
 }

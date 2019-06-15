@@ -129,7 +129,7 @@ const styles = theme => ({
         padding: theme.spacing(4),
     },
     button: {
-        margin: theme.spacing,
+        margin: theme.spacing(1),
     },
     drawerButton: {
         width: drawerWidth - (theme.spacing(6)),

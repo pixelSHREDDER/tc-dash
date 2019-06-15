@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import config from './configuration.json';
+import { URLS } from './conf';
 import auth0Client from './Auth';
-import Callback from './Callback';
+//import Callback from './Callback';
 import NewInstance from './NewInstance/NewInstance';
 import { pageTitles, routes } from './Routes/Routes';
 import SecuredRoute from './Routes/SecuredRoute';
@@ -21,10 +21,10 @@ import WebsiteWritePost from './Website/WritePost';*/
 import Instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
 
+import { CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-//import deepPurple from '@material-ui/core/colors/deepPurple';
-import { green, red } from '@material-ui/core/colors';
+import { deepPurple, green, red } from '@material-ui/core/colors';
 import {
   AppBar,
   Avatar,
@@ -55,7 +55,7 @@ import {
   //ExpandLess as ExpandLessIcon,
   //ExpandMore as ExpandMoreIcon,
   //OpenInNew as ExternalLinkIcon,
-  Help as HelpIcon,
+  //Help as HelpIcon,
   Menu as MenuIcon,
   //ViewList as ViewListIcon
  } from '@material-ui/icons';
@@ -64,11 +64,8 @@ import {
 
 const theme = createMuiTheme({
   palette: {
-    //primary: deepPurple,
-    primary: {
-      main: "#1982d1",
-    },
-      secondary: green,
+    primary: deepPurple,
+    secondary: green,
     error: red
   },
   typography: {
@@ -112,13 +109,13 @@ const styles = theme => ({
     padding: 0,
   },
   listSubheader: {
-    //backgroundColor: deepPurple[500],
+    backgroundColor: deepPurple[500],
     //backgroundColor: theme.palette.primary.main,
-    backgroundColor: "#1982d1",
     color: theme.palette.common.white,
   },
   drawerListItemText: {
-    padding: `0 0 0 ${theme.spacing(0.5)}px`,
+    padding: 0,
+    paddingLeft: theme.spacing(0.5),
   },
   drawerListItemTitleLine1: {
     display: 'block',
@@ -146,6 +143,10 @@ const styles = theme => ({
     padding: theme.spacing(3),
   },
 });
+
+const Callback = () => (
+  <CircularProgress />
+);
 
 class App extends React.Component {
   constructor(props) {
@@ -180,24 +181,48 @@ class App extends React.Component {
 
   async componentDidMount() {
     let instanceId = null;
-    if (this.props.location.pathname === '/callback') {
+    if (this.props.location.pathname === 'callback') return;
+    /*if (this.props.location.pathname === '/callback') {
       this.setState({checkingSession: false});
       return;
-    }
+    }*/
     try {
-      await auth0Client.silentAuth();
+      await auth0Client.renewTokens();
+      this.forceUpdate();
+      instanceId = await auth0Client.getProfile().sub;
+      this.getInstance(instanceId);
+      this.setState({ checkingSession: false });
+      //this.setState({ checkingSession: false });
+    /*try {
+      await auth0Client.checkSession();
       instanceId = await auth0Client.getProfile().sub;
       this.forceUpdate();
-      this.getInstance(instanceId);
-      /*if (!this.state.intervalIsSet) {
+      this.getInstance(instanceId);*/
+      /* older
+      if (!this.state.intervalIsSet) {
         let interval = setInterval(this.getInstance(instanceId), 1000);
         this.setState({ intervalIsSet: interval });
       }*/
-      this.setState({checkingSession: false});
-      //this.refreshInstance();
+      //this.setState({checkingSession: false});
+      /* older
+      this.refreshInstance();*/
     } catch (err) {
-      if (err.error !== 'login_required') console.log(err.error);
-      this.setState({checkingSession: false});
+      console.error(err);
+      this.setState({ checkingSession: false });
+      //this.setState({checkingSession: false});
+      /*if (err.error !== 'login_required') console.log(err.error);
+      this.setState({checkingSession: false});*/
+    }
+    //this.setState({ checkingSession: false });
+  }
+
+  checkAuthentication = async (props) => {
+    try {
+      await auth0Client.handleAuthentication();
+      props.history.replace('/');
+    } catch(error) {
+      console.log('an error occured checking authentication');
+      console.error(error);
     }
   }
 
@@ -210,11 +235,11 @@ class App extends React.Component {
 
   async getInstances() {
     const token = await auth0Client.getIdToken();
-    const data = (await axios.get(`http://${config.dataURL[config.env]}/getData`,
-    { headers: { 'Authorization': `Bearer ${token}` }}
+    const data = (await axios.get(`http://${ URLS.dataUrl }/getData`,
+    { headers: { 'Authorization': `Bearer ${ token }` }}
     )).data;
     console.log(data);
-    /*fetch(`http://${config.dataURL[config.env]}/getData`, {
+    /*fetch(`http://${ URLS.dataUrl }/getData`, {
       method: 'GET',
       withCredentials: true,
       credentials: 'include',  
@@ -229,8 +254,8 @@ class App extends React.Component {
 
   async getInstance(owner) {
     const token = await auth0Client.getIdToken();
-    const data = (await axios.get(`http://${config.dataURL[config.env]}/instance/${owner}`,
-    { headers: { 'Authorization': `Bearer ${token}`}}
+    const data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ owner }`,
+    { headers: { 'Authorization': `Bearer ${ token }`}}
     )).data;
     this.setState({
       instance: data.data[0]
@@ -246,8 +271,8 @@ class App extends React.Component {
       while (currentIds.includes(idToBeAdded)) {
         ++idToBeAdded;
       }*/
-      axios.post(`http://${config.dataURL[config.env]}/addInstance`, instance,
-        {headers: { 'Authorization': `Bearer ${token}` }}
+      axios.post(`http://${ URLS.dataUrl }/addInstance`, instance,
+        {headers: { 'Authorization': `Bearer ${ token }` }}
       );
   };
 
@@ -260,12 +285,12 @@ class App extends React.Component {
       }
     });*/
 
-    axios.delete(`http://${config.dataURL[config.env]}/deleteInstance`, {
+    axios.delete(`http://${ URLS.dataUrl }/deleteInstance`, {
       data: {
         //owner: objOwnerToDelete
         owner: owner
       },
-      headers: { 'Authorization': `Bearer ${token}` }}
+      headers: { 'Authorization': `Bearer ${ token }` }}
     );
   };
 
@@ -279,9 +304,9 @@ class App extends React.Component {
         }
       });*/
 
-      const data = (await axios.post(`http://${config.dataURL[config.env]}/updateInstance/${owner}`,
+      const data = (await axios.post(`http://${ URLS.dataUrl }/updateInstance/${ owner }`,
         { data: update },
-        { headers: { 'Authorization': `Bearer ${token}` }}
+        { headers: { 'Authorization': `Bearer ${ token }` }}
       )).data;
       this.setState({
         instance: data.data
@@ -298,10 +323,10 @@ class App extends React.Component {
     try {
       const token = await auth0Client.getIdToken();
       const id = await auth0Client.getProfile().sub;
-      //const instance = (await axios.get(`http://${config.dataURL[config.env]}/${params.instanceId}`)).data;
-      const instance = (await axios.get(`http://${config.dataURL[config.env]}/${id}`, {
-        //headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
-        headers: { 'Authorization': `Bearer ${token}` }
+      //const instance = (await axios.get(`http://${ URLS.dataUrl }/${ params.instanceId }`)).data;
+      const instance = (await axios.get(`http://${ URLS.dataUrl }/${ id }`, {
+        //headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
+        headers: { 'Authorization': `Bearer ${ token }` }
       })).data;
       this.setState({
           instance,
@@ -316,10 +341,10 @@ class App extends React.Component {
 
   /*async saveInstance(instance) {
     console.log(instance);
-    await axios.put(`http://${config.dataURL[config.env]}/${instance.id}`, {
+    await axios.put(`http://${ URLS.dataUrl }/${ instance.id }`, {
       instance,
     }, {
-      headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
+      headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
     });*/
     /*this.setState({
       instance,
@@ -684,7 +709,11 @@ class App extends React.Component {
                 {/*<RadioToggle/>
                 <Route exact path='/' component={Instances}/>
                 <Route exact path='/instance/:instanceId' component={Instance}/>*/}
-                <Route exact path='/callback' component={Callback}/>
+                {/*<Route exact path='/callback' component={Callback}/>*/}
+                <Route path="/callback" render={ (props) => {
+                  this.checkAuthentication(props);
+                  return (<Callback />);
+                }} />
                 <Route exact path='/instance/:instanceId' component={Instance} />
                 {/*<SecuredRoute path='/instance:instanceId'
                               component={Instance}

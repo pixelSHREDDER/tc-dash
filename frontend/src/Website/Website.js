@@ -51,10 +51,10 @@ class Website extends React.Component {
   }*/
 
   render() {
-    const {instance, onSubmit} = this.props;
-    if (this.props.instance === null) return <p>Loading ...</p>;
+    const {instance/*, onSubmit*/} = this.props;
+    if (instance === null) return <p>Loading ...</p>;
     /*this.setState({
-      instance: this.props.instance,
+      instance: instance,
     });*/
     //this.state.instance.title = "flerp";
     //remove this whenever
@@ -67,7 +67,7 @@ class Website extends React.Component {
             <h1 className="display-3">{this.state.instance.title}</h1>
             <p className="lead">{this.state.instance.description}</p>
             <hr className="my-4" />
-            <Button onClick={() => {this.props.onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>Do</Button>
+            <Button onClick={() => {onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>Do</Button>
             {*//*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
             <p>Answers:</p>
             {

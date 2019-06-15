@@ -54,15 +54,15 @@ class GSSocialMedia extends React.Component {
 
   render() {
     const {classes, instance, onSubmit} = this.props;
-    if (this.props.instance === null) return <p>Loading ...</p>;
+    if (instance === null) return <p>Loading ...</p>;
     this.setState({
-      instance: this.props.instance,
+      instance: instance,
     });
 
     return (
         <div style={{height: 400}}>
             <RadioToggle/>
-            <Button variant="contained" color="primary" size="large" onClick={() => {this.props.onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>
+            <Button variant="contained" color="primary" size="large" onClick={() => {onSubmit(this.state.instance.id, { 'title': this.state.instance.title })}}>
                 Save
                 <SaveIcon className={classes.rightIcon} />
             </Button>

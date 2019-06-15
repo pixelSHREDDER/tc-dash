@@ -1,3 +1,4 @@
-frontend/src/configuration.json
 backend/configuration.json
 node_modules
+frontend/cypress.env.json
+frontend/.env
