@@ -1,0 +1,12 @@
+{
+    "title": "New Demo County Young Democrats",
+    "description": "Riding the Blue Wave Again Since 1808",
+    "mailing_address": {
+        "line_1": "456 Main St_-_",
+        "line_2": "Apt_-_ 202",
+        "city": "Portland",
+        "state": "OR",
+        "zip": "67890-1234",
+        "phone": "321-425-7890"
+    }
+}

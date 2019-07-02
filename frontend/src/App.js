@@ -414,7 +414,7 @@ class App extends React.Component {
     const open = Boolean(anchorEl);
 
     const drawer = (
-      <div>
+      <React.Fragment>
         {
         !auth0Client.isAuthenticated() &&
           <div className={classes.toolbar}>
@@ -428,7 +428,7 @@ class App extends React.Component {
         {
         auth0Client.isAuthenticated() &&
           <div className={classes.toolbar}>
-              <div>
+              <React.Fragment>
                 <List className={classes.root}>
                   {/*<ListItem alignItems="flex-start">*/}
                   <ListItem>
@@ -474,7 +474,7 @@ class App extends React.Component {
                 >*/}
                   {/*<AccountCircle />*/}
                 {/*</IconButton>*/}
-              </div>
+              </React.Fragment>
             </div>
           }
           {
@@ -641,7 +641,7 @@ class App extends React.Component {
               </ListItem>
             </List>
           */}
-        </div>
+        </React.Fragment>
     );
 
     return (
@@ -695,17 +695,17 @@ class App extends React.Component {
             <div className={classes.toolbar} />
             {
             !auth0Client.isAuthenticated() && !this.state.checkingSession &&
-              <div>
+              <React.Fragment>
                 <Typography variant="subtitle2" gutterBottom>
                   You must be logged into your chapter's account to continue.
                 </Typography>
                 <Button variant="contained" color="primary" size="large" className={classes.button} onClick={auth0Client.signIn}>Login</Button>
-              </div>
+              </React.Fragment>
             }
             {/*auth0Client.isAuthenticated() &&
               <Dashboard instance={this.state.instance} />
             */}
-              <div>
+              <React.Fragment>
                 {/*<RadioToggle/>
                 <Route exact path='/' component={Instances}/>
                 <Route exact path='/instance/:instanceId' component={Instance}/>*/}
@@ -806,7 +806,7 @@ class App extends React.Component {
                               instance={this.state.instance}
                               checkingSession={this.state.checkingSession}
                               onSubmit={this.updateInstance} />
-              </div>
+              </React.Fragment>
             {/*}*/}
           </main>
         </div>

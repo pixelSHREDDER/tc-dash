@@ -60,7 +60,7 @@ class RadioButtonsGroup extends React.Component {
             />
           </RadioGroup>
         {this.state.value === 'true' &&
-          <div>
+          <React.Fragment>
             <br></br>
             <fieldset>
               <TextField
@@ -72,7 +72,7 @@ class RadioButtonsGroup extends React.Component {
                 margin="normal"
               />
             </fieldset>
-          </div>
+          </React.Fragment>
         }
         </FormControl>
       </div>

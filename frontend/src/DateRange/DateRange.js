@@ -1,9 +1,13 @@
+//import React, { useState, useEffect } from 'react';
 import React from 'react';
+import useForm from '../CustomHooks';
 //import React, { FC, ChangeEvent, FormEvent, useState } from "react";
-import { withStyles } from '@material-ui/core/styles';
+//import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 
-const styles = theme => ({
+//const styles = theme => ({
+const useStyles = makeStyles(theme => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -13,21 +17,37 @@ const styles = theme => ({
         marginRight: theme.spacing(1),
         width: 200,
     },
-});
+//});
+}));
 
-class DateRange extends React.Component {
-    state = {
-      from: '',
-      to: '',
-    };
+//class DateRange extends React.Component {
+export default function DateRange(sendDateRange) {
+    const classes = useStyles();
+    /*constructor(props) {
+        super(props);
+        this.state = {
+            from: '',
+            to: '',
+        };
+    }*/
+    //const [from, setFrom] = useState('');
+    //const [to, setTo] = useState('');
+    const {inputs, handleInputChange} = useForm({ from: '', to: '' }, sendDateRange);
+    /*useEffect(() => {
+        sendDateRange({from, to});
+    });*/
 
-    handleChange = () => (event) => {
-        (event.target.id === 'from') ? this.setState({from: event.target.value}) : this.setState({to: event.target.value});
-        this.props.sendDateRange(this.state);
-    };
+    //handleChange = () => (event) => {
+    /*handleChange((event) => {
+        console.log(event.target);
+        if (event.target.id === 'from') this.setState({from: event.target.value});
+        else this.setState({to: event.target.value});
+        //this.props.sendDateRange(this.state);
+    });*/
+    //};
 
-    render() {
-        const { classes } = this.props;
+    //render() {
+        //const { classes, sendDateRange } = this.props;
 
         return (
             <form className={classes.container} noValidate>
@@ -36,7 +56,10 @@ class DateRange extends React.Component {
                     label="From (optional)"
                     type="date"
                     className={classes.textField}
-                    onChange={this.handleChange}
+                    //onChange={this.handleChange(sendDateRange)}
+                    //onChange={(event) => setFrom(event.target.value)}
+                    onChange={handleInputChange}
+                    value={inputs.from}
                     InputLabelProps={{
                         shrink: true,
                     }}
@@ -46,14 +69,17 @@ class DateRange extends React.Component {
                     label="To (optional)"
                     type="date"
                     className={classes.textField}
-                    onChange={this.handleChange}
+                    //onChange={this.handleChange(sendDateRange)}
+                    //onChange={(event) => setTo(event.target.value)}
+                    onChange={handleInputChange}
+                    value={inputs.to}
                     InputLabelProps={{
                         shrink: true,
                     }}
                 />
             </form>
         );
-    }
+    //}
 }
 
-export default withStyles(styles)(DateRange);
+//export default withStyles(styles)(DateRange);

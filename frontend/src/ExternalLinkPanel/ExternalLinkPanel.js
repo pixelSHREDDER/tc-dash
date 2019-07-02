@@ -55,7 +55,7 @@ class ExternalLinkPanel extends React.Component {
         if (this.props.instance === null) return <p>Loading ...</p>;
         try {
             this.setRoutes(this.props);
-            if (this.state.route === null) return <p>Loadinng ...</p>;
+            if (this.state.route === null) return <p>this.state.route === null</p>;
         } catch (err) {
             //if (err.error !== 'login_required') console.log(err.error);
         }
@@ -207,7 +207,7 @@ class ExternalLinkPanel extends React.Component {
 
     getDateRange = (data) => {
         let dateString = '';
-        if ('dateFormat' in this.state.routes[this.props.location]) {
+        if ('dateFormat' in this.state.route) {
             dateString = data;
         }
         console.log(data);
@@ -215,18 +215,18 @@ class ExternalLinkPanel extends React.Component {
     };
 
     render() {
-        const {classes, instance} = this.props;
-        if (instance === null) return <p>Loading ...</p>;
+        const {classes/*, instance*/} = this.props;
+        //if (instance === null) return <p>Loading ...</p>;
         //this.setRoutes(this.props);
-        if (this.state.route === null) return <p>Loadinng ...</p>;
+        if (this.state.route === null) return <p>this.state.route === null</p>;
         /*this.setState({
-            instance: this.props.instance,
+            instance: instance,
         });*/
 
         return (
             <Grid container className={classes.root} spacing={2} justify="center">
-                {this.state.route.map(item => (
-                    <Grid item md={8}>
+                {this.state.route.map((item, index) => (
+                    <Grid item md={8} key={`panel-${index}`}>
                         <Paper className={classes.paper} elevation={1}>
                             {item.icon}
                             <Typography component="p" gutterBottom>

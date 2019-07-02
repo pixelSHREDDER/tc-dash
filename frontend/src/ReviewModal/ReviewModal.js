@@ -180,7 +180,7 @@ class ReviewModal extends React.Component {
         const {expanded} = this.state;
 
         return (
-            <div>
+            <React.Fragment>
                 <Button variant="contained" color="secondary" size="large" className={classes.drawerButton} onClick={this.handleOpen}>
                     {isLive ? 'Submit!' : 'Launch!'}
                     <LaunchIcon className={classes.icon} />
@@ -299,7 +299,7 @@ class ReviewModal extends React.Component {
                         </Dialog>
                     </div>
                 </Modal>
-            </div>
+            </React.Fragment>
         );
     }
 }

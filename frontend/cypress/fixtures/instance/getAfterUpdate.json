@@ -1,0 +1,42 @@
+{
+    "_id": {
+        "$oid":"abc123"
+    },
+    "owner": "auth0|abc123",
+    "domain": "ydwa_-_org",
+    "title": "New Demo County Young Democrats",
+    "description": "Riding the Blue Wave Again Since 1808",
+    "type": "county",
+    "mailing_address": {
+        "line_1": "456 Main St_-_",
+        "line_2": "Apt_-_ 202",
+        "city": "Portland",
+        "state": "OR",
+        "zip": "67890-1234",
+        "phone": "321-425-7890"
+    },
+    "old_website": {
+        "url": "http://oldwebsite_-_org",
+        "hosting_provider": "sitegrounds",
+        "hosting_username": "herrderr",
+        "pwpush_url": "https://pwpush_-_com/p/123"
+    },
+    "domain_choices": [
+        "ydwa_-_org",
+        "ydwashington-_org",
+        "wayoungdems_-_org"
+    ],
+    "createdAt": {
+        "$date": {
+            "$numberLong": "1553758414452"
+        }
+    },
+    "updatedAt": {
+        "$date": {
+            "$numberLong": "1553820549320"
+        }
+    },
+    "__v": {
+        "$numberInt": "0"
+    }
+}

@@ -102,7 +102,7 @@ class Board extends React.Component {
     });*/
 
     return (
-      <div>
+      <React.Fragment>
         <Grid container spacing={16} className={classes.root}>
           <Grid item xs={12}>
             <Grid container justify="center" spacing={16}>
@@ -759,7 +759,7 @@ class Board extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-      </div>
+      </React.Fragment>
     )
   }
 }
