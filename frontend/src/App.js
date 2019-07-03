@@ -7,12 +7,11 @@ import auth0Client from './Auth';
 //import Callback from './Callback';
 import NewInstance from './NewInstance/NewInstance';
 import SecuredRoute from './Routes/SecuredRoute';
+import AppFrame from './AppFrame/AppFrame';
 import Board from './Board/Board';
 import Dashboard from './Dashboard/Dashboard';
 import ExternalLinkPanel from './ExternalLinkPanel/ExternalLinkPanel';
 import GSSocialMedia from './SocialMedia/GSSocialMedia';
-import Nav from './Nav/Nav';
-import TopBar from './TopBar/TopBar';
 import Website from './Website/Website';
 /*import WebsiteEditPosts from './Website/EditPosts';
 import WebsiteViewPosts from './Website/ViewPosts';
@@ -79,7 +78,6 @@ class App extends React.Component {
       instance: null,
       intervalIsSet: false,
       live: true,
-      mobileOpen: false,
       status: 'onboarding'
     };
     this.updateInstance = this.updateInstance.bind(this);
@@ -294,21 +292,16 @@ class App extends React.Component {
     }
   };
 
-  handleDrawerToggle = () => {
-    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
-  };
-
   render() {
     const { classes } = this.props;
     const { pathname } = this.props.location;
-    const { checkingSession, instance, live, mobileOpen } = this.state;
+    const { checkingSession, instance, live } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <TopBar pathname={pathname} handleDrawerToggle={this.handleDrawerToggle} />
-          <Nav isLive={live} handleDrawerToggle={this.handleDrawerToggle} handleLogOut={this.signOut} mobileOpen={mobileOpen} />
+          <AppFrame isLive={live} handleLogOut={this.signOut} pathname={pathname} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {
