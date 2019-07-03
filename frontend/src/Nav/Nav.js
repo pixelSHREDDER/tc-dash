@@ -37,56 +37,56 @@ import {
 const drawerWidth = 240;
 
 const styles = theme => ({
-  root: {
-    display: 'flex',
-  },
-  /*nested: {
-    paddingLeft: theme.spacing(4),
-  },*/
-  drawer: {
-    [theme.breakpoints.up('sm')]: {
-      width: drawerWidth,
-      flexShrink: 0,
+    root: {
+        display: 'flex',
     },
-  },
-  /*drawerButton: {
-    margin: theme.spacing(1),
-    width: drawerWidth - (theme.spacing(2)),
-  },*/
-  avatar: {
-    width: 28,
-    height: 28,
-  },
-  drawerList: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  drawerListUl: {
-    padding: 0,
-  },
-  listSubheader: {
-    backgroundColor: deepPurple[500],
-    //backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  drawerListItemText: {
-    padding: 0,
-    paddingLeft: theme.spacing(0.5),
-  },
-  drawerListItemTitleLine1: {
-    display: 'block',
-  },
-  smallIcon: {
-    //float: 'right',
-    fontSize: '0.75rem',
-    marginLeft: theme.spacing(0.5),
-  },
-  /*smallIcon: {
-    fontSize: '0.75rem',
-  },*/
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: drawerWidth,
-  },
+    /*nested: {
+        paddingLeft: theme.spacing(4),
+    },*/
+    drawer: {
+        [theme.breakpoints.up('sm')]: {
+        width: drawerWidth,
+        flexShrink: 0,
+        },
+    },
+    /*drawerButton: {
+        margin: theme.spacing(1),
+        width: drawerWidth - (theme.spacing(2)),
+    },*/
+    avatar: {
+        width: 28,
+        height: 28,
+    },
+    drawerList: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    drawerListUl: {
+        padding: 0,
+    },
+    listSubheader: {
+        backgroundColor: deepPurple[500],
+        //backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
+    },
+    drawerListItemText: {
+        padding: 0,
+        paddingLeft: theme.spacing(0.5),
+    },
+    drawerListItemTitleLine1: {
+        display: 'block',
+    },
+    smallIcon: {
+        //float: 'right',
+        fontSize: '0.75rem',
+        marginLeft: theme.spacing(0.5),
+    },
+    /*smallIcon: {
+        fontSize: '0.75rem',
+    },*/
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+        width: drawerWidth,
+    },
 });
 
 class Nav extends React.Component {
@@ -94,19 +94,18 @@ class Nav extends React.Component {
         super(props);
         this.state = {
           anchorEl: null,
-          mobileOpen: false,
           //nestedOpen: false,
           //selected: null,
         };
         this.renderDrawer = this.renderDrawer.bind(this);
     };
 
-    handleMenu = event => {
+    handleMenuOpen = event => {
         this.setState({ anchorEl: event.currentTarget });
-      };
+    };
 
-    handleDrawerToggle = () => {
-        this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+    handleMenuClose = () => {
+        this.setState({ anchorEl: null });
     };
 
     /*handleListItemClick = index => {
@@ -117,12 +116,8 @@ class Nav extends React.Component {
         }
     };*/
 
-    handleClose = () => {
-        this.setState({ anchorEl: null });
-    };
-
     renderDrawer = () => {
-        const { classes, isLive } = this.props;
+        const { classes, isLive, handleLogOut } = this.props;
         const { anchorEl } = this.state;
         const { pathname } = this.props.location;
         const open = Boolean(anchorEl);
@@ -154,14 +149,14 @@ class Nav extends React.Component {
                                         className={classes.avatar}
                                         aria-owns={open ? 'menu-appbar' : undefined}
                                         aria-haspopup="true"
-                                        onClick={this.handleMenu}
+                                        onClick={this.handleMenuOpen}
                                     />
                                 </ListItemAvatar>
                                 <ListItemText primary={"Hi, " + auth0Client.getProfile().nickname + "!"}/>
                                 {/*<AccountCircle button
                                     aria-owns={open ? 'menu-appbar' : undefined}
                                     aria-haspopup="true"
-                                    onClick={this.handleMenu}
+                                    onClick={this.handleMenuOpen}
                                     color="inherit"
                                 />
                                 <ListItemText primary={"Hi, " + auth0Client.getProfile().nickname + "!"}/>*/}
@@ -177,15 +172,15 @@ class Nav extends React.Component {
                                     horizontal: 'right',
                                     }}
                                     open={open}
-                                    onClose={this.handleClose}
+                                    onClose={this.handleMenuClose}
                             >
-                                <MenuItem onClick={() => {this.signOut()}}>Logout</MenuItem>
+                                <MenuItem onClick={handleLogOut}>Logout</MenuItem>
                             </Menu>
                         </List>
                         {/*<IconButton
                         aria-owns={open ? 'menu-appbar' : undefined}
                         aria-haspopup="true"
-                        onClick={this.handleMenu}
+                        onClick={this.handleMenuOpen}
                         color="inherit"
                         >*/}
                             {/*<AccountCircle />*/}
@@ -350,34 +345,34 @@ class Nav extends React.Component {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, container, handleDrawerToggle, mobileOpen } = this.props;
 
         return (
             <nav className={classes.drawer}>
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Hidden smUp implementation="css">
                     <Drawer
-                    container={this.props.container}
-                    variant="temporary"
-                    anchor="left"
-                    open={this.state.mobileOpen}
-                    onClose={this.handleDrawerToggle}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
+                        container={container}
+                        variant="temporary"
+                        anchor="left"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
                     >
-                    {this.renderDrawer()}
+                        {this.renderDrawer()}
                     </Drawer>
                 </Hidden>
                 <Hidden xsDown implementation="css">
                     <Drawer
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                    variant="permanent"
-                    open
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        variant="permanent"
+                        open
                     >
-                    {this.renderDrawer()}
+                        {this.renderDrawer()}
                     </Drawer>
                 </Hidden>
             </nav>

@@ -79,6 +79,7 @@ class App extends React.Component {
       instance: null,
       intervalIsSet: false,
       live: true,
+      mobileOpen: false,
       status: 'onboarding'
     };
     this.updateInstance = this.updateInstance.bind(this);
@@ -275,7 +276,7 @@ class App extends React.Component {
     this.props.history.replace('/');
   };
 
-  progress = (section) => {
+  progress = section => {
     const { completed } = this.state;
     if (completed[section] === 100) {
       this.setState({
@@ -293,17 +294,21 @@ class App extends React.Component {
     }
   };
 
+  handleDrawerToggle = () => {
+    this.setState(state => ({ mobileOpen: !state.mobileOpen }));
+  };
+
   render() {
     const { classes } = this.props;
     const { pathname } = this.props.location;
-    const { checkingSession, instance, live } = this.state;
+    const { checkingSession, instance, live, mobileOpen } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <TopBar pathname={pathname}/>
-          <Nav isLive={live} />
+          <TopBar pathname={pathname} handleDrawerToggle={this.handleDrawerToggle} />
+          <Nav isLive={live} handleDrawerToggle={this.handleDrawerToggle} handleLogOut={this.signOut} mobileOpen={mobileOpen} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {

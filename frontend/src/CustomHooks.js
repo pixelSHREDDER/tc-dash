@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-const useForm = ({initialValues, inputChangeCallback, submitCallback} = {}) => {
+//const useForm = ({initialValues, inputChangeCallback, submitCallback} = {}) => {
+const useForm = (initialValues, inputChangeCallback, submitCallback) => {
   const [inputs, setInputs] = useState(initialValues);
   const handleSubmit = (event) => {
     if (event) event.preventDefault();
@@ -10,13 +11,13 @@ const useForm = ({initialValues, inputChangeCallback, submitCallback} = {}) => {
     event.persist();
     setInputs(inputs => ({...inputs, [event.target.name]: event.target.value}));
     //if ('inputChangeCallback' in args[0]) args[0].inputChangeCallback();
-    console.log(inputChangeCallback);
+    console.log(inputs);
     inputChangeCallback();
   }
   return {
-    handleSubmit,
+    inputs,
     handleInputChange,
-    inputs
+    handleSubmit
   };
 }
 export default useForm;

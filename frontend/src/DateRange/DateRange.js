@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 //class DateRange extends React.Component {
-export default function DateRange(sendDateRange) {
+export default function DateRange({sendDateRange}) {
     const classes = useStyles();
     /*constructor(props) {
         super(props);

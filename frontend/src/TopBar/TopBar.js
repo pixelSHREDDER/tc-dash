@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function TopBar({pathname}) {
+const TopBar = ({pathname, handleDrawerToggle}) => {
     const classes = useStyles();
 
     return (
@@ -35,8 +35,7 @@ export default function TopBar({pathname}) {
                 <IconButton
                     color="inherit"
                     aria-label="Open drawer"
-                    // TODO: Wire this to work with Nav component
-                    //onClick={this.handleDrawerToggle}
+                    onClick={handleDrawerToggle}
                     className={classes.menuButton}
                 >
                     <MenuIcon />
@@ -47,4 +46,6 @@ export default function TopBar({pathname}) {
             </Toolbar>
         </AppBar>
     );
-}
+};
+
+export default TopBar;
