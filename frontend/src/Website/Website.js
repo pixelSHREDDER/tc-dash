@@ -16,8 +16,8 @@ const styles = theme => ({
   });
 
 class Website extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       instance: null,
     };

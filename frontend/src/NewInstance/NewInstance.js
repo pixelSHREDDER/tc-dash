@@ -4,8 +4,8 @@ import { withRouter } from 'react-router-dom';
 //import axios from 'axios';
 
 class NewInstance extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
 
     this.state = {
       disabled: false,

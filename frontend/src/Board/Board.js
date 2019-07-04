@@ -59,8 +59,8 @@ const styles = theme => ({
 });
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       instance: null,
       treeData: [{ title: 'Chicken', children: [{ title: 'Egg' }] }],

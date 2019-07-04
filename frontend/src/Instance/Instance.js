@@ -5,8 +5,8 @@ import React from 'react';
 //import auth0Client from '../Auth';
 
 class Instance extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       instance: null,
     };

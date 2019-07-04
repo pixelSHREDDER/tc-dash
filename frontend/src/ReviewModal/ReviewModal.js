@@ -140,8 +140,8 @@ const styles = theme => ({
 });
 
 class ReviewModal extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             dialogOpen: false,
             expanded: null,

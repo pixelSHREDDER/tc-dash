@@ -90,8 +90,8 @@ const styles = theme => ({
 });
 
 class Nav extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
           anchorEl: null,
           //nestedOpen: false,

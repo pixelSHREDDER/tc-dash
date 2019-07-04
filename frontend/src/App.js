@@ -57,8 +57,8 @@ const Callback = () => (
 );
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       auth: auth0Client.isAuthenticated(),
       checkingSession: true,

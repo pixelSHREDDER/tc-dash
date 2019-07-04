@@ -32,8 +32,8 @@ const styles = theme => ({
   });
 
 class ExportDonations extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
         instance: null,
     };

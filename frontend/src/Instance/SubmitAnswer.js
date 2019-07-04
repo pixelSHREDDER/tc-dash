@@ -3,8 +3,8 @@ import {withRouter} from 'react-router-dom';
 import auth0Client from '../Auth';
 
 class SubmitAnswer extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       answer: '',
     };
