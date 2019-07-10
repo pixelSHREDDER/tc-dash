@@ -24,15 +24,15 @@ import {
     Slide
 } from '@material-ui/core';
 import {
-    //AccountCircle,
-    Done as DoneIcon,
-    //ExpandLess as ExpandLessIcon,
-    //ExpandMore as ExpandMoreIcon,
-    //OpenInNew as ExternalLinkIcon,
-    //Help as HelpIcon,
-    //ViewList as ViewListIcon
-} from '@material-ui/icons';
- //import { Rocket as LaunchIcon } from 'mdi-material-ui';
+    DoneIcon
+    //ExpandLessIcon,
+    //ExpandMoreIcon,
+    //ExternalLinkIcon,
+    //HelpIcon,
+    //LaunchIcon,
+    //ViewListIcon
+} from '../Icons';
+//import { AccountCircle } from '@material-ui/icons';
 
 const drawerWidth = 240;
 

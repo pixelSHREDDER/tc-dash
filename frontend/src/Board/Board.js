@@ -16,8 +16,7 @@ import {
   //Switch,
   Typography
 } from '@material-ui/core';
-import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
-import { ArrowDown as ArrowDownIcon } from 'mdi-material-ui';
+import { ArrowDownIcon, ExpandMoreIcon } from '../Icons';
 
 const styles = theme => ({
     root: {

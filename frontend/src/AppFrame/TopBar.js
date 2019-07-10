@@ -7,7 +7,7 @@ import {
     Toolbar,
     Typography
 } from '@material-ui/core';
-import { Menu as MenuIcon } from '@material-ui/icons';
+import { MenuIcon } from '../Icons';
 
 const drawerWidth = 240;
 

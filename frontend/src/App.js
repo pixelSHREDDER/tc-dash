@@ -10,13 +10,28 @@ import SecuredRoute from './Routes/SecuredRoute';
 import AppFrame from './AppFrame/AppFrame';
 import Board from './Board/Board';
 import Dashboard from './Dashboard/Dashboard';
-import ExternalLinkPanel from './ExternalLinkPanel/ExternalLinkPanel';
+import EditWebsitePosts from './Website/EditWebsitePosts';
+import EmailMembers from './Email/EmailMembers';
+import ExportAlumni from './Membership/ExportAlumni';
+import ExportBudget from './PaymentsFinances/ExportBudget';
+import ExportDonations from './PaymentsFinances/ExportDonations';
+import ExportDonors from './Membership/ExportDonors';
+import ExportMembers from './Membership/ExportMembers';
+import ExportSustainers from './Membership/ExportSustainers';
 import GSSocialMedia from './SocialMedia/GSSocialMedia';
+import PostToFacebookPage from './SocialMedia/PostToFacebookPage';
+import SendATweet from './SocialMedia/SendATweet';
+import ViewAlumni from './Membership/ViewAlumni';
+import ViewBudget from './PaymentsFinances/ViewBudget';
+import ViewDonations from './PaymentsFinances/ViewDonations';
+import ViewDonors from './Membership/ViewDonors';
+import ViewEmailStats from './Email/ViewEmailStats';
+import ViewMembers from './Membership/ViewMembers';
+import ViewSustainers from './Membership/ViewSustainers';
+import ViewWebsitePosts from './Website/ViewWebsitePosts';
+import ViewWebsiteStats from './Website/ViewWebsiteStats';
+import WriteWebsitePost from './Website/WriteWebsitePost';
 import Website from './Website/Website';
-/*import WebsiteEditPosts from './Website/EditPosts';
-import WebsiteViewPosts from './Website/ViewPosts';
-import WebsiteViewSiteStats from './Website/ViewSiteStats';
-import WebsiteWritePost from './Website/WritePost';*/
 import Instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
 
@@ -75,7 +90,8 @@ class App extends React.Component {
         "brandingPersonalization": 2,
       },
       //instances: [],
-      instance: null,
+      //instance: null,
+      instance: {},
       intervalIsSet: false,
       live: true,
       status: 'onboarding'
@@ -341,59 +357,62 @@ class App extends React.Component {
                               instance={instance}
                               checkingSession={checkingSession}
                               onSubmit={this.updateInstance} />
-                <SecuredRoute path='/email/email-alumni'
+                {/*<SecuredRoute path='/email/email-alumni'
                               component={ExternalLinkPanel}
                               instance={instance} />
                 <SecuredRoute path='/email/email-donors'
                               component={ExternalLinkPanel}
-                              instance={instance} />
+                              instance={instance} />*/}
                 <SecuredRoute path='/email/email-members'
-                              component={ExternalLinkPanel}
+                              component={EmailMembers}
                               instance={instance} />
-                <SecuredRoute path='/email/email-sustainers'
+                {/*<SecuredRoute path='/email/email-sustainers'
                               component={ExternalLinkPanel}
-                              instance={instance} />
+                              instance={instance} />*/}
                 <SecuredRoute path='/email/view-stats'
-                              component={ExternalLinkPanel}
+                              component={ViewEmailStats}
                               instance={instance} />
                 <SecuredRoute path='/membership/export-alumni'
-                              component={ExternalLinkPanel}
+                              component={ExportAlumni}
                               instance={instance} />
                 <SecuredRoute path='/membership/export-donors'
-                              component={ExternalLinkPanel}
+                              component={ExportDonors}
                               instance={instance} />
                 <SecuredRoute path='/membership/export-members'
-                              component={ExternalLinkPanel}
+                              component={ExportMembers}
                               instance={instance} />
                 <SecuredRoute path='/membership/export-sustainers'
-                              component={ExternalLinkPanel}
+                              component={ExportSustainers}
                               instance={instance} />
                 <SecuredRoute path='/membership/view-alumni'
-                              component={ExternalLinkPanel}
+                              component={ViewAlumni}
                               instance={instance} />
                 <SecuredRoute path='/membership/view-donors'
-                              component={ExternalLinkPanel}
+                              component={ViewDonors}
                               instance={instance} />
                 <SecuredRoute path='/membership/view-members'
-                              component={ExternalLinkPanel}
+                              component={ViewMembers}
                               instance={instance} />
                 <SecuredRoute path='/membership/view-sustainers'
-                              component={ExternalLinkPanel}
+                              component={ViewSustainers}
                               instance={instance} />
                 <SecuredRoute path='/payments-finances/export-budget'
-                              component={ExternalLinkPanel}
-                              instance={instance} />
+                              component={ExportBudget}
+                            instance={instance} />
                 <SecuredRoute path='/payments-finances/export-donations'
-                              component={ExternalLinkPanel}
+                              component={ExportDonations}
                               instance={instance} />
                 <SecuredRoute path='/payments-finances/view-budget'
-                              component={ExternalLinkPanel}
+                              component={ViewBudget}
                               instance={instance} />
                 <SecuredRoute path='/payments-finances/view-donations'
-                              component={ExternalLinkPanel}
+                              component={ViewDonations}
                               instance={instance} />
                 <SecuredRoute path='/social-media/post-to-facebook-page'
-                              component={ExternalLinkPanel}
+                              component={PostToFacebookPage}
+                              instance={instance} />
+                <SecuredRoute path='/social-media/send-a-tweet'
+                              component={SendATweet}
                               instance={instance} />
                 <SecuredRoute path='/website'
                               component={Website}
@@ -401,22 +420,22 @@ class App extends React.Component {
                               checkingSession={checkingSession}
                               onSubmit={this.updateInstance} />
                 <SecuredRoute path='/website/edit-posts'
-                              component={ExternalLinkPanel}
+                              component={EditWebsitePosts}
                               instance={instance} />
                 <SecuredRoute path='/website/view-posts'
-                              component={ExternalLinkPanel}
+                              component={ViewWebsitePosts}
                               instance={instance} />
                 <SecuredRoute path='/website/view-stats'
-                              component={ExternalLinkPanel}
+                              component={ViewWebsiteStats}
                               instance={instance} />
                 <SecuredRoute path='/website/write-post'
-                              component={ExternalLinkPanel}
+                              component={WriteWebsitePost}
                               instance={instance} />
                 <SecuredRoute path='/get-started/social-media'
                               component={GSSocialMedia}
                               instance={instance}
                               checkingSession={checkingSession}
-                              onSubmit={this.updateInstance} />
+                          onSubmit={this.updateInstance} />
               </React.Fragment>
             {/*}*/}
           </main>

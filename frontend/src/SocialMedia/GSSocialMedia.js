@@ -2,7 +2,7 @@ import React from 'react';
 import RadioToggle from '../RadioToggle/RadioToggle';
 import { withStyles } from '@material-ui/core/styles';
 import { Button/*, Typography*/ } from '@material-ui/core';
-import { ContentSave as SaveIcon } from 'mdi-material-ui';
+import { SaveIcon } from '../Icons';
 
 const styles = theme => ({
     root: {
