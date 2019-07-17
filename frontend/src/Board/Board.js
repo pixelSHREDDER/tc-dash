@@ -102,9 +102,9 @@ class Board extends React.Component {
 
     return (
       <React.Fragment>
-        <Grid container spacing={16} className={classes.root}>
+        <Grid container spacing={2} className={classes.root}>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={16}>
+            <Grid container justify="center" spacing={10}>
               <Grid item>
                 <Card className={classes.card}>
                   <CardContent>
@@ -175,14 +175,14 @@ class Board extends React.Component {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={16}>
+            <Grid container justify="center" spacing={0}>
               <Grid item>
                 <ArrowDownIcon />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={16}>
+            <Grid container justify="center" spacing={10}>
               <Grid item>
                 <Card className={classes.card}>
                   <CardContent>
@@ -306,14 +306,14 @@ class Board extends React.Component {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={16}>
+            <Grid container justify="center" spacing={10}>
               <Grid item>
                 <ArrowDownIcon />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={16}>
+            <Grid container justify="center" spacing={10}>
               <Grid item>
                 <Card className={classes.card}>
                   <CardContent>
@@ -557,7 +557,7 @@ class Board extends React.Component {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={12}>
+            <Grid container justify="center" spacing={10}>
               <Grid item className={classes.arrow} xs={3}>
                 <ArrowDownIcon />
               </Grid>
@@ -571,7 +571,7 @@ class Board extends React.Component {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Grid container justify="center" spacing={12}>
+            <Grid container justify="center" spacing={10}>
               <Grid item xs={3}>
                 <Card className={classes.card}>
                   <CardContent>

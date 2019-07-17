@@ -83,6 +83,12 @@ const styles = theme => ({
     /*smallIcon: {
         fontSize: '0.75rem',
     },*/
+    progressBar: {
+        /*left: theme.spacing(0.5),
+        position: 'relative',
+        right: 'auto',*/
+        marginTop: theme.spacing(0.5),
+    },
     toolbar: theme.mixins.toolbar,
     drawerPaper: {
         width: drawerWidth,
@@ -117,7 +123,7 @@ class Nav extends React.Component {
     };*/
 
     renderDrawer = () => {
-        const { classes, isLive, handleLogOut } = this.props;
+        const { classes, isLive, handleLogOut, onboardingProgress } = this.props;
         const { anchorEl } = this.state;
         const { pathname } = this.props.location;
         const open = Boolean(anchorEl);
@@ -141,7 +147,6 @@ class Nav extends React.Component {
                 <div className={classes.toolbar}>
                     <React.Fragment>
                         <List className={classes.root}>
-                            {/*<ListItem alignItems="flex-start">*/}
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar alt={auth0Client.getProfile().nickname}
@@ -195,7 +200,6 @@ class Nav extends React.Component {
                         {routes.live.map((sectionId, index) => (
                             <Slide direction="right" in={!this.state.checkingSession} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
                                 <ul className={classes.drawerListUl}>
-                                    {/* <ListSubheader>{sectionId.icon} {sectionId.title}</ListSubheader> */}
                                     {
                                     ('topLevel' in sectionId) && (index !== 0) &&
                                         <Divider />
@@ -237,8 +241,6 @@ class Nav extends React.Component {
                                                     alignItems="flex-start"
                                                     component={Link}
                                                     to={`/${sectionId.url}/${item.url}`}
-                                                    //onClick={() => this.handleListItemClick(1)}
-                                                    //selected={(selected === 1) || (pathname === `/${sectionId.url}/${item.url}`)}
                                                     selected={pathname === `/${sectionId.url}/${item.url}`}
                                                 >
                                                     <ListItemIcon>{item.icon}</ListItemIcon>
@@ -249,18 +251,8 @@ class Nav extends React.Component {
                                                                 {(item.title) && item.title.split('\n').map(function(i, key, array) {
                                                                     return <span key={key} className={((key === 0) && (array.length > 1)) ? classes.drawerListItemTitleLine1 : ''}>{i}</span>;
                                                                 })}
-                                                                {/*
-                                                                (item.link) &&
-                                                                    <ExternalLinkIcon className={classes.smallIcon} />
-                                                                */}
                                                             </React.Fragment>
                                                         }
-                                                        /*primary={item.title}*/
-                                                        /* secondary={
-                                                            <React.Fragment>
-                                                                {item.subtitle}
-                                                            </React.Fragment>
-                                                        } */
                                                     />
                                                 </ListItem>
                                             ))}
@@ -278,53 +270,44 @@ class Nav extends React.Component {
                 drawerList = (
                     <List component="nav" className={classes.drawerList} subheader={<li />}>
                         {routes.onboarding.map(sectionId => (
-                            <Slide direction="right" in={!this.state.checkingSession} mountOnEnter unmountOnExit>
-                                <li key={`section-${sectionId.url}`}>
-                                    {/* <ListSubheader>{sectionId.icon} {sectionId.title}</ListSubheader> */}
+                            <Slide direction="right" in={!this.state.checkingSession} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
+                                <ul className={classes.drawerListUl}>
                                     <ListSubheader className={classes.listSubheader} elevation={24}>{sectionId.title}</ListSubheader>
                                     <List component="div" disablePadding>
                                         {sectionId.children.map(item => (
                                             <ListItem button
-                                                    key={`item-${sectionId.url}-${item.url}`}
-                                                    alignItems="flex-start"
-                                                    component={Link}
-                                                    to={`/${sectionId.url}/${item.url}`}
-                                                    //onClick={() => this.handleListItemClick(1)}
-                                                    //selected={(selected === 1) || (pathname === `/${sectionId.url}/${item.url}`)}
-                                                    selected={pathname === `/${sectionId.url}/${item.url}`}
+                                                key={`item-${sectionId.url}-${item.url}`}
+                                                component={Link}
+                                                to={`/${sectionId.url}/${item.url}`}
+                                                selected={pathname === `/${sectionId.url}/${item.url}`}
                                             >
                                                 {
-                                                (item.completed < 100) &&
+                                                (onboardingProgress[item.url.replace('-', '_')] < 100) &&
                                                     <ListItemIcon>{item.icon}</ListItemIcon>
                                                 }
                                                 {
-                                                (item.completed === 100) &&
+                                                (onboardingProgress[item.url.replace('-', '_')] === 100) &&
                                                     <ListItemIcon>
                                                         <DoneIcon color="secondary" />
                                                     </ListItemIcon>
                                                 }
                                                 <ListItemText inset
-                                                    primary={item.title}
-                                                    secondary={
+                                                    component="div"
+                                                    className={classes.drawerListItemText}
+                                                    primary={
                                                         <React.Fragment>
-                                                            {/*{item.subtitle}*/}
+                                                            <span>{item.title}</span>
                                                             {
-                                                            (item.completed < 100) &&
-                                                                <LinearProgress variant="determinate" value={item.completed} />
+                                                            (onboardingProgress[item.url.replace('-', '_')] < 100) &&
+                                                                <LinearProgress className={classes.progressBar} variant="determinate" value={onboardingProgress[item.url.replace('-', '_')]} />
                                                             }
-                                                        </React.Fragment>
+                                                        </React.Fragment>    
                                                     }
                                                 />
                                             </ListItem>
                                         ))}
-                                        {/*<ListItem>
-                                            <Button disabled variant="contained" color="secondary" size="large" className={classes.drawerButton}>
-                                                Launch!
-                                                <LaunchIcon className={classes.rightIcon} />
-                                            </Button>
-                                        </ListItem>*/}
                                     </List>
-                                </li>
+                                </ul>
                             </Slide>
                         ))}
                         <ListItem>

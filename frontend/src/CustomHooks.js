@@ -16,7 +16,12 @@ const useForm = (initialValues, inputChangeCallback, submitCallback, skipFirstEf
 
     const handleInputChange = event => {
         event.persist();
-        setInputs(inputs => ({...inputs, [event.nativeEvent.target.id]: event.nativeEvent.target.value}));
+        let inputKey = '';
+        //console.log(event.nativeEvent.target);
+        if (event.nativeEvent.target.id !== '') inputKey = event.nativeEvent.target.id;
+        else if (event.nativeEvent.target.name !== '') inputKey = event.nativeEvent.target.name;
+        setInputs(inputs => ({...inputs, [inputKey]: event.nativeEvent.target.value}));
+        //setInputs(inputs => ({...inputs, [event.nativeEvent.target.id]: event.nativeEvent.target.value}));
     };
 
     return {

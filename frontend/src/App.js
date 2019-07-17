@@ -18,7 +18,7 @@ import ExportDonations from './PaymentsFinances/ExportDonations';
 import ExportDonors from './Membership/ExportDonors';
 import ExportMembers from './Membership/ExportMembers';
 import ExportSustainers from './Membership/ExportSustainers';
-import GSSocialMedia from './SocialMedia/GSSocialMedia';
+import GSSocialMedia from './GetStarted/GSSocialMedia';
 import PostToFacebookPage from './SocialMedia/PostToFacebookPage';
 import SendATweet from './SocialMedia/SendATweet';
 import ViewAlumni from './Membership/ViewAlumni';
@@ -77,7 +77,7 @@ class App extends React.Component {
     this.state = {
       auth: auth0Client.isAuthenticated(),
       checkingSession: true,
-      completed: {
+      /*completed: {
         "organizationInfo": 100,
         "website": 2,
         "boardHierarchy": 2,
@@ -88,12 +88,14 @@ class App extends React.Component {
         "podcasting": 2,
         "bylawsConstitution": 2,
         "brandingPersonalization": 2,
-      },
+      },*/
       //instances: [],
       //instance: null,
-      instance: {},
+      instance: {
+        onboarding_progress: {},
+      },
       intervalIsSet: false,
-      live: true,
+      live: null,
       status: 'onboarding'
     };
     this.updateInstance = this.updateInstance.bind(this);
@@ -317,7 +319,7 @@ class App extends React.Component {
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <AppFrame isLive={live} handleLogOut={this.signOut} pathname={pathname} />
+          <AppFrame isLive={live} handleLogOut={this.signOut} pathname={pathname} onboardingProgress={instance.onboarding_progress} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {

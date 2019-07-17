@@ -1,87 +1,50 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  FormLabel,
-  Radio,
-  RadioGroup,
-  TextField
-} from '@material-ui/core';
+import RadioToggleControls from './RadioToggleControls';
+import { TextField } from '@material-ui/core';
 
-const styles = theme => ({
-  root: {
-    display: 'flex',
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-  group: {
-    margin: [theme.spacing(1), 0],
-    //margin: theme.spacing(1),
-  },
-});
+class RadioToggle extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          formOpen: false,
+        };
+    };
 
-class RadioButtonsGroup extends React.Component {
-  state = {
-    value: '',
-  };
+    handleRadioToggle = (inputKey, data) => {
+        const { radioChangeCallback } = this.props;
+        let inputVal = data[inputKey];
+        inputVal = (inputVal === 'true') ? true : (inputVal === 'false') ? false : null;
+        this.setState({ formOpen: inputVal });
+        radioChangeCallback(inputVal);
+    };
 
-  handleChange = event => {
-    this.setState({ value: event.target.value });
-  };
+    render() {
+        const { title, description, labels, formChangeCallback } = this.props;
+        const { formOpen } = this.state;
+        const inputKey = title.replace(/ /g, '_');
 
-  render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Do you already have a Facebook page?</FormLabel>
-          <FormHelperText>We'll make one for you if you don't!</FormHelperText>
-          <RadioGroup
-            aria-label="GenFacebookder"
-            name="facebook"
-            className={classes.group}
-            value={this.state.value}
-            onChange={this.handleChange}
-          >
-            <FormControlLabel
-              value="true"
-              control={<Radio />}
-              label="Yes"
-            />
-            <FormControlLabel
-              value="false"
-              control={<Radio color="primary" />}
-              label="No"
-            />
-          </RadioGroup>
-        {this.state.value === 'true' &&
-          <React.Fragment>
-            <br></br>
-            <fieldset>
-              <TextField
-                id="standard-name"
-                label="Name"
-                //className={classes.textField}
-                //value={this.state.name}
-                //onChange={this.handleChange('name')}
-                margin="normal"
-              />
-            </fieldset>
-          </React.Fragment>
-        }
-        </FormControl>
-      </div>
-    );
-  }
+        return (
+            <React.Fragment>
+                <RadioToggleControls title={title} description={description} labels={labels} inputKey={inputKey} sendRadio={(data) => this.handleRadioToggle(inputKey, data)} />
+                {
+                formOpen &&
+                    <React.Fragment>
+                        <br></br>
+                        <fieldset>
+                            <TextField
+                                id="standard-name"
+                                label="Name"
+                                //className={classes.textField}
+                                //value={this.state.name}
+                                onChange={formChangeCallback}
+                                margin="normal"
+                            />
+                        </fieldset>
+                    </React.Fragment>
+                }
+            </React.Fragment>
+        );
+    }
 }
 
-RadioButtonsGroup.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(RadioButtonsGroup);
+export default RadioToggle;

@@ -77,7 +77,7 @@ const pageTitles = {
     "/get-help": "Get Help",
     //"/get-started": "Get Started",
     "/get-started/analytics-seo": "Analytics & SEO",
-    "/get-started/board-hierarchy": "Board Hierarchy",
+    "/get-started/board": "Board",
     "/get-started/branding-personalization": "Branding & Personalization",
     "/get-started/bylaws-constitution": "Bylaws & Constitution",
     "/get-started/email": "Email",

@@ -432,6 +432,58 @@ let InstanceSchema = new Schema(
       type: String,
       validate: [hexValidator, 'Not a valid color']
     },
+    onboarding_progress: {
+      organization_info: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      website: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      board: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      email: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      social_media: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      payments_finances: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      analytics_seo: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      podcasting: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      bylaws_constitution: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+      branding_personalization: {
+        type: Number,
+        min: [0, 'Progress too low'],
+        max: [100, 'Progress too high'],
+      },
+    },
   },
   { timestamps: true }
 );
