@@ -1,5 +1,3 @@
-// Might need to uncomment?
-//import React from 'react';
 import {
     Add as AddIcon,
     ShowChart as AnalyticsIcon,

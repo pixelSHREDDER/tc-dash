@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { pageTitles } from '../Routes/Routes';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -46,6 +47,11 @@ const TopBar = ({pathname, handleDrawerToggle}) => {
             </Toolbar>
         </AppBar>
     );
+};
+
+TopBar.propTypes = {
+    pathname: PropTypes.string.isRequired,
+    handleDrawerToggle: PropTypes.func.isRequired,
 };
 
 export default TopBar;

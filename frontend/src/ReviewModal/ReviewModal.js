@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import { deepPurple } from '@material-ui/core/colors';
 import {
     Button,
     Chip,
@@ -79,8 +80,7 @@ const drawerWidth = 240;
 
 const styles = theme => ({
     expansionPanelSummary: {
-        //backgroundColor: deepPurple[500],
-        backgroundColor: "#1982d1",
+        backgroundColor: deepPurple[500],
       },
     expansionHeading: {
         //fontSize: theme.typography.pxToRem(15),
@@ -109,7 +109,6 @@ const styles = theme => ({
         position: 'absolute',
         top: '10%',
         left: '50%',
-        //width: theme.spacing(90),
         width: '50%',
         height: '90%',
         backgroundColor: theme.palette.background.paper,
@@ -138,14 +137,11 @@ const styles = theme => ({
 });
 
 class ReviewModal extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            dialogOpen: false,
-            expanded: null,
-            open: false,
-        };
-    }
+    state = {
+        dialogOpen: false,
+        expanded: null,
+        open: false,
+    };
 
     handleOpen = () => {
         this.setState({ open: true });
@@ -174,8 +170,8 @@ class ReviewModal extends React.Component {
       };
 
     render() {
-        const {classes, isLive} = this.props;
-        const {expanded} = this.state;
+        const { classes, isLive } = this.props;
+        const { expanded } = this.state;
 
         return (
             <React.Fragment>

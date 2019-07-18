@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from '../CustomHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -19,14 +20,11 @@ const useStyles = makeStyles(theme => ({
     },
     group: {
         margin: [theme.spacing(1), 0],
-        //margin: theme.spacing(1),
     },
 }));
 
 const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputKey, sendRadio}) => {
-    const classes = useStyles();
-    //const [value, setValue] = React.useState();
-    
+    const classes = useStyles();    
     const {inputs, handleInputChange} = useForm({[inputKey]: null}, sendRadio);
 
     return (
@@ -41,7 +39,6 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
                     //value={value}
                     defaultValue={inputs.value}
                     onChange={handleInputChange}
-                    //onChange={(event) => {event.persist(); console.log(event);}}
                 >
                     <FormControlLabel
                         value="true"
@@ -58,5 +55,13 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
         </form>
     );
 }
+
+RadioToggleControls.propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    labels: PropTypes.array,
+    inputKey: PropTypes.string.isRequired,
+    sendRadio: PropTypes.func.isRequired,
+};
 
 export default RadioToggleControls;

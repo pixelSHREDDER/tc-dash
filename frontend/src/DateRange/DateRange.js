@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useForm } from '../CustomHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
@@ -46,5 +47,9 @@ const DateRange = ({sendDateRange}) => {
         </form>
     );
 }
+
+DateRange.propTypes = {
+    sendDateRange: PropTypes.func.isRequired,
+};
 
 export default DateRange;

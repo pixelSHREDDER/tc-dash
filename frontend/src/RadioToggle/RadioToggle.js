@@ -1,13 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RadioToggleControls from './RadioToggleControls';
 import { TextField } from '@material-ui/core';
 
 class RadioToggle extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          formOpen: false,
-        };
+    state = {
+        formOpen: false,
     };
 
     handleRadioToggle = (inputKey, data) => {
@@ -46,5 +44,12 @@ class RadioToggle extends React.Component {
         );
     }
 }
+
+RadioToggle.propTypes = {
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    labels: PropTypes.array,
+    formChangeCallback: PropTypes.func.isRequired,
+};
 
 export default RadioToggle;

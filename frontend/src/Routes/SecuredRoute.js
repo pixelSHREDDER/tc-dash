@@ -1,9 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import auth0Client from '../Auth';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-function SecuredRoute(props) {
+const SecuredRoute = props => {
   const { component: Component, path, instance, checkingSession, onSubmit } = props;
   return (
     <Route path={path} render={() => {
@@ -15,6 +16,13 @@ function SecuredRoute(props) {
         return <Component instance={instance} onSubmit={onSubmit} />
     }} />
   );
-}
+};
+
+SecuredRoute.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
+  path: PropTypes.string.isRequired,
+  checkingSession: PropTypes.bool,
+  onSubmit: PropTypes.func,
+};
 
 export default SecuredRoute;

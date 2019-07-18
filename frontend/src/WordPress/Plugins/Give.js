@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { format as formatDate } from 'date-fns';
 
 // TODO: replace with call to imported function to get proper value
@@ -60,6 +61,32 @@ const getCSVDonors = (domain, startDate = null, endDate = null) => {
         body: body
     });
 }
+
+createDonationsExportBody.propTypes = {
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+};
+
+createDonorsExportBody.propTypes = {
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+};
+
+getCSVDonations.propTypes = {
+    domain: PropTypes.string.isRequired,
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+};
+
+getCurrentYearPDFDonations.propTypes = {
+    domain: PropTypes.string.isRequired,
+};
+
+getCSVDonors.propTypes = {
+    domain: PropTypes.string.isRequired,
+    startDate: PropTypes.instanceOf(Date),
+    endDate: PropTypes.instanceOf(Date),
+};
 
 export {
     getCSVDonations,

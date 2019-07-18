@@ -1,5 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import DateRange from '../DateRange/DateRange';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -109,5 +110,11 @@ class ExternalLinkPanel extends React.Component {
         )
     }
 }
+
+ExternalLinkPanel.propTypes = {
+    classes: PropTypes.object.isRequired,
+    domain: PropTypes.string.isRequired,
+    panels: PropTypes.array.isRequired,
+};
 
 export default withRouter(withStyles(styles, { withTheme: true })(ExternalLinkPanel));

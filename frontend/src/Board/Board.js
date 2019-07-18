@@ -64,41 +64,11 @@ class Board extends React.Component {
       instance: null,
       treeData: [{ title: 'Chicken', children: [{ title: 'Egg' }] }],
     };
-
-    //this.submitAnswer = this.submitAnswer.bind(this);
   }
-
-  async componentDidMount() {
-    //await this.refreshInstance();
-  }
-
-  /*async refreshInstance() {
-    const { match: { params } } = this.props;
-    const instance = (await axios.get(`http://localhost:8081/${params.instanceId}`, {
-        instance,
-    }, {
-      headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
-    })).data;
-    this.setState({
-        instance,
-    });
-  }*/
-
-  /*async submitAnswer(answer) {
-    await axios.post(`http://localhost:8081/answer/${this.state.instance.id}`, {
-      answer,
-    }, {
-      headers: { 'Authorization': `Bearer ${auth0Client.getIdToken()}` }
-    });
-    await this.refreshInstance();
-  }*/
 
   render() {
     const {classes, instance/*, onSubmit*/} = this.props;
     if (instance === null) return <CircularProgress />;
-    /*this.setState({
-      instance: instance,
-    });*/
 
     return (
       <React.Fragment>

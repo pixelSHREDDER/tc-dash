@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
-//import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import auth0Client from '../Auth';
 import { routes } from '../Routes/Routes';
 import ReviewModal from '../ReviewModal/ReviewModal';
@@ -8,7 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 import {
     Avatar,
-    //Collapse,
     Divider,
     Drawer,
     Hidden,
@@ -23,15 +22,7 @@ import {
     MenuItem,
     Slide
 } from '@material-ui/core';
-import {
-    DoneIcon
-    //ExpandLessIcon,
-    //ExpandMoreIcon,
-    //ExternalLinkIcon,
-    //HelpIcon,
-    //LaunchIcon,
-    //ViewListIcon
-} from '../Icons';
+import { DoneIcon } from '../Icons';
 //import { AccountCircle } from '@material-ui/icons';
 
 const drawerWidth = 240;
@@ -40,19 +31,12 @@ const styles = theme => ({
     root: {
         display: 'flex',
     },
-    /*nested: {
-        paddingLeft: theme.spacing(4),
-    },*/
     drawer: {
         [theme.breakpoints.up('sm')]: {
         width: drawerWidth,
         flexShrink: 0,
         },
     },
-    /*drawerButton: {
-        margin: theme.spacing(1),
-        width: drawerWidth - (theme.spacing(2)),
-    },*/
     avatar: {
         width: 28,
         height: 28,
@@ -80,13 +64,7 @@ const styles = theme => ({
         fontSize: '0.75rem',
         marginLeft: theme.spacing(0.5),
     },
-    /*smallIcon: {
-        fontSize: '0.75rem',
-    },*/
     progressBar: {
-        /*left: theme.spacing(0.5),
-        position: 'relative',
-        right: 'auto',*/
         marginTop: theme.spacing(0.5),
     },
     toolbar: theme.mixins.toolbar,
@@ -100,8 +78,6 @@ class Nav extends React.Component {
         super();
         this.state = {
           anchorEl: null,
-          //nestedOpen: false,
-          //selected: null,
         };
         this.renderDrawer = this.renderDrawer.bind(this);
     };
@@ -113,14 +89,6 @@ class Nav extends React.Component {
     handleMenuClose = () => {
         this.setState({ anchorEl: null });
     };
-
-    /*handleListItemClick = index => {
-        if (index === 0) {
-        this.setState(state => ({ nestedOpen: !state.nestedOpen, selected: null }));
-        } else {
-        this.setState({ selected: index });
-        }
-    };*/
 
     renderDrawer = () => {
         const { classes, isLive, handleLogOut, onboardingProgress } = this.props;
@@ -328,14 +296,13 @@ class Nav extends React.Component {
     };
 
     render() {
-        const { classes, container, handleDrawerToggle, mobileOpen } = this.props;
+        const { classes, handleDrawerToggle, mobileOpen } = this.props;
 
         return (
             <nav className={classes.drawer}>
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Hidden smUp implementation="css">
                     <Drawer
-                        container={container}
                         variant="temporary"
                         anchor="left"
                         open={mobileOpen}
@@ -363,8 +330,10 @@ class Nav extends React.Component {
     }
 }
 
-/*Nav.propTypes = {
+Nav.propTypes = {
   classes: PropTypes.object.isRequired,
-};*/
+  handleDrawerToggle: PropTypes.func.isRequired,
+  mobileOpen: PropTypes.bool.isRequired,
+};
 
 export default withRouter(withStyles(styles, { withTheme: true })(Nav));

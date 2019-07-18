@@ -1,13 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Nav from './Nav';
 import TopBar from './TopBar';
 
 class AppFrame extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-          mobileOpen: false,
-        };
+    state = {
+        mobileOpen: false,
     };
 
     handleDrawerToggle = () => {
@@ -26,5 +24,10 @@ class AppFrame extends React.Component {
         );
     }
 }
+
+AppFrame.propTypes = {
+    handleLogOut: PropTypes.func.isRequired,
+    pathname: PropTypes.string.isRequired,
+};
 
 export default AppFrame;

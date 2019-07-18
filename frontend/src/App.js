@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import { URLS } from './conf';
 import auth0Client from './Auth';
 //import Callback from './Callback';
@@ -95,7 +94,7 @@ class App extends React.Component {
         onboarding_progress: {},
       },
       intervalIsSet: false,
-      live: null,
+      live: true,
       status: 'onboarding'
     };
     this.updateInstance = this.updateInstance.bind(this);
@@ -446,9 +445,5 @@ class App extends React.Component {
     );
   }
 }
-
-App.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 export default withRouter(withStyles(styles, { withTheme: true })(App));

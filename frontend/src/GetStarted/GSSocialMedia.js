@@ -3,11 +3,8 @@ import RadioToggle from '../RadioToggle/RadioToggle';
 import { LinearProgress } from '@material-ui/core';
 
 class GSSocialMedia extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      instance: {}
-    };
+  state = {
+    instance: {}
   }
 
   handleRadioChange = (data) => {
