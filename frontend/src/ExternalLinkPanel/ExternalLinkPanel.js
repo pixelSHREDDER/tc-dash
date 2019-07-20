@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import DateRange from '../DateRange/DateRange';
+import instance from '../Instance/Instance';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Button,
@@ -58,7 +59,7 @@ class ExternalLinkPanel extends React.Component {
     }
 
     render() {
-        const { classes, domain } = this.props;
+        const { classes } = this.props;
         const { panels } = this.state;
 
         return (
@@ -89,7 +90,7 @@ class ExternalLinkPanel extends React.Component {
                                         <DateRange sendDateRange={(data) => this.setDates(index, data)} />
                                     </Grid>
                                     <Grid item md={8}>
-                                        <Button onClick={() => {panel.linkFn(domain, panel.from, panel.to)}} size="large" color="primary" autoFocus>
+                                        <Button onClick={() => {panel.linkFn(instance.data.domain, panel.from, panel.to)}} size="large" color="primary" autoFocus>
                                             {panel.title}
                                             <ExternalLinkIcon className={classes.rightIcon} />
                                         </Button>
@@ -98,7 +99,7 @@ class ExternalLinkPanel extends React.Component {
                             }
                             {
                             !panel.useDates &&
-                                <Button onClick={() => {panel.linkFn(domain)}} size="large" color="primary" autoFocus>
+                                <Button onClick={() => {panel.linkFn(instance.data.domain)}} size="large" color="primary" autoFocus>
                                     {panel.title}
                                     <ExternalLinkIcon className={classes.rightIcon} />
                                 </Button>
@@ -113,7 +114,6 @@ class ExternalLinkPanel extends React.Component {
 
 ExternalLinkPanel.propTypes = {
     classes: PropTypes.object.isRequired,
-    domain: PropTypes.string.isRequired,
     panels: PropTypes.array.isRequired,
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { isLive } from '../Instance/Instance';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 import {
@@ -170,7 +171,7 @@ class ReviewModal extends React.Component {
       };
 
     render() {
-        const { classes, isLive } = this.props;
+        const { classes } = this.props;
         const { expanded } = this.state;
 
         return (

@@ -1,72 +1,84 @@
-import React from 'react';
-//import axios from 'axios';
-//import { URLS } from '../conf';
-//import SubmitAnswer from './SubmitAnswer';
-//import auth0Client from '../Auth';
+import axios from 'axios';
+import { URLS } from '../conf';
+import auth0Client from '../Auth';
 
-class Instance extends React.Component {
+let isCheckingSession;
+let isLive;
+
+class Instance {
   constructor() {
-    super();
-    this.state = {
-      instance: null,
+    this.data = {
+      onboarding_progress: {},
     };
-
-    //this.submitAnswer = this.submitAnswer.bind(this);
+    isLive = false;
+    //isCheckingSession = true;
   }
 
-  async componentDidMount() {
-    //await this.refreshInstance();
+  init = async () => {
+    let instanceId = null;
+
+    try {
+      await auth0Client.renewTokens();
+      //this.forceUpdate();
+      instanceId = await auth0Client.getProfile().sub;
+      this.getData(instanceId);
+      //isCheckingSession = false;
+    /*try {
+      await auth0Client.checkSession();
+      instanceId = await auth0Client.getProfile().sub;
+      this.forceUpdate();
+      this.getInstance(instanceId);*/
+      /* older
+      if (!this.state.intervalIsSet) {
+        let interval = setInterval(this.getInstance(instanceId), 1000);
+        this.setState({ intervalIsSet: interval });
+      }*/
+      //isCheckingSession = false;
+      /* older
+      this.refreshInstance();*/
+    } catch (err) {
+      console.error(err);
+      //isCheckingSession = false;
+      /*if (err.error !== 'login_required') console.log(err.error);
+      isCheckingSession = false;*/
+    }
+    //isCheckingSession = false;
   }
 
-  /*async refreshInstance() {
-    const { match: { params } } = this.props;
+  getData = async (owner) => {
+    const token = await auth0Client.getIdToken();
+    const data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ owner }`,
+    { headers: { 'Authorization': `Bearer ${ token }`}}
+    )).data;
+    this.data = data.data[0];
+    //TODO: Add isLive setting based on data
+    console.log(this.data);
+  };
+
+  updateData = async (owner, update) => {
     try {
       const token = await auth0Client.getIdToken();
-      const instance = (await axios.get(`http://${ URLS.dataUrl }/${ params.instanceId }`, {
-        headers: { 'Authorization': `Bearer ${ token }` }
-      })).data;
-      this.setState({
-          instance,
-      });
+      /*let objOwnerToUpdate = null;
+      this.state.instances.forEach(ins => {
+        if (ins.owner == ownerToUpdate) {
+          objOwnerToUpdate = ins.owner;
+        }
+      });*/
+
+      this.data = (await axios.post(`http://${ URLS.dataUrl }/updateInstance/${ owner }`,
+        { data: update },
+        { headers: { 'Authorization': `Bearer ${ token }` }}
+      )).data.data;
     } catch (err) {
-      if (err.response.status===401 && err.config) {
+      console.log(err);
+      //if (err.response.status===401 && err.config) {
 
-      }
+      //}
     }
-  }*/
-
-  /*async submitAnswer(answer) {
-    await axios.post(`http://${ URLS.dataUrl }/answer/${ this.state.instance.id }`, {
-      answer,
-    }, {
-      headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
-    });
-    await this.refreshInstance();
-  }*/
-
-  render() {
-    const {instance} = this.props;
-    //const {instance} = this.state;
-    if (instance === null) return <p>Loading ...</p>;
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="jumbotron col-12">
-            <h1 className="display-3">{instance.title}</h1>
-            <p className="lead">{instance.description}</p>
-            <hr className="my-4" />
-            {/*<SubmitAnswer instanceId={instance.id} submitAnswer={this.submitAnswer} />
-            <p>Answers:</p>
-            {
-              instance.answers.map((answer, idx) => (
-                <p className="lead" key={idx}>{answer.answer}</p>
-              ))
-            }*/}
-          </div>
-        </div>
-      </div>
-    )
-  }
+  };
 }
 
-export default Instance;
+const instance = new Instance();
+
+export default instance;
+export { isCheckingSession, isLive };

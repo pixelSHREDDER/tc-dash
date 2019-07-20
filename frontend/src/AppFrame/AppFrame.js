@@ -13,13 +13,13 @@ class AppFrame extends React.Component {
     };
 
     render() {
-        const { handleLogOut, isLive, pathname, onboardingProgress } = this.props;
+        const { handleLogOut, pathname, onboardingProgress } = this.props;
         const { mobileOpen } = this.state;
 
         return (
             <React.Fragment>
                 <TopBar pathname={pathname} handleDrawerToggle={this.handleDrawerToggle} />
-                <Nav isLive={isLive} handleDrawerToggle={this.handleDrawerToggle} handleLogOut={handleLogOut} mobileOpen={mobileOpen} onboardingProgress={onboardingProgress} />
+                <Nav handleDrawerToggle={this.handleDrawerToggle} handleLogOut={handleLogOut} mobileOpen={mobileOpen} onboardingProgress={onboardingProgress} />
             </React.Fragment>
         );
     }

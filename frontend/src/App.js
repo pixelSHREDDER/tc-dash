@@ -31,7 +31,7 @@ import ViewWebsitePosts from './Website/ViewWebsitePosts';
 import ViewWebsiteStats from './Website/ViewWebsiteStats';
 import WriteWebsitePost from './Website/WriteWebsitePost';
 import Website from './Website/Website';
-import Instance from './Instance/Instance';
+import instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
 
 import { CircularProgress } from '@material-ui/core';
@@ -75,7 +75,6 @@ class App extends React.Component {
     super();
     this.state = {
       auth: auth0Client.isAuthenticated(),
-      checkingSession: true,
       /*completed: {
         "organizationInfo": 100,
         "website": 2,
@@ -89,52 +88,15 @@ class App extends React.Component {
         "brandingPersonalization": 2,
       },*/
       //instances: [],
-      //instance: null,
-      instance: {
-        onboarding_progress: {},
-      },
       intervalIsSet: false,
-      live: true,
-      status: 'onboarding'
     };
+
     this.updateInstance = this.updateInstance.bind(this);
   }
 
   async componentDidMount() {
-    let instanceId = null;
     if (this.props.location.pathname === 'callback') return;
-    /*if (this.props.location.pathname === '/callback') {
-      this.setState({checkingSession: false});
-      return;
-    }*/
-    try {
-      await auth0Client.renewTokens();
-      this.forceUpdate();
-      instanceId = await auth0Client.getProfile().sub;
-      this.getInstance(instanceId);
-      this.setState({ checkingSession: false });
-      //this.setState({ checkingSession: false });
-    /*try {
-      await auth0Client.checkSession();
-      instanceId = await auth0Client.getProfile().sub;
-      this.forceUpdate();
-      this.getInstance(instanceId);*/
-      /* older
-      if (!this.state.intervalIsSet) {
-        let interval = setInterval(this.getInstance(instanceId), 1000);
-        this.setState({ intervalIsSet: interval });
-      }*/
-      //this.setState({checkingSession: false});
-      /* older
-      this.refreshInstance();*/
-    } catch (err) {
-      console.error(err);
-      this.setState({ checkingSession: false });
-      //this.setState({checkingSession: false});
-      /*if (err.error !== 'login_required') console.log(err.error);
-      this.setState({checkingSession: false});*/
-    }
-    //this.setState({ checkingSession: false });
+    await instance.init().then(this.forceUpdate());
   }
 
   checkAuthentication = async (props) => {
@@ -173,7 +135,7 @@ class App extends React.Component {
       /*.then((res) => console.log(res.data));*/
   };
 
-  async getInstance(owner) {
+  /*async getInstance(owner) {
     const token = await auth0Client.getIdToken();
     const data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ owner }`,
     { headers: { 'Authorization': `Bearer ${ token }`}}
@@ -182,7 +144,7 @@ class App extends React.Component {
       instance: data.data[0]
     })
     console.log(this.state.instance);
-  };
+  };*/
 
   async addInstance(instance) {
     const token = await auth0Client.getIdToken();
@@ -312,17 +274,16 @@ class App extends React.Component {
   render() {
     const { classes } = this.props;
     const { pathname } = this.props.location;
-    const { checkingSession, instance, live } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <AppFrame isLive={live} handleLogOut={this.signOut} pathname={pathname} onboardingProgress={instance.onboarding_progress} />
+          <AppFrame handleLogOut={this.signOut} pathname={pathname} onboardingProgress={instance.data.onboarding_progress} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {
-            !auth0Client.isAuthenticated() && !checkingSession &&
+            !auth0Client.isAuthenticated() && !auth0Client.getCheckingSession() &&
               <React.Fragment>
                 <Typography variant="subtitle2" gutterBottom>
                   You must be logged into your chapter's account to continue.
@@ -331,7 +292,7 @@ class App extends React.Component {
               </React.Fragment>
             }
             {/*auth0Client.isAuthenticated() &&
-              <Dashboard instance={instance} />
+              <Dashboard />
             */}
               <React.Fragment>
                 {/*<RadioToggle/>
@@ -342,101 +303,36 @@ class App extends React.Component {
                   this.checkAuthentication(props);
                   return (<Callback />);
                 }} />
-                <Route exact path='/instance/:instanceId' component={Instance} />
-                {/*<SecuredRoute path='/instance:instanceId'
-                              component={Instance}
-                              checkingSession={checkingSession} />*/}
-                <SecuredRoute path='/dashboard'
-                              component={Dashboard}
-                              instance={instance} />
-                <SecuredRoute path='/new-instance'
-                              component={NewInstance}
-                              checkingSession={checkingSession}
-                              onSubmit={this.addInstance} />
-                <SecuredRoute path='/board/view-board'
-                              component={Board}
-                              instance={instance}
-                              checkingSession={checkingSession}
-                              onSubmit={this.updateInstance} />
-                {/*<SecuredRoute path='/email/email-alumni'
-                              component={ExternalLinkPanel}
-                              instance={instance} />
-                <SecuredRoute path='/email/email-donors'
-                              component={ExternalLinkPanel}
-                              instance={instance} />*/}
-                <SecuredRoute path='/email/email-members'
-                              component={EmailMembers}
-                              instance={instance} />
-                {/*<SecuredRoute path='/email/email-sustainers'
-                              component={ExternalLinkPanel}
-                              instance={instance} />*/}
-                <SecuredRoute path='/email/view-stats'
-                              component={ViewEmailStats}
-                              instance={instance} />
-                <SecuredRoute path='/membership/export-alumni'
-                              component={ExportAlumni}
-                              instance={instance} />
-                <SecuredRoute path='/membership/export-donors'
-                              component={ExportDonors}
-                              instance={instance} />
-                <SecuredRoute path='/membership/export-members'
-                              component={ExportMembers}
-                              instance={instance} />
-                <SecuredRoute path='/membership/export-sustainers'
-                              component={ExportSustainers}
-                              instance={instance} />
-                <SecuredRoute path='/membership/view-alumni'
-                              component={ViewAlumni}
-                              instance={instance} />
-                <SecuredRoute path='/membership/view-donors'
-                              component={ViewDonors}
-                              instance={instance} />
-                <SecuredRoute path='/membership/view-members'
-                              component={ViewMembers}
-                              instance={instance} />
-                <SecuredRoute path='/membership/view-sustainers'
-                              component={ViewSustainers}
-                              instance={instance} />
-                <SecuredRoute path='/payments-finances/export-budget'
-                              component={ExportBudget}
-                            instance={instance} />
-                <SecuredRoute path='/payments-finances/export-donations'
-                              component={ExportDonations}
-                              instance={instance} />
-                <SecuredRoute path='/payments-finances/view-budget'
-                              component={ViewBudget}
-                              instance={instance} />
-                <SecuredRoute path='/payments-finances/view-donations'
-                              component={ViewDonations}
-                              instance={instance} />
-                <SecuredRoute path='/social-media/post-to-facebook-page'
-                              component={PostToFacebookPage}
-                              instance={instance} />
-                <SecuredRoute path='/social-media/send-a-tweet'
-                              component={SendATweet}
-                              instance={instance} />
-                <SecuredRoute path='/website'
-                              component={Website}
-                              instance={instance}
-                              checkingSession={checkingSession}
-                              onSubmit={this.updateInstance} />
-                <SecuredRoute path='/website/edit-posts'
-                              component={EditWebsitePosts}
-                              instance={instance} />
-                <SecuredRoute path='/website/view-posts'
-                              component={ViewWebsitePosts}
-                              instance={instance} />
-                <SecuredRoute path='/website/view-stats'
-                              component={ViewWebsiteStats}
-                              instance={instance} />
-                <SecuredRoute path='/website/write-post'
-                              component={WriteWebsitePost}
-                              instance={instance} />
-                <SecuredRoute path='/get-started/social-media'
-                              component={GSSocialMedia}
-                              instance={instance}
-                              checkingSession={checkingSession}
-                          onSubmit={this.updateInstance} />
+                {/*<Route exact path='/instance/:instanceId' component={Instance} />
+                <SecuredRoute path='/instance:instanceId' component={Instance} />*/}
+                <SecuredRoute path='/dashboard' component={Dashboard} />
+                <SecuredRoute path='/new-instance' component={NewInstance} onSubmit={this.addInstance} />
+                <SecuredRoute path='/board/view-board' component={Board} onSubmit={this.updateInstance} />
+                {/*<SecuredRoute path='/email/email-alumni' component={ExternalLinkPanel} />
+                <SecuredRoute path='/email/email-donors' component={ExternalLinkPanel} />*/}
+                <SecuredRoute path='/email/email-members' component={EmailMembers} />
+                {/*<SecuredRoute path='/email/email-sustainers' component={ExternalLinkPanel} />*/}
+                <SecuredRoute path='/email/view-stats' component={ViewEmailStats} />
+                <SecuredRoute path='/membership/export-alumni' component={ExportAlumni} />
+                <SecuredRoute path='/membership/export-donors' component={ExportDonors} />
+                <SecuredRoute path='/membership/export-members' component={ExportMembers} />
+                <SecuredRoute path='/membership/export-sustainers' component={ExportSustainers} />
+                <SecuredRoute path='/membership/view-alumni' component={ViewAlumni} />
+                <SecuredRoute path='/membership/view-donors' component={ViewDonors} />
+                <SecuredRoute path='/membership/view-members' component={ViewMembers} />
+                <SecuredRoute path='/membership/view-sustainers' component={ViewSustainers} />
+                <SecuredRoute path='/payments-finances/export-budget' component={ExportBudget} />
+                <SecuredRoute path='/payments-finances/export-donations' component={ExportDonations} />
+                <SecuredRoute path='/payments-finances/view-budget' component={ViewBudget} />
+                <SecuredRoute path='/payments-finances/view-donations' component={ViewDonations} />
+                <SecuredRoute path='/social-media/post-to-facebook-page' component={PostToFacebookPage} />
+                <SecuredRoute path='/social-media/send-a-tweet' component={SendATweet} />
+                <SecuredRoute path='/website' component={Website} onSubmit={this.updateInstance} />
+                <SecuredRoute path='/website/edit-posts' component={EditWebsitePosts} />
+                <SecuredRoute path='/website/view-posts' component={ViewWebsitePosts} />
+                <SecuredRoute path='/website/view-stats' component={ViewWebsiteStats} />
+                <SecuredRoute path='/website/write-post' component={WriteWebsitePost} />
+                <SecuredRoute path='/get-started/social-media' component={GSSocialMedia} onSubmit={this.updateInstance} />
               </React.Fragment>
             {/*}*/}
           </main>

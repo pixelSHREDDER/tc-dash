@@ -13,6 +13,7 @@ class Auth {
       responseType: config.responseType,
       scope: config.scope,
     });
+    this.checkingSession = false;
 
     this.scheduleTokenRenewal();
   }
@@ -30,6 +31,11 @@ class Auth {
   // Returns the profile of the authenticated user, if any.
   getProfile = () => {
     return this.profile;
+  }
+
+  // => Boolean
+  getCheckingSession = () => {
+    return this.checkingSession.toString();
   }
 
   // Called after the user is redirected from Auth0.  This method reads the hash segment
@@ -57,6 +63,7 @@ class Auth {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.profile = authResult.idTokenPayload;
+    this.checkingSession = false;
     // set the time that the id token will expire at
     this.expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
     this.scheduleTokenRenewal();
@@ -92,8 +99,10 @@ class Auth {
   }*/
 
   checkSession = () => {
+    this.checkingSession = true;
     return new Promise((resolve, reject) => {
       this.auth0.checkSession({}, (err, authResult) => {
+        this.checkingSession = false;
         if (err) return reject(err);
         resolve(authResult);
         /*this.setSession(authResult);

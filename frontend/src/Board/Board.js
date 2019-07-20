@@ -1,4 +1,5 @@
 import React from 'react';
+//import instance from '../Instance/Instance';
 //import SortableTree from 'react-sortable-tree';
 //import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 //import FileExplorerTheme from 'react-sortable-tree-theme-file-explorer';
@@ -8,7 +9,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  CircularProgress,
   //FormControlLabel,
   //FormGroup,
   Grid,
@@ -61,14 +61,12 @@ class Board extends React.Component {
   constructor() {
     super();
     this.state = {
-      instance: null,
       treeData: [{ title: 'Chicken', children: [{ title: 'Egg' }] }],
     };
   }
 
   render() {
-    const {classes, instance/*, onSubmit*/} = this.props;
-    if (instance === null) return <CircularProgress />;
+    const {classes/*, onSubmit*/} = this.props;
 
     return (
       <React.Fragment>
