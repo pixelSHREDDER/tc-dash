@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import axios from 'axios';
-import { URLS } from './conf';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getInstance } from './redux/actions/instanceActions';
 import auth0Client from './Auth';
 //import Callback from './Callback';
 import NewInstance from './NewInstance/NewInstance';
@@ -31,7 +32,6 @@ import ViewWebsitePosts from './Website/ViewWebsitePosts';
 import ViewWebsiteStats from './Website/ViewWebsiteStats';
 import WriteWebsitePost from './Website/WriteWebsitePost';
 import Website from './Website/Website';
-import instance from './Instance/Instance';
 //import Instances from './Instances/Instances';
 
 import { CircularProgress } from '@material-ui/core';
@@ -71,32 +71,28 @@ const Callback = () => (
 );
 
 class App extends React.Component {
-  constructor() {
+  /*constructor() {
     super();
     this.state = {
-      auth: auth0Client.isAuthenticated(),
-      /*completed: {
-        "organizationInfo": 100,
-        "website": 2,
-        "boardHierarchy": 2,
-        "email": 2,
-        "socialMedia": 2,
-        "paymentsFinances": 2,
-        "analyticsSeo": 2,
-        "podcasting": 2,
-        "bylawsConstitution": 2,
-        "brandingPersonalization": 2,
-      },*/
+      //auth: auth0Client.isAuthenticated(),
       //instances: [],
       intervalIsSet: false,
     };
 
-    this.updateInstance = this.updateInstance.bind(this);
-  }
+    //this.updateInstance = this.updateInstance.bind(this);
+  }*/
+
+  state = {
+    intervalIsSet: false,
+  };
 
   async componentDidMount() {
     if (this.props.location.pathname === 'callback') return;
-    await instance.init().then(this.forceUpdate());
+    this.props.getInstance();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.instance) this.forceUpdate();
   }
 
   checkAuthentication = async (props) => {
@@ -115,138 +111,6 @@ class App extends React.Component {
         this.setState({ intervalIsSet: null });
       }
   }
-
-  async getInstances() {
-    const token = await auth0Client.getIdToken();
-    const data = (await axios.get(`http://${ URLS.dataUrl }/getData`,
-    { headers: { 'Authorization': `Bearer ${ token }` }}
-    )).data;
-    console.log(data);
-    /*fetch(`http://${ URLS.dataUrl }/getData`, {
-      method: 'GET',
-      withCredentials: true,
-      credentials: 'include',  
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-      .then(data => data.json())*/
-      /*.then(res => this.setState({
-        instances: res.data
-      }));*/
-      /*.then((res) => console.log(res.data));*/
-  };
-
-  /*async getInstance(owner) {
-    const token = await auth0Client.getIdToken();
-    const data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ owner }`,
-    { headers: { 'Authorization': `Bearer ${ token }`}}
-    )).data;
-    this.setState({
-      instance: data.data[0]
-    })
-    console.log(this.state.instance);
-  };*/
-
-  async addInstance(instance) {
-    const token = await auth0Client.getIdToken();
-    //const owner = instance.owner;
-    /*let currentIds = this.state.instances.map(data => data.id);
-      let idToBeAdded = 0;
-      while (currentIds.includes(idToBeAdded)) {
-        ++idToBeAdded;
-      }*/
-      axios.post(`http://${ URLS.dataUrl }/addInstance`, instance,
-        {headers: { 'Authorization': `Bearer ${ token }` }}
-      );
-  };
-
-  async deleteInstance(owner) {
-    const token = await auth0Client.getIdToken();
-    /*let objOwnerToDelete = null;
-    this.state.instances.forEach(ins => {
-      if (ins.owner == owner) {
-        objOwnerToDelete = ins.owner;
-      }
-    });*/
-
-    axios.delete(`http://${ URLS.dataUrl }/deleteInstance`, {
-      data: {
-        //owner: objOwnerToDelete
-        owner: owner
-      },
-      headers: { 'Authorization': `Bearer ${ token }` }}
-    );
-  };
-
-  async updateInstance(owner, update) {
-    try {
-      const token = await auth0Client.getIdToken();
-      /*let objOwnerToUpdate = null;
-      this.state.instances.forEach(ins => {
-        if (ins.owner == ownerToUpdate) {
-          objOwnerToUpdate = ins.owner;
-        }
-      });*/
-
-      const data = (await axios.post(`http://${ URLS.dataUrl }/updateInstance/${ owner }`,
-        { data: update },
-        { headers: { 'Authorization': `Bearer ${ token }` }}
-      )).data;
-      this.setState({
-        instance: data.data
-      })
-    } catch (err) {
-      console.log(err);
-      //if (err.response.status===401 && err.config) {
-
-      //}
-    }
-  };
-
-  /*async refreshInstance() {
-    try {
-      const token = await auth0Client.getIdToken();
-      const id = await auth0Client.getProfile().sub;
-      //const instance = (await axios.get(`http://${ URLS.dataUrl }/${ params.instanceId }`)).data;
-      const instance = (await axios.get(`http://${ URLS.dataUrl }/${ id }`, {
-        //headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
-        headers: { 'Authorization': `Bearer ${ token }` }
-      })).data;
-      this.setState({
-          instance,
-      });
-    } catch (err) {
-      //console.log(err.config);
-      if (err.response.status===401 && err.config) {
-
-      }
-    }
-  }*/
-
-  /*async saveInstance(instance) {
-    console.log(instance);
-    await axios.put(`http://${ URLS.dataUrl }/${ instance.id }`, {
-      instance,
-    }, {
-      headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
-    });*/
-    /*this.setState({
-      instance,
-     });*/
-    /*await this.refreshInstance();
-  }*/
-
-  /*handleChange = event => {
-    this.setState({ auth: event.target.checked });
-  };*/
-
-/*  handleModalOpen = () => {
-    this.setState({ modalOpen: true });
-  };
-
-  handleModalClose = () => {
-    this.setState({ modalOpen: false });
-  };
-*/
 
   signOut = () => {
     auth0Client.signOut();
@@ -272,18 +136,18 @@ class App extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, loading } = this.props;
     const { pathname } = this.props.location;
 
     return (
       <MuiThemeProvider theme={theme}>
         <div className={classes.root}>
           <CssBaseline />
-          <AppFrame handleLogOut={this.signOut} pathname={pathname} onboardingProgress={instance.data.onboarding_progress} />
+          <AppFrame handleLogOut={this.signOut} pathname={pathname} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
             {
-            !auth0Client.isAuthenticated() && !auth0Client.getCheckingSession() &&
+            !auth0Client.isAuthenticated() && !loading &&
               <React.Fragment>
                 <Typography variant="subtitle2" gutterBottom>
                   You must be logged into your chapter's account to continue.
@@ -342,4 +206,15 @@ class App extends React.Component {
   }
 }
 
-export default withRouter(withStyles(styles, { withTheme: true })(App));
+App.propTypes = {
+  instance: PropTypes.object.isRequired,
+  getInstance: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => ({
+  instance: state.instance,
+  loading: state.loading,
+});
+
+export default withRouter(connect(mapStateToProps, { getInstance })(withStyles(styles, { withTheme: true })(App)));

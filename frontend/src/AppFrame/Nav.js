@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { isLive } from '../Instance/Instance';
 import auth0Client from '../Auth';
 import { routes } from '../Routes/Routes';
 import ReviewModal from '../ReviewModal/ReviewModal';
@@ -92,7 +92,7 @@ class Nav extends React.Component {
     };
 
     renderDrawer = () => {
-        const { classes, handleLogOut, onboardingProgress } = this.props;
+        const { classes, handleLogOut, isLive, loading, onboardingProgress } = this.props;
         const { anchorEl } = this.state;
         const { pathname } = this.props.location;
         const open = Boolean(anchorEl);
@@ -167,7 +167,7 @@ class Nav extends React.Component {
                 drawerList = (
                     <List component="nav" className={classes.drawerList} subheader={<li />}>
                         {routes.live.map((sectionId, index) => (
-                            <Slide direction="right" in={!auth0Client.getCheckingSession()} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
+                            <Slide direction="right" in={!loading} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
                                 <ul className={classes.drawerListUl}>
                                     {
                                     ('topLevel' in sectionId) && (index !== 0) &&
@@ -239,7 +239,7 @@ class Nav extends React.Component {
                 drawerList = (
                     <List component="nav" className={classes.drawerList} subheader={<li />}>
                         {routes.onboarding.map(sectionId => (
-                            <Slide direction="right" in={!auth0Client.getCheckingSession()} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
+                            <Slide direction="right" in={!loading} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
                                 <ul className={classes.drawerListUl}>
                                     <ListSubheader className={classes.listSubheader} elevation={24}>{sectionId.title}</ListSubheader>
                                     <List component="div" disablePadding>
@@ -298,11 +298,9 @@ class Nav extends React.Component {
 
     render() {
         const { classes, handleDrawerToggle, mobileOpen } = this.props;
-        let isCheckingSession = auth0Client.getCheckingSession();
 
         return (
             <nav className={classes.drawer}>
-                derp: {isCheckingSession}
                 {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                 <Hidden smUp implementation="css">
                     <Drawer
@@ -334,9 +332,18 @@ class Nav extends React.Component {
 }
 
 Nav.propTypes = {
-  classes: PropTypes.object.isRequired,
-  handleDrawerToggle: PropTypes.func.isRequired,
-  mobileOpen: PropTypes.bool.isRequired,
+    classes: PropTypes.object.isRequired,
+    handleDrawerToggle: PropTypes.func.isRequired,
+    isLive: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
+    mobileOpen: PropTypes.bool.isRequired,
+    onboardingProgress: PropTypes.object.isRequired,
 };
+  
+const mapStateToProps = state => ({
+    isLive: state.isLive,
+    loading: state.loading,
+    onboardingProgress: state.instance.onboarding_progress,
+});
 
-export default withRouter(withStyles(styles, { withTheme: true })(Nav));
+export default withRouter(connect(mapStateToProps, {})(withStyles(styles, { withTheme: true })(Nav)));

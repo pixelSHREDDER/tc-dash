@@ -1,14 +1,15 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import instance from '../Instance/Instance';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Dashboard = () => {
+const Dashboard = ({ instance }) => {
   return (
     <div className="container">
       <div className="row">
         <div className="jumbotron col-12">
-          <h1 className="display-3">{instance.data.title}</h1>
-          <p className="lead">{instance.data.description}</p>
+          <h1 className="display-3">{instance.title}</h1>
+          <p className="lead">{instance.description}</p>
           <hr className="my-4" />
         </div>
       </div>
@@ -16,4 +17,8 @@ const Dashboard = () => {
   )
 }
 
-export default withRouter(Dashboard);
+Dashboard.propTypes = { instance: PropTypes.object.isRequired };
+
+const mapStateToProps = state => ({ instance: state.instance });
+
+export default withRouter(connect(mapStateToProps, {})(Dashboard));

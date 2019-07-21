@@ -1,6 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { isLive } from '../Instance/Instance';
 import { withStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 import {
@@ -171,7 +171,7 @@ class ReviewModal extends React.Component {
       };
 
     render() {
-        const { classes } = this.props;
+        const { classes, isLive } = this.props;
         const { expanded } = this.state;
 
         return (
@@ -301,6 +301,9 @@ class ReviewModal extends React.Component {
 
 ReviewModal.propTypes = {
     classes: PropTypes.object.isRequired,
+    isLive: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(ReviewModal);
+const mapStateToProps = state => ({ isLive: state.isLive });
+
+export default connect(mapStateToProps, {})(withStyles(styles, { withTheme: true })(ReviewModal));
