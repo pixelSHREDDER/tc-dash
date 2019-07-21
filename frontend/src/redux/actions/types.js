@@ -1,4 +1,3 @@
-export const GET_INSTANCE = 'GET_INSTANCE';
 export const TOGGLE_ISLIVE = 'TOGGLE_ISLIVE';
 export const TOGGLE_LOADING = 'TOGGLE_LOADING';
 export const UPDATE_INSTANCE = 'UPDATE_INSTANCE';

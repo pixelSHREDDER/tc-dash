@@ -1,4 +1,4 @@
-import { GET_INSTANCE, UPDATE_INSTANCE } from '../actions/types';
+import { UPDATE_INSTANCE } from '../actions/types';
 
 const initialState = {
     domain: '',
@@ -18,7 +18,6 @@ const initialState = {
 
 export default function(state = initialState, action) {
     switch (action.type) {
-        case GET_INSTANCE:
         case UPDATE_INSTANCE:
             return {
                 ...action.payload

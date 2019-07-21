@@ -2,7 +2,9 @@ import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getInstance } from './redux/actions/instanceActions';
+import axios from 'axios';
+import { setInstance, updateInstance } from './redux/actions/instanceActions';
+import { URLS } from './conf';
 import auth0Client from './Auth';
 //import Callback from './Callback';
 import NewInstance from './NewInstance/NewInstance';
@@ -88,12 +90,140 @@ class App extends React.Component {
 
   async componentDidMount() {
     if (this.props.location.pathname === 'callback') return;
-    this.props.getInstance();
+    this.getInstance();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.instance) this.forceUpdate();
   }
+
+  getInstance = async () => {
+    const { setInstance } = this.props;
+    let instanceId = null;
+    let token = null;
+    let data = {};
+
+    try {
+        await auth0Client.renewTokens();
+        instanceId = await auth0Client.getProfile().sub;
+        token = await auth0Client.getIdToken();
+        data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ instanceId }`,
+        { headers: { 'Authorization': `Bearer ${ token }`}}
+        )).data;
+        console.log(data);
+        setInstance(data.data[0]);
+    } catch (err) {
+        console.error(err);
+    }
+  }
+
+  updateInstance = async (update) => {
+    const { updateInstance } = this.props;
+    let token = null;
+    let data = {};
+    
+    try {
+      token = await auth0Client.getIdToken();
+      data = (await axios.post(`http://${ URLS.dataUrl }/updateInstance/${ this.props.instance.id }`,
+        { data: update },
+        { headers: { 'Authorization': `Bearer ${ token }` }}
+      )).data.data;
+      console.log(data);
+      updateInstance(data);
+    } catch (err) {
+      console.log(err);
+      //if (err.response.status===401 && err.config) {
+  
+      //}
+    }
+  };
+
+/*async getInstances() {
+    const token = await auth0Client.getIdToken();
+    const data = (await axios.get(`http://${ URLS.dataUrl }/getData`,
+    { headers: { 'Authorization': `Bearer ${ token }` }}
+    )).data;
+    console.log(data);*/
+    /*fetch(`http://${ URLS.dataUrl }/getData`, {
+      method: 'GET',
+      withCredentials: true,
+      credentials: 'include',  
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+      .then(data => data.json())*/
+      /*.then(res => this.setState({
+        instances: res.data
+      }));*/
+      /*.then((res) => console.log(res.data));*/
+  /*};
+
+  async addInstance(instance) {
+    const token = await auth0Client.getIdToken();*/
+    //const owner = instance.owner;
+    /*let currentIds = this.state.instances.map(data => data.id);
+      let idToBeAdded = 0;
+      while (currentIds.includes(idToBeAdded)) {
+        ++idToBeAdded;
+      }*/
+      /*axios.post(`http://${ URLS.dataUrl }/addInstance`, instance,
+        {headers: { 'Authorization': `Bearer ${ token }` }}
+      );
+  };
+
+  async deleteInstance(owner) {
+    const token = await auth0Client.getIdToken();*/
+    /*let objOwnerToDelete = null;
+    this.state.instances.forEach(ins => {
+      if (ins.owner == owner) {
+        objOwnerToDelete = ins.owner;
+      }
+    });*/
+
+    /*axios.delete(`http://${ URLS.dataUrl }/deleteInstance`, {
+      data: {
+        //owner: objOwnerToDelete
+        owner: owner
+      },
+      headers: { 'Authorization': `Bearer ${ token }` }}
+    );
+  };*/
+
+  /*async refreshInstance() {
+    try {
+      const token = await auth0Client.getIdToken();
+      const id = await auth0Client.getProfile().sub;
+      //const instance = (await axios.get(`http://${ URLS.dataUrl }/${ params.instanceId }`)).data;
+      const instance = (await axios.get(`http://${ URLS.dataUrl }/${ id }`, {
+        //headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
+        headers: { 'Authorization': `Bearer ${ token }` }
+      })).data;
+      this.setState({
+          instance,
+      });
+    } catch (err) {
+      //console.log(err.config);
+      if (err.response.status===401 && err.config) {
+
+      }
+    }
+  }*/
+
+  /*async saveInstance(instance) {
+    console.log(instance);
+    await axios.put(`http://${ URLS.dataUrl }/${ instance.id }`, {
+      instance,
+    }, {
+      headers: { 'Authorization': `Bearer ${ auth0Client.getIdToken() }` }
+    });*/
+    /*this.setState({
+      instance,
+     });*/
+    /*await this.refreshInstance();
+  }*/
+
+  /*handleChange = event => {
+    this.setState({ auth: event.target.checked });
+  };*/
 
   checkAuthentication = async (props) => {
     try {
@@ -208,8 +338,9 @@ class App extends React.Component {
 
 App.propTypes = {
   instance: PropTypes.object.isRequired,
-  getInstance: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  setInstance: PropTypes.func.isRequired,
+  updateInstance: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -217,4 +348,4 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 
-export default withRouter(connect(mapStateToProps, { getInstance })(withStyles(styles, { withTheme: true })(App)));
+export default withRouter(connect(mapStateToProps, { setInstance, updateInstance })(withStyles(styles, { withTheme: true })(App)));
