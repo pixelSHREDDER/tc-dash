@@ -1,0 +1,27 @@
+{
+    "env": "set based on choices below",
+    "apiPort": {
+        "local": 3001,
+        "stage": "gotta dbl check what this should be",
+        "prod": "gotta dbl check what this should be"
+    },
+    "dbRoute": {
+        "local": "get from mongodb atlas",
+        "stage": "get from mongodb atlas",
+        "prod": "get from hosting"
+    },
+    "auth0": {
+        "local": {
+            "domain": "get from auth0",
+            "audience": "get from auth0"
+        },
+        "stage": {
+            "domain": "get from auth0",
+            "audience": "get from auth0"
+        },
+        "prod": {
+            "domain": "get from auth0",
+            "audience": "get from auth0"
+        }
+    }
+}
