@@ -1,13 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FormValidators from '../Forms/FormValidators';
 import RadioToggleControls from './RadioToggleControls';
+import { withStyles } from '@material-ui/core/styles';
 import {
     FormControl,
+    FormControlLabel,
     FormHelperText,
+    FormLabel,
     Input,
-    InputLabel/*,
-    TextField*/
+    InputLabel,
+    Radio,
+    RadioGroup,
 } from '@material-ui/core';
+
+const styles = theme => ({
+    formControl: {
+        margin: theme.spacing(3),
+    },
+    group: {
+        margin: [theme.spacing(1), 0],
+    },
+});
 
 class RadioToggle extends React.Component {
     state = {
@@ -18,19 +32,17 @@ class RadioToggle extends React.Component {
         errors: {},
     };
 
-    validate = () => {
-        const { form } = this.state;
-        const errors = {};
+    validateProperty = (data, validators) => {
+        let errorMessage = '';
 
-        if (form.text.trim() === '') errors.text = 'Field is required.';
+        for (let v in validators) {
+            if (validators[v] in FormValidators) {
+                let error = FormValidators[validators[v]](data);
+                if (error.length) errorMessage.length ? errorMessage += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : errorMessage += error;
+            }
+        };
 
-        return Object.keys(errors).length === 0 ? null : errors;
-    };
-
-    validateProperty = ({name, value}) => {
-        if (name === 'username') {
-            if (value.trim() === '') return 'username required';
-        }
+        return errorMessage.length ? `${errorMessage} :(` : '';
     }
 
     handleRadioToggle = (inputKey, data) => {
@@ -42,27 +54,20 @@ class RadioToggle extends React.Component {
     };
 
 
-    handleFormChange = (inputKey, data) => {
+    handleFormChange = (data, field, validators) => {
         const { formChangeCallback } = this.props;
-        const { errors, form } = this.state;
-        const errors = { ...errors };
-        let inputVal = data[inputKey];
-        const errorMessage = this.validateProperty(inputVal);
-        if (errorMessage) errors[inputKey] = errorMessage;
-        else delete errors[input.name];
-        let newForm = { ...form};
-        newForm[inputKey] = inputVal;
-        //inputVal = (inputVal === 'true') ? true : (inputVal === 'false') ? false : null;
-        this.setState({
-            form: newForm,
-            errors
-        });
-        if (errors) return;
-        formChangeCallback(inputVal);
+        const { errors } = this.state;
+        const formErrors = {...errors};
+        const errorMessage = this.validateProperty(data, validators);
+
+        if (errorMessage) formErrors[field] = errorMessage;
+        else delete formErrors[field];
+        this.setState({ errors: formErrors });
+        if (!formErrors) formChangeCallback(data);
     };
 
     render() {
-        const { title, description, labels, formChangeCallback } = this.props;
+        const { classes, title, description, labels, fields } = this.props;
         const { errors, form, formOpen } = this.state;
         const inputKey = title.replace(/ /g, '_');
 
@@ -74,32 +79,52 @@ class RadioToggle extends React.Component {
                     <React.Fragment>
                         <br></br>
                         <fieldset>
-                            {/*<TextField
-                                id="standard-name"
-                                label="Name"
-                                //className={classes.textField}
-                                value={form.text}
-                                onChange={(data) => this.handleFormChange(inputKey, data)}
-                                margin="normal"
-                            />*/}
-                            <FormControl error={errors}>
-                                <InputLabel htmlFor="name">Name</InputLabel>
-                                <Input
-                                    id="name"
-                                    value={form.text}
-                                    onChange={(data) => this.handleFormChange(inputKey, data)}
-                                    aria-describedby="name-helper-text"
-                                />
-                                <FormHelperText id="name-helper-text">
-                                    {errors.map(error => (
-                                        <React.Fragment>
-                                            <span key={error.key}>{error}</span>
-                                            <br />
-                                        </React.Fragment>
-                                    ))}
-                                    Please enter a name.
-                                </FormHelperText>
-                            </FormControl>
+                            {fields.map(field => (
+                                <React.Fragment key={field.id}>
+                                {
+                                (field.type === 'text') &&
+                                    <FormControl error={field.id in errors}>
+                                        <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                                        <Input
+                                            id={field.id}
+                                            defaultValue={form.text}
+                                            onBlur={e => this.handleFormChange(e.target.value, field.id, field.validators)}
+                                            aria-describedby={`${field.id}-helper-text`}
+                                        />
+                                        <FormHelperText id={`${field.id}-helper-text`}>
+                                            {(field.id in errors) && <span>{errors[field.id]}</span>}
+                                        </FormHelperText>
+                                    </FormControl>
+                                }
+                                {
+                                (field.type === 'radio') &&
+                                    <FormControl component="fieldset" error={field.id in errors} className={classes.formControl}>
+                                        <FormLabel component="legend">{field.label}</FormLabel>
+                                        {
+                                            field.description &&
+                                            <FormHelperText>{field.description}</FormHelperText>
+                                        }
+                                        <RadioGroup
+                                            aria-label={field.label}
+                                            name={field.id}
+                                            className={classes.group}
+                                            onChange={e => this.handleFormChange(e.target.value, field.id, field.validators)}
+                                            aria-describedby={`${field.id}-helper-text`}
+                                            row
+                                        >
+                                            {field.options.map(option => (
+                                                <FormControlLabel key={`${field.id}_${option.value}`}
+                                                    id={`${field.id}_${option.value}`}
+                                                    value={option.value}
+                                                    control={<Radio color="primary" />}
+                                                    label={option.label}
+                                                />
+                                            ))}
+                                        </RadioGroup>
+                                    </FormControl>
+                                }
+                                </React.Fragment>
+                            ))}
                         </fieldset>
                     </React.Fragment>
                 }
@@ -110,9 +135,10 @@ class RadioToggle extends React.Component {
 
 RadioToggle.propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     labels: PropTypes.array,
     formChangeCallback: PropTypes.func.isRequired,
+    fields: PropTypes.array.isRequired,
 };
 
-export default RadioToggle;
+export default withStyles(styles, { withTheme: true })(RadioToggle);

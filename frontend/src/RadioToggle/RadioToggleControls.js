@@ -31,14 +31,17 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
         <form className={classes.container} noValidate>
             <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">{title}</FormLabel>
-                <FormHelperText>{description}</FormHelperText>
+                {
+                    description &&
+                    <FormHelperText>{description}</FormHelperText>
+                }
                 <RadioGroup
                     aria-label={title}
                     name={inputKey}
                     className={classes.group}
-                    //value={value}
                     defaultValue={inputs.value}
                     onChange={handleInputChange}
+                    row
                 >
                     <FormControlLabel
                         value="true"
@@ -58,7 +61,7 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
 
 RadioToggleControls.propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     labels: PropTypes.array,
     inputKey: PropTypes.string.isRequired,
     sendRadio: PropTypes.func.isRequired,

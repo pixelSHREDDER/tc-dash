@@ -3,6 +3,7 @@ import { Route, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { addError } from './redux/actions/errorActions';
 import { setInstance, updateInstance } from './redux/actions/instanceActions';
 import { URLS } from './conf';
 import auth0Client from './Auth';
@@ -98,7 +99,7 @@ class App extends React.Component {
   }
 
   getInstance = async () => {
-    const { setInstance } = this.props;
+    const { addError, setInstance } = this.props;
     let instanceId = null;
     let token = null;
     let data = {};
@@ -112,8 +113,8 @@ class App extends React.Component {
         )).data;
         console.log(data);
         setInstance(data.data[0]);
-    } catch (err) {
-        console.error(err);
+    } catch (e) {
+        addError(e);
     }
   }
 
@@ -226,12 +227,13 @@ class App extends React.Component {
   };*/
 
   checkAuthentication = async (props) => {
+    const { addError } = this.props;
     try {
       await auth0Client.handleAuthentication();
       props.history.replace('/');
-    } catch(error) {
+    } catch(e) {
+      addError(e);
       console.log('an error occured checking authentication');
-      console.error(error);
     }
   }
 
@@ -337,6 +339,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  addError: PropTypes.func.isRequired,
   instance: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
   setInstance: PropTypes.func.isRequired,
@@ -348,4 +351,4 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 
-export default withRouter(connect(mapStateToProps, { setInstance, updateInstance })(withStyles(styles, { withTheme: true })(App)));
+export default withRouter(connect(mapStateToProps, { addError, setInstance, updateInstance })(withStyles(styles, { withTheme: true })(App)));
