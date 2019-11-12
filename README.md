@@ -29,31 +29,28 @@ Ongoing personal project built on a MERN + Redux stack. App is a dashboard and o
 
 ## Installation
 
-Download to your project directory, add `README.md`, and commit:
+Download to your project directory, and run:
 
 ```sh
-curl -LO http://git.io/Xy0Chg
-git add README.md
-git commit -m "Use README Boilerplate"
+npm install
+cd backend
+npm install
+cd ../frontend
+npm install
 ```
 
 ## Usage
 
-Replace the contents of `README.md` with your project's:
+In project directory, run:
 
-- Name
-- Description
-- Installation instructions
-- Usage instructions
-- Support instructions
-- Contributing instructions
-
-Feel free to remove any sections that aren't applicable to your project.
+```sh
+npm start
+```
 
 ## Support
 
-Please [open an issue](https://github.com/fraction/readme-boilerplate/issues/new) for support.
+Please [open an issue](https://github.com/pixelSHREDDER/tc-dash/issues/new) for support.
 
 ## Contributing
 
-Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/fraction/readme-boilerplate/compare/).
+Please contribute using [Github Flow](https://guides.github.com/introduction/flow/). Create a branch, add commits, and [open a pull request](https://github.com/pixelSHREDDER/tc-dash/compare/).
