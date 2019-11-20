@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 const useForm = (initialValues, inputChangeCallback, submitCallback, skipFirstEffect) => {
     const skipEffect = useRef(skipFirstEffect);
     const [inputs, setInputs] = useState(initialValues);
+
     useEffect(() => {
         if (inputChangeCallback && !skipEffect.current) {
             inputChangeCallback(inputs);
@@ -21,6 +22,7 @@ const useForm = (initialValues, inputChangeCallback, submitCallback, skipFirstEf
         if (event.nativeEvent.target.id !== '') inputKey = event.nativeEvent.target.id;
         else if (event.nativeEvent.target.name !== '') inputKey = event.nativeEvent.target.name;
         setInputs(inputs => ({...inputs, [inputKey]: event.nativeEvent.target.value}));
+        inputChangeCallback(inputs);
     };
 
     return {

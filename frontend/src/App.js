@@ -21,6 +21,7 @@ import ExportDonations from './PaymentsFinances/ExportDonations';
 import ExportDonors from './Membership/ExportDonors';
 import ExportMembers from './Membership/ExportMembers';
 import ExportSustainers from './Membership/ExportSustainers';
+import GSPaymentsFinances from './GetStarted/GSPaymentsFinances';
 import GSSocialMedia from './GetStarted/GSSocialMedia';
 import PostToFacebookPage from './SocialMedia/PostToFacebookPage';
 import SendATweet from './SocialMedia/SendATweet';
@@ -328,6 +329,7 @@ class App extends React.Component {
                 <SecuredRoute path='/website/view-posts' component={ViewWebsitePosts} />
                 <SecuredRoute path='/website/view-stats' component={ViewWebsiteStats} />
                 <SecuredRoute path='/website/write-post' component={WriteWebsitePost} />
+                <SecuredRoute path='/get-started/payments-finances' component={GSPaymentsFinances} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/social-media' component={GSSocialMedia} onSubmit={this.updateInstance} />
               </React.Fragment>
             {/*}*/}

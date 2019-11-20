@@ -1,6 +1,7 @@
 const FormValidators = {
     'atmarkUsername': data => data.toString().match(/^(?:@).*$/) ? '' : 'That\'s not a valid username',
     'discordChannelURL': data => data.toString().match(/https:\/\/?(?:www.)?discord.gg\/(?:(?:\w)*#!\/)?([\w-]*)?/) ? '' : 'That\'s not a valid Discord Channel URL',
+    'email': data => data.toString().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@(([[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) ? '' : 'That\'s not a valid email address',
     'facebookPageURL': data => data.toString().match(/https:\/\/?(?:www.)?facebook.com\/(?:(?:\w)*#!\/)?(?:pages\/)?([\w-]*)?/) ? '' : 'That\'s not a valid Facebook Page URL',
     'linkedInGroupURL': data => data.toString().match(/https:\/\/?(?:www.)?linkedin.com\/(?:(?:\w)*#!\/)?(?:groups\/)?([\w-]*)?/) ? '' : 'That\'s not a valid LinkedIn Group URL',
     'meetupGroupURL': data => data.toString().match(/https:\/\/?(?:www.)?meetup.com\/(?:(?:\w)*#!\/)?(?:channel\/)?([\w-]*)?/) ? '' : 'That\'s not a valid Meetup group URL',

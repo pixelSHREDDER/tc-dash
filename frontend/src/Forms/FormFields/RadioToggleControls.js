@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useForm } from '../CustomHooks';
+//import { useForm } from '../CustomHooks';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     FormControl,
@@ -16,16 +16,17 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
     },
     formControl: {
-        margin: theme.spacing(3),
+        //margin: `${theme.spacing(3)}px 0`,
+        marginTop: theme.spacing(2),
     },
-    group: {
+    /*group: {
         margin: [theme.spacing(1), 0],
-    },
+    },*/
 }));
 
 const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputKey, sendRadio}) => {
     const classes = useStyles();    
-    const {inputs, handleInputChange} = useForm({[inputKey]: null}, sendRadio);
+    //const {inputs, handleInputChange} = useForm({[inputKey]: null}, sendRadio, null, true);
 
     return (
         <form className={classes.container} noValidate>
@@ -39,8 +40,8 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
                     aria-label={title}
                     name={inputKey}
                     className={classes.group}
-                    defaultValue={inputs.value}
-                    onChange={handleInputChange}
+                    //defaultValue={inputs.value} 
+                    onChange={e => sendRadio(e.target.value)}
                     row
                 >
                     <FormControlLabel
