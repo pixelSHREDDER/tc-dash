@@ -38,6 +38,10 @@ class TextFormField extends React.Component {
                         onBlur={e => inputChangeHandler(e.target.value, field.id, field.validators)}
                         aria-describedby={`${field.id}-helper-text`}
                     />
+                    {
+                    field.description &&
+                        <FormHelperText>{field.description}</FormHelperText>
+                    }
                     <FormHelperText id={`${field.id}-helper-text`} className={(index === (fields.length - 1)) ? classes.formHelperText : ''}>
                         {(field.id in errors) && <span>{errors[field.id]}</span>}
                     </FormHelperText>
