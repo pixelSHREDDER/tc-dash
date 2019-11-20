@@ -43,7 +43,7 @@ class PasswordFormField extends React.Component {
             <TextField
                 id={field.id}
                 type={passIsMasked ? 'password' : 'text'}
-                label={field.label}
+                label={field.label || 'Password'}
                 defaultValue={form.text}
                 onBlur={e => inputChangeHandler(e.target.value, field.id, validators)}
                 aria-describedby={`${field.id}-helper-text`}
@@ -76,7 +76,7 @@ class PasswordFormField extends React.Component {
             <TextField
                 id={`${field.id}_confirm`}
                 type={passIsMasked ? 'password' : 'text'}
-                label={`Confirm ${field.label}`}
+                label={`Confirm ${field.label || 'Password'}`}
                 defaultValue={form.text}
                 onBlur={e => inputChangeHandler(e.target.value, `${field.id}_confirm`, validators)}
                 aria-describedby={`${field.id}_confirm-helper-text`}

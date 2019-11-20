@@ -8,8 +8,6 @@ const payPalFormFields = {
         },{
             type: 'password',
             id: 'paypal_password',
-            label: 'Password',
-            //validators: ['required', 'email'],
         },{
             type: 'radioToggle',
             title: 'Does your account have two-factor authentication (2FA) enabled?',

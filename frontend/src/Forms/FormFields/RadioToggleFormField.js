@@ -24,10 +24,6 @@ class RadioToggleFormField extends React.Component {
         super();
         this.state = {
             openForms: {},
-            /*form: {
-                text: '',
-            },*/
-            //errors: {},
         };
         this.renderRadioToggleField = this.renderRadioToggleField.bind(this);
     };
