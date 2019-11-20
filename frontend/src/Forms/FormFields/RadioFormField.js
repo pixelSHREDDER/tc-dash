@@ -14,15 +14,26 @@ class RadioFormField extends React.Component {
     render() {
         const { fields, index, /*form,*/ errors, inputChangeHandler } = this.props;
         const field = fields[index];
+        if (!field.options) {
+            field.options = [
+                {
+                    label: 'Yes',
+                    value: 'true',
+                },{
+                    label: 'No',
+                    value: 'false',
+                }
+            ];
+        }
     
         return (
             <Grid item sm={12}>
                 <FormControl component="fieldset" error={field.id in errors} fullWidth>
                     <FormLabel component="legend">{field.label}</FormLabel>
-                    {
+                        {
                         field.description &&
-                        <FormHelperText>{field.description}</FormHelperText>
-                    }
+                            <FormHelperText>{field.description}</FormHelperText>
+                        }
                     <RadioGroup
                         aria-label={field.label}
                         name={field.id}
@@ -30,7 +41,8 @@ class RadioFormField extends React.Component {
                         aria-describedby={`${field.id}-helper-text`}
                         row
                     >
-                        {field.options.map(option => (
+                        {
+                        field.options.map(option => (
                             <FormControlLabel key={`${field.id}_${option.value}`}
                                 id={`${field.id}_${option.value}`}
                                 value={option.value}

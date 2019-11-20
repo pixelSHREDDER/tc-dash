@@ -88,7 +88,7 @@ class FormRenderer extends React.Component {
                                     <Typography variant="h6" component="h2">{questionGroup.title}</Typography>
                                 }
                                 {questionGroup.questions.map((question, index) => (
-                                    <React.Fragment key={question.title.toLowerCase().replace(' ', '')}>
+                                    <React.Fragment key={question.label.toLowerCase().replace(' ', '')}>
                                         {
                                         (question.type === 'password') &&
                                             <PasswordFormField
@@ -97,7 +97,7 @@ class FormRenderer extends React.Component {
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
-                                                //inputChangeHandler={data => this.handleInputChange(data, question.title.toLowerCase().replace(' ', ''), question.validators)}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
                                             />
                                         }
                                         {
@@ -108,23 +108,23 @@ class FormRenderer extends React.Component {
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
-                                                //inputChangeHandler={data => this.handleInputChange(data, question.title.toLowerCase().replace(' ', ''), question.validators)}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
                                             />
                                         }
                                         {
                                         (question.type === 'radioToggle') &&
                                             <RadioToggleFormField
-                                                title={question.title}
+                                                label={question.label}
                                                 description={question.description}
-                                                labels={question.labels}    
+                                                optionLabels={question.optionLabels}    
                                                 fields={question.fields}
                                                 index={index}
                                                 form={form}
                                                 errors={errors}
                                                 radioChangeHandler={radioChangeCallback}
-                                                //radioChangeHandler={data => this.handleRadioToggle(data, question.title.toLowerCase().replace(' ', ''))}
+                                                //radioChangeHandler={data => this.handleRadioToggle(data, question.label.toLowerCase().replace(' ', ''))}
                                                 //radioChangeHandler={(data) => radioChangeHandler(data)}
-                                                //inputChangeHandler={e => this.handleInputChange(e.target.value, question.title.toLowerCase().replace(' ', ''), question.validators)}
+                                                //inputChangeHandler={e => this.handleInputChange(e.target.value, question.label.toLowerCase().replace(' ', ''), question.validators)}
                                                 inputChangeHandler={this.handleInputChange}
                                                 //inputChangeHandler={(data) => inputChangeHandler(data)}
                                             />
@@ -137,7 +137,7 @@ class FormRenderer extends React.Component {
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
-                                                //inputChangeHandler={data => this.handleInputChange(data, question.title.toLowerCase().replace(' ', ''), question.validators)}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
                                             />
                                         }
                                     </React.Fragment>

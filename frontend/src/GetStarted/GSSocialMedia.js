@@ -27,13 +27,13 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        title: 'Do you already have a Facebook Page?',
+        label: 'Do you already have a Facebook Page?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: facebookPageFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you already have a Twitter account?',
+        label: 'Do you already have a Twitter account?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: twitterFormFields.existing,
       },
@@ -44,22 +44,22 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        title: 'Do you have an Instagram account?',
+        label: 'Do you have an Instagram account?',
         fields: instagramFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Snapchat account?',
+        label: 'Do you have a Snapchat account?',
         fields: snapchatFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Pinterest account?',
+        label: 'Do you have a Pinterest account?',
         fields: pinterestFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Flickr account?',
+        label: 'Do you have a Flickr account?',
         fields: flickrFormFields.existing,
       },
     ],
@@ -69,12 +69,12 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        title: 'Do you have a YouTube channel?',
+        label: 'Do you have a YouTube channel?',
         fields: youTubeFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Twitch channel?',
+        label: 'Do you have a Twitch channel?',
         fields: twitchFormFields.existing,
       },
     ],
@@ -84,22 +84,22 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        title: 'Do you have a Discord channel?',
+        label: 'Do you have a Discord channel?',
         fields: discordFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Messenger group chat?',
+        label: 'Do you have a Messenger group chat?',
         fields: messengerFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Slack workspace?',
+        label: 'Do you have a Slack workspace?',
         fields: slackWorkspaceFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a WhatsApp chat?',
+        label: 'Do you have a WhatsApp chat?',
         fields: whatsAppChatFormFields.existing,
       },
     ],
@@ -109,12 +109,12 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        title: 'Do you have a Medium blog?',
+        label: 'Do you have a Medium blog?',
         fields: mediumFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Tumblr blog?',
+        label: 'Do you have a Tumblr blog?',
         fields: tumblrFormFields.existing,
       },
     ],
@@ -124,22 +124,22 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        title: 'Do you have an GitHub account?',
+        label: 'Do you have an GitHub account?',
         fields: gitHubFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a LinkedIn group?',
+        label: 'Do you have a LinkedIn group?',
         fields: linkedInFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Meetup group?',
+        label: 'Do you have a Meetup group?',
         fields: meetupFormFields.existing,
       },
       {
         type: 'radioToggle',
-        title: 'Do you have a Reddit sub?',
+        label: 'Do you have a Reddit sub?',
         fields: redditSubFormFields.existing,
       },
     ],

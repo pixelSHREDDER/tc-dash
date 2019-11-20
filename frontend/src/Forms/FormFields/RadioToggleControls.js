@@ -24,20 +24,20 @@ const useStyles = makeStyles(theme => ({
     },*/
 }));
 
-const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputKey, sendRadio}) => {
+const RadioToggleControls = ({label, description, optionLabels = ['Yes', 'No'], inputKey, sendRadio}) => {
     const classes = useStyles();    
     //const {inputs, handleInputChange} = useForm({[inputKey]: null}, sendRadio, null, true);
 
     return (
         <form className={classes.container} noValidate>
             <FormControl component="fieldset" className={classes.formControl}>
-                <FormLabel component="legend">{title}</FormLabel>
+                <FormLabel component="legend">{label}</FormLabel>
                 {
                     description &&
                     <FormHelperText>{description}</FormHelperText>
                 }
                 <RadioGroup
-                    aria-label={title}
+                    aria-label={label}
                     name={inputKey}
                     className={classes.group}
                     //defaultValue={inputs.value} 
@@ -47,12 +47,12 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
                     <FormControlLabel
                         value="true"
                         control={<Radio />}
-                        label={labels[0]}
+                        label={optionLabels[0]}
                     />
                     <FormControlLabel
                         value="false"
                         control={<Radio color="primary" />}
-                        label={labels[1]}
+                        label={optionLabels[1]}
                     />
                 </RadioGroup>
             </FormControl>
@@ -61,9 +61,9 @@ const RadioToggleControls = ({title, description, labels = ['Yes', 'No'], inputK
 }
 
 RadioToggleControls.propTypes = {
-    title: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
     description: PropTypes.string,
-    labels: PropTypes.array,
+    optionLabels: PropTypes.array,
     inputKey: PropTypes.string.isRequired,
     sendRadio: PropTypes.func.isRequired,
 };
