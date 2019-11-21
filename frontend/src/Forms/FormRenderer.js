@@ -5,6 +5,7 @@ import TextFormField from './FormFields/TextFormField';
 import PasswordFormField from './FormFields/PasswordFormField';
 import RadioFormField from './FormFields/RadioFormField';
 import RadioToggleFormField from './FormFields/RadioToggleFormField';
+import StateFormField from './FormFields/StateFormField';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Paper,
@@ -88,7 +89,7 @@ class FormRenderer extends React.Component {
                                     <Typography variant="h6" component="h2">{questionGroup.title}</Typography>
                                 }
                                 {questionGroup.questions.map((question, index) => (
-                                    <React.Fragment key={question.label.toLowerCase().replace(' ', '')}>
+                                    <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${index}`}>
                                         {
                                         (question.type === 'password') &&
                                             <PasswordFormField
@@ -127,6 +128,17 @@ class FormRenderer extends React.Component {
                                                 //inputChangeHandler={e => this.handleInputChange(e.target.value, question.label.toLowerCase().replace(' ', ''), question.validators)}
                                                 inputChangeHandler={this.handleInputChange}
                                                 //inputChangeHandler={(data) => inputChangeHandler(data)}
+                                            />
+                                        }
+                                        {
+                                        (question.type === 'state') &&
+                                            <StateFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
                                             />
                                         }
                                         {

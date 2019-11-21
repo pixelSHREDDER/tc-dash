@@ -49,7 +49,7 @@ class RadioToggleFormField extends React.Component {
                         description={description || ''}
                         optionLabels={optionLabels || ['Yes', 'No']}
                         inputKey={label.replace(/ /g, '_')}
-                        sendRadio={(data) => this.handleRadioToggle(data, label.replace(/ /g, '_'))}
+                        sendRadio={data => this.handleRadioToggle(data, label.replace(/ /g, '_'))}
                     />
                     {
                     ((label.replace(/ /g, '_') in openForms) && (openForms[label.replace(/ /g, '_')] === true)) &&

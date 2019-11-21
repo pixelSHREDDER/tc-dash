@@ -16,12 +16,12 @@ const mailingAddressFormFields = [
         label: 'Town/City',
         validators: ['required'],
     },
-    /*{
+    {
         type: 'state',
         id: 'state',
         validators: ['required'],
     },
-    {
+    /*{
         type: 'zip',
         id: 'zip',
         validators: ['required'],
