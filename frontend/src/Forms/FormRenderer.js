@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FormValidators from './FormValidators';
-import TextFormField from './FormFields/TextFormField';
 import PasswordFormField from './FormFields/PasswordFormField';
 import RadioFormField from './FormFields/RadioFormField';
 import RadioToggleFormField from './FormFields/RadioToggleFormField';
 import StateFormField from './FormFields/StateFormField';
+import TextFormField from './FormFields/TextFormField';
+import ZipFormField from './FormFields/ZipFormField';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Paper,
@@ -144,6 +145,17 @@ class FormRenderer extends React.Component {
                                         {
                                         (question.type === 'text') &&
                                             <TextFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
+                                        {
+                                        (question.type === 'zip') &&
+                                            <ZipFormField
                                                 fields={questionGroup.questions}
                                                 index={index}
                                                 form={form}

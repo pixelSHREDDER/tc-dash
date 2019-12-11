@@ -36,6 +36,7 @@ class StateFormField extends React.Component {
         const { fields, index, /*form,*/ errors } = this.props;
         const { selectedValue } = this.state;
         const field = fields[index];
+
         if (!('id' in field)) { field.id = 'state'; }
         if (!('label' in field)) { field.label = 'State'; }
     
@@ -47,6 +48,7 @@ class StateFormField extends React.Component {
                         labelid={`${field.id}_label`}
                         id={field.id}
                         value={selectedValue}
+                        onBlur={e => this.handleInputChange(e.target.value, field.label.replace(/ /g, '_'), field.validators)}
                         onChange={e => this.handleInputChange(e.target.value, field.label.replace(/ /g, '_'), field.validators)}
                     >
                         <MenuItem value={'AL'}>Alabama</MenuItem>

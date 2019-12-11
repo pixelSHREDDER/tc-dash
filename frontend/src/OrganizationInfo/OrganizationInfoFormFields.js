@@ -21,11 +21,11 @@ const mailingAddressFormFields = [
         id: 'state',
         validators: ['required'],
     },
-    /*{
+    {
         type: 'zip',
         id: 'zip',
         validators: ['required'],
-    },*/
+    },
 ];
 
 export {

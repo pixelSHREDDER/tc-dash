@@ -12,5 +12,6 @@ const FormValidators = {
     'twitchChannelURL': data => data.toString().match(/https:\/\/?(?:www.)?twitch.tv\/(?:(?:\w)*#!\/)?([\w-]*)?/) ? '' : 'That\'s not a valid Twitch channel URL',
     'whatsAppChatURL': data => data.toString().match(/https:\/\/?chat.whatsapp.com\/(?:\w)*/) ? '' : 'That\'s not a valid WhatsApp chat URL',
     'youTubeChannelURL': data => data.toString().match(/https:\/\/?(?:www.)?youtube.com\/(?:(?:\w)*#!\/)?(?:channel\/)?([\w-]*)?/) ? '' : 'That\'s not a valid YouTube channel URL',
+    'zip': data => data.toString().match(/^\d{5}(-\d{4})?$/) ? '' : 'That\'s not a valid zipcode',
 };
 export default FormValidators;
