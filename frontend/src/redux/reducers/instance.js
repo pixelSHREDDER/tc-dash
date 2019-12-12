@@ -3,16 +3,16 @@ import { UPDATE_INSTANCE } from '../actions/types';
 const initialState = {
     domain: '',
     onboarding_progress: {
-        'organizationInfo': 2,
-        'website': 2,
-        'boardHierarchy': 2,
-        'email': 2,
-        'socialMedia': 2,
-        'paymentsFinances': 2,
-        'analyticsSeo': 2,
-        'podcasting': 2,
-        'bylawsConstitution': 2,
-        'brandingPersonalization': 2,
+        'organization_info': 0,
+        'website': 100,
+        'board': 60,
+        'email': 25,
+        'social_media': 10,
+        'payments_finances': 0,
+        'analytics_seo': 100,
+        'podcasting': 40,
+        'bylaws_constitution': 10,
+        'branding_personalization': 80,
     },
 };
 
