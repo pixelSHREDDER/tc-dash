@@ -22,6 +22,7 @@ import ExportDonors from './Membership/ExportDonors';
 import ExportMembers from './Membership/ExportMembers';
 import ExportSustainers from './Membership/ExportSustainers';
 import GSAnalyticsSEO from './GetStarted/GSAnalyticsSEO';
+import GSEmail from './GetStarted/GSEmail';
 import GSOrganizationInfo from './GetStarted/GSOrganizationInfo';
 import GSPaymentsFinances from './GetStarted/GSPaymentsFinances';
 import GSSocialMedia from './GetStarted/GSSocialMedia';
@@ -333,6 +334,7 @@ class App extends React.Component {
                 <SecuredRoute path='/website/view-stats' component={ViewWebsiteStats} />
                 <SecuredRoute path='/website/write-post' component={WriteWebsitePost} />
                 <SecuredRoute path='/get-started/analytics-seo' component={GSAnalyticsSEO} onSubmit={this.updateInstance} />
+                <SecuredRoute path='/get-started/email' component={GSEmail} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/organization-info' component={GSOrganizationInfo} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/payments-finances' component={GSPaymentsFinances} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/social-media' component={GSSocialMedia} onSubmit={this.updateInstance} />
