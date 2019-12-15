@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextFormField from './TextFormField';
 import PasswordFormField from './PasswordFormField';
+import PhoneFormField from './PhoneFormField';
 import RadioFormField from './RadioFormField';
+import SelectFormField from './SelectFormField';
+import StateFormField from './StateFormField';
+import TextFormField from './TextFormField';
+//import ZipFormField from './ZipFormField';
 import RadioToggleControls from './RadioToggleControls';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -32,7 +36,6 @@ class RadioToggleFormField extends React.Component {
         const { radioChangeHandler } = this.props;
         const { openForms } = this.state;
         value = (value === 'true') ? true : (value === 'false') ? false : null;
-        console.log(field);
         this.setState({ openForms: { ...openForms, [field]: value } });
         radioChangeHandler({ field, value, fieldCount: 0 });
     };
@@ -70,6 +73,16 @@ class RadioToggleFormField extends React.Component {
                                                     />
                                                 }
                                                 {
+                                                (field.type === 'phone') &&
+                                                    <PhoneFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
+                                                {
                                                 (field.type === 'radio') &&
                                                     <RadioFormField
                                                         fields={fields}
@@ -86,6 +99,26 @@ class RadioToggleFormField extends React.Component {
                                                     </React.Fragment>
                                                 }
                                                 {
+                                                (field.type === 'select') &&
+                                                    <SelectFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
+                                                {
+                                                (field.type === 'state') &&
+                                                    <StateFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
+                                                {
                                                 (field.type === 'text') &&
                                                     <TextFormField
                                                         fields={fields}
@@ -93,6 +126,16 @@ class RadioToggleFormField extends React.Component {
                                                         form={form}
                                                         errors={errors}
                                                         inputChangeHandler={data => inputChangeHandler(data, field.id, field.validators)}
+                                                    />
+                                                }
+                                                {
+                                                (field.type === 'zip') &&
+                                                    <TextFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
                                                     />
                                                 }
                                             </React.Fragment>

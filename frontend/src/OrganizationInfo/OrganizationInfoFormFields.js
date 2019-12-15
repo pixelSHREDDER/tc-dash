@@ -2,13 +2,13 @@ const mailingAddressFormFields = [
     {
         type: 'text',
         id: 'address_line_1',
-        label: 'Address (Line 1)',
+        label: 'Address, line 1',
         validators: ['required'],
     },
     {
         type: 'text',
         id: 'address_line_2',
-        label: 'Address (Line 2)',
+        label: 'Address, line 2 (optional)',
     },
     {
         type: 'text',
@@ -24,6 +24,7 @@ const mailingAddressFormFields = [
     {
         type: 'zip',
         id: 'zip',
+        label: 'Zip code',
         validators: ['required'],
     },
 ];

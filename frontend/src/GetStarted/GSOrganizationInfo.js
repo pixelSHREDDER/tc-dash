@@ -18,21 +18,33 @@ const questionGroups = [
         description: 'It could be a slogan, a catchphrase, or just a brief description.',
         validators: ['required'],
       },
-      /*{
+      {
         type: 'select',
-        label: 'What type of organization is this?',
+        label: 'What type of organization are you?',
+        options: {
+          'county': 'Chapter (County)',
+          'college': 'Chapter (College)',
+          'high_school': 'Chapter (High School)',
+          'caucus': 'Caucus',
+        },
         validators: ['required'],
       },
-      {
-        type: 'phone',
-        label: 'Does your organization have a phone number?',
-        description: 'Office numbers only please!',
-      },*/
     ],
   },
   {
     title: 'Mailing Address',
     questions: mailingAddressFormFields,
+  },
+  {
+    title: 'Phone Number',
+    questions: [
+      {
+        type: 'phone',
+        label: 'What\'s your organization\'s phone number?',
+        description: 'Can be either a landline or a board member\'s cellphone number (will be displayed publicly).',
+        validators: ['required'],
+      },
+    ],
   },
 ];
 

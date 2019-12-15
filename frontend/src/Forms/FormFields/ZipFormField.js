@@ -6,8 +6,8 @@ import {
     FormControl,
     FormHelperText,
     Grid,
-    InputLabel,
-    TextField
+    InputLabel/*,
+    TextField*/
 } from '@material-ui/core';
 
 const styles = theme => ({
@@ -38,28 +38,33 @@ class ZipFormField extends React.Component {
         const { classes, fields, index, /*form,*/ errors } = this.props;
         const { selectedValue } = this.state;
         const field = fields[index];
+
+        if (!('label' in field)) { field.label = 'Zip Code'; }
+        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
     
         return (
             <Grid item xs={12}>
                 <FormControl error={field.id in errors} fullWidth>
                     <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                    {/* Couldn't get this to work: https://stackoverflow.com/questions/45758998/how-can-i-mask-my-material-ui-textfield */}
+                    {/* https://github.com/sanniassin/react-input-mask */}
                     <InputMask
-                            mask="/^\d{5}(-\d{4})?$/"
-                            maskPlaceholder="-"
+                            mask={[/^\d{5}(-\d{4})?$/]}
+                            //maskPlaceholder="_____-____"
                             value={selectedValue}
                             onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
-                            onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
-                            alwaysShowMask={true}
+                            //onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
+                            //alwaysShowMask={true}
                     >
-                        {() => <TextField
+                        {/* {() => <TextField
                             id={field.id}
                             //defaultValue={form.text}
                             //value={selectedValue}
                             //onBlur={e => this.handleFormChange(e.target.value, field.id, field.validators)}
-                            /*onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
-                            onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}*/
+                            *//*onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
+                            onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}*//*
                             aria-describedby={`${field.id}-helper-text`}
-                        />}
+                        />} */}
                     </InputMask>
                     {
                     field.description &&

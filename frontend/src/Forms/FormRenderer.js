@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FormValidators from './FormValidators';
 import PasswordFormField from './FormFields/PasswordFormField';
+import PhoneFormField from './FormFields/PhoneFormField';
 import RadioFormField from './FormFields/RadioFormField';
 import RadioToggleFormField from './FormFields/RadioToggleFormField';
+import RankedChoicesFormField from './FormFields/RankedChoicesFormField';
+import SelectFormField from './FormFields/SelectFormField';
 import StateFormField from './FormFields/StateFormField';
 import TextFormField from './FormFields/TextFormField';
-import ZipFormField from './FormFields/ZipFormField';
+//import ZipFormField from './FormFields/ZipFormField';
 import { withStyles } from '@material-ui/core/styles';
 import {
     Paper,
@@ -56,7 +59,7 @@ class FormRenderer extends React.Component {
         for (let v in validators) {
             if (validators[v] in FormValidators) {
                 let error = FormValidators[validators[v]](data);
-                if (error.length) errorMessage.length ? errorMessage += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : errorMessage += error;
+                if (error.length) { errorMessage.length ? errorMessage += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : errorMessage += error }
             }
         };
 
@@ -66,17 +69,18 @@ class FormRenderer extends React.Component {
     handleInputChange = (value, field, validators) => {
         const { inputChangeCallback } = this.props;
         const { errors } = this.state;
-        const formErrors = {...errors};
         const errorMessage = this.validateProperty(value, validators);
 
-        if (errorMessage) formErrors[field] = errorMessage;
-        else delete formErrors[field];
+        let formErrors = {...errors};
+
+        if (errorMessage) { formErrors[field] = errorMessage }
+        else { delete formErrors[field] }
         this.setState({ errors: formErrors });
-        if (!formErrors.length) inputChangeCallback({ field, value, fieldCount: 0 });
+        if (!formErrors.length) { inputChangeCallback({ field, value, fieldCount: 0 }) }
     };
 
     render() {
-        const { classes, questionGroups, radioChangeCallback } = this.props;
+        const { classes, questionGroups, inputChangeCallback, radioChangeCallback } = this.props;
         const { errors, form } = this.state;
     
         return (
@@ -89,11 +93,23 @@ class FormRenderer extends React.Component {
                                 ('title' in questionGroup) &&
                                     <Typography variant="h6" component="h2">{questionGroup.title}</Typography>
                                 }
-                                {questionGroup.questions.map((question, index) => (
+                                {
+                                questionGroup.questions.map((question, index) => (
                                     <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${index}`}>
                                         {
                                         (question.type === 'password') &&
                                             <PasswordFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
+                                        {
+                                        (question.type === 'phone') &&
+                                            <PhoneFormField
                                                 fields={questionGroup.questions}
                                                 index={index}
                                                 form={form}
@@ -132,6 +148,30 @@ class FormRenderer extends React.Component {
                                             />
                                         }
                                         {
+                                        (question.type === 'rankedChoices') &&
+                                            <RankedChoicesFormField
+                                                label={question.label}
+                                                description={question.description}
+                                                choiceCount={question.choiceCount}
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeCallback={inputChangeCallback}
+                                            />
+                                        }
+                                        {
+                                        (question.type === 'select') &&
+                                            <SelectFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
+                                        {
                                         (question.type === 'state') &&
                                             <StateFormField
                                                 fields={questionGroup.questions}
@@ -155,7 +195,7 @@ class FormRenderer extends React.Component {
                                         }
                                         {
                                         (question.type === 'zip') &&
-                                            <ZipFormField
+                                            <TextFormField
                                                 fields={questionGroup.questions}
                                                 index={index}
                                                 form={form}

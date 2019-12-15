@@ -14,6 +14,9 @@ class RadioFormField extends React.Component {
     render() {
         const { fields, index, /*form,*/ errors, inputChangeHandler } = this.props;
         const field = fields[index];
+
+        if (!('label' in field)) { field.label = 'Pick one!'; }
+        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
         if (!field.options) {
             field.options = [
                 {

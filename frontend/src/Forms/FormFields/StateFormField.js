@@ -37,19 +37,19 @@ class StateFormField extends React.Component {
         const { selectedValue } = this.state;
         const field = fields[index];
 
-        if (!('id' in field)) { field.id = 'state'; }
         if (!('label' in field)) { field.label = 'State'; }
+        if (!('id' in field)) { field.id = 'state'; }
     
         return (
             <Grid item sm={12}>
                 <FormControl component="fieldset" error={field.id in errors} fullWidth>
-                    <InputLabel>{field.label || 'State'}</InputLabel>
+                    <InputLabel>{field.label}</InputLabel>
                     <Select
                         labelid={`${field.id}_label`}
                         id={field.id}
                         value={selectedValue}
-                        onBlur={e => this.handleInputChange(e.target.value, field.label.replace(/ /g, '_'), field.validators)}
-                        onChange={e => this.handleInputChange(e.target.value, field.label.replace(/ /g, '_'), field.validators)}
+                        onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
+                        onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
                     >
                         <MenuItem value={'AL'}>Alabama</MenuItem>
                         <MenuItem value={'AK'}>Alaska</MenuItem>
