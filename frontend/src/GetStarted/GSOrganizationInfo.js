@@ -1,6 +1,6 @@
 import React from 'react';
 import GSForm from '../Forms/GSForm';
-import { mailingAddressFormFields } from '../OrganizationInfo/OrganizationInfoFormFields';
+import { organizationMailingAddressFormFields } from '../OrganizationInfo/OrganizationInfoFormFields';
 
 const questionGroups = [
   {
@@ -33,7 +33,7 @@ const questionGroups = [
   },
   {
     title: 'Mailing Address',
-    questions: mailingAddressFormFields,
+    questions: organizationMailingAddressFormFields,
   },
   {
     title: 'Phone Number',

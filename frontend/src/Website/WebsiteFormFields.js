@@ -1,3 +1,7 @@
+import {
+    getUsernamePasswordFormFields,
+} from '../Forms/FormFieldGenerators';
+
 const websiteFormFields = [
     {
         type: 'text',
@@ -20,17 +24,8 @@ const websiteFormFields = [
           },
           other: true,
           validators: ['required'],
-    },{
-        type: 'text',
-        id: 'website_hosting_username',
-        label: 'Hosting username/email',
-        validators: ['required'],
-    },{
-        type: 'password',
-        id: 'website_hosting_password',
-        label: 'Hosting password',
-        validators: ['required'],
-    }
+    },
+    ...getUsernamePasswordFormFields('website_hosting', ['Hosting username/email', 'Hosting password']),
 ];
 
 export {

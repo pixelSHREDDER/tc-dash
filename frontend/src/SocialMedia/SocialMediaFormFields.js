@@ -1,3 +1,8 @@
+import {
+    getIsPublicFormFields,
+    getTwoFactorFormFields,
+} from '../Forms/FormFieldGenerators';
+
 const discordFormFields = {
     'existing': [
         {
@@ -5,21 +10,8 @@ const discordFormFields = {
             id: 'discord_channel_url',
             label: 'Channel URL',
             validators: ['required', 'discordChannelURL'],
-        },{
-            type: 'radio',
-            id: 'discord_channel_public',
-            label: 'Is your Discord channel public, or for internal use only?',
-            options: [
-                {
-                    label: 'Public',
-                    value: 'true',
-                },{
-                    label: 'Internal Only',
-                    value: 'false',
-                }
-            ],
-            validators: ['required'],
         },
+        ...getIsPublicFormFields('discord_channel', 'Discord channel'),
     ],
 };
 const facebookPageFormFields = {
@@ -73,21 +65,8 @@ const linkedInFormFields = {
             id: 'linkedin_group_url',
             label: 'Group URL',
             validators: ['required', 'linkedInGroupURL'],
-        },{
-            type: 'radio',
-            id: 'linkedin_group_public',
-            label: 'Is your LinkedIn group public, or for internal use only?',
-            options: [
-                {
-                    label: 'Public',
-                    value: 'true',
-                },{
-                    label: 'Internal Only',
-                    value: 'false',
-                }
-            ],
-            validators: ['required'],
         },
+        ...getIsPublicFormFields('linkedin_group', 'LinkedIn group'),
     ],
 };
 
@@ -109,21 +88,8 @@ const messengerFormFields = {
             id: 'messenger_group_chat_url',
             label: 'Group Chat URL',
             validators: ['required', 'MessengerGroupChatURL'],
-        },{
-            type: 'radio',
-            id: 'messenger_group_chat_public',
-            label: 'Is your Messenger group chat public, or for internal use only?',
-            options: [
-                {
-                    label: 'Public',
-                    value: 'true',
-                },{
-                    label: 'Internal Only',
-                    value: 'false',
-                }
-            ],
-            validators: ['required'],
         },
+        ...getIsPublicFormFields('messenger_group_chat', 'Messenger group chat'),
     ],
 };
 
@@ -156,21 +122,8 @@ const redditSubFormFields = {
             id: 'reddit_sub_url',
             label: 'Subreddit URL',
             validators: ['required', 'redditSubURL'],
-        },{
-            type: 'radio',
-            id: 'reddit_sub_public',
-            label: 'Is your sub public, or for internal use only?',
-            options: [
-                {
-                    label: 'Public',
-                    value: 'true',
-                },{
-                    label: 'Internal Only',
-                    value: 'false',
-                }
-            ],
-            validators: ['required'],
         },
+        ...getIsPublicFormFields('reddit_sub', 'subreddit'),
     ],
 };
 
@@ -181,21 +134,8 @@ const slackWorkspaceFormFields = {
             id: 'slack_workspace_url',
             label: 'Workspace URL',
             validators: ['required', 'slackWorkspaceURL'],
-        },{
-            type: 'radio',
-            id: 'slack_workspace_public',
-            label: 'Is your workspace public, or for internal use only?',
-            options: [
-                {
-                    label: 'Public',
-                    value: 'true',
-                },{
-                    label: 'Internal Only',
-                    value: 'false',
-                }
-            ],
-            validators: ['required'],
         },
+        ...getIsPublicFormFields('slack_workspace', 'workspace'),
     ],
 };
 
@@ -239,7 +179,13 @@ const twitterFormFields = {
             id: 'twitter_username',
             label: 'Username (@Username)',
             validators: ['required', 'atmarkUsername'],
+        },{
+            type: 'password',
+            id: 'twitter_password',
+            label: 'Password',
+            validators: ['required'],
         },
+        ...getTwoFactorFormFields('twitter'),
     ],
 };
 
@@ -250,21 +196,8 @@ const whatsAppChatFormFields = {
             id: 'whatsapp_chat_url',
             label: 'Chat URL',
             validators: ['required', 'whatsAppChatURL'],
-        },{
-            type: 'radio',
-            id: 'whatsapp_chat_public',
-            label: 'Is your WhatsApp chat public, or for internal use only?',
-            options: [
-                {
-                    label: 'Public',
-                    value: 'true',
-                },{
-                    label: 'Internal Only',
-                    value: 'false',
-                }
-            ],
-            validators: ['required'],
         },
+        ...getIsPublicFormFields('whatsapp_chat', 'WhatsApp chat'),
     ],
 };
 
