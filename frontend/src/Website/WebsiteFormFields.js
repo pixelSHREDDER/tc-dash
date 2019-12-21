@@ -1,5 +1,6 @@
 import {
     getUsernamePasswordFormFields,
+    getTwoFactorFormFields,
 } from '../Forms/FormFieldGenerators';
 
 const websiteFormFields = [
@@ -26,6 +27,7 @@ const websiteFormFields = [
           validators: ['required'],
     },
     ...getUsernamePasswordFormFields('website_hosting', ['Hosting username/email', 'Hosting password']),
+    ...getTwoFactorFormFields('website_hosting'),
 ];
 
 export {

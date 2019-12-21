@@ -25,6 +25,7 @@ import GSAnalyticsSEO from './GetStarted/GSAnalyticsSEO';
 import GSEmail from './GetStarted/GSEmail';
 import GSOrganizationInfo from './GetStarted/GSOrganizationInfo';
 import GSPaymentsFinances from './GetStarted/GSPaymentsFinances';
+import GSPodcasting from './GetStarted/GSPodcasting';
 import GSSocialMedia from './GetStarted/GSSocialMedia';
 import GSWebsite from './GetStarted/GSWebsite';
 import PostToFacebookPage from './SocialMedia/PostToFacebookPage';
@@ -337,6 +338,7 @@ class App extends React.Component {
                 <SecuredRoute path='/get-started/email' component={GSEmail} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/organization-info' component={GSOrganizationInfo} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/payments-finances' component={GSPaymentsFinances} onSubmit={this.updateInstance} />
+                <SecuredRoute path='/get-started/podcasting' component={GSPodcasting} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/social-media' component={GSSocialMedia} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/website' component={GSWebsite} onSubmit={this.updateInstance} />
               </React.Fragment>

@@ -6,13 +6,14 @@ import {
 
 const emailFormFields = {
     'existing': [
-        ...getEmailPasswordFormFields('mailchimp', ['Email account address', 'Email account password']),
+        ...getEmailPasswordFormFields('old_email', ['Email account address', 'Email account password']),
         {
             type: 'text',
-            id: 'forwarding_position',
+            id: 'old_email_forwarding_position',
             label: 'Whom should we forward incoming mail to? (replace me with Board select)',
             validators: ['required'],
         },
+        ...getTwoFactorFormFields('old_email'),
     ],
 };
 const mailchimpFormFields = {

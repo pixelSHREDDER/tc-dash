@@ -10,6 +10,14 @@ const googleAnalyticsFormFields = {
     ],
 };
 
+const googleSearchConsoleFormFields = {
+    'existing': [
+        ...getEmailPasswordFormFields('google_search_console'),
+        ...getTwoFactorFormFields('google_search_console'),
+    ],
+};
+
 export {
     googleAnalyticsFormFields,
+    googleSearchConsoleFormFields,
 };

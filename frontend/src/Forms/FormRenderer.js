@@ -9,6 +9,7 @@ import RankedChoicesFormField from './FormFields/RankedChoicesFormField';
 import SelectFormField from './FormFields/SelectFormField';
 import StateFormField from './FormFields/StateFormField';
 import TextFormField from './FormFields/TextFormField';
+import TextareaFormField from './FormFields/TextareaFormField';
 //import ZipFormField from './FormFields/ZipFormField';
 import { withStyles } from '@material-ui/core/styles';
 import {
@@ -185,6 +186,17 @@ class FormRenderer extends React.Component {
                                         {
                                         (question.type === 'text') &&
                                             <TextFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
+                                        {
+                                        (question.type === 'textarea') &&
+                                            <TextareaFormField
                                                 fields={questionGroup.questions}
                                                 index={index}
                                                 form={form}

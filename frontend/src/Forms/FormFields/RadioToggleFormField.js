@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import PasswordFormField from './PasswordFormField';
 import PhoneFormField from './PhoneFormField';
 import RadioFormField from './RadioFormField';
+import RankedChoicesFormField from './RankedChoicesFormField';
 import SelectFormField from './SelectFormField';
 import StateFormField from './StateFormField';
 import TextFormField from './TextFormField';
+import TextareaFormField from './TextareaFormField';
 //import ZipFormField from './ZipFormField';
 import RadioToggleControls from './RadioToggleControls';
 import { withStyles } from '@material-ui/core/styles';
@@ -99,6 +101,19 @@ class RadioToggleFormField extends React.Component {
                                                     </React.Fragment>
                                                 }
                                                 {
+                                                (field.type === 'rankedChoices') &&
+                                                    <RankedChoicesFormField
+                                                        label={field.label}
+                                                        description={field.description}
+                                                        choiceCount={field.choiceCount}
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
+                                                {
                                                 (field.type === 'select') &&
                                                     <SelectFormField
                                                         fields={fields}
@@ -121,6 +136,16 @@ class RadioToggleFormField extends React.Component {
                                                 {
                                                 (field.type === 'text') &&
                                                     <TextFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={data => inputChangeHandler(data, field.id, field.validators)}
+                                                    />
+                                                }
+                                                {
+                                                (field.type === 'textarea') &&
+                                                    <TextareaFormField
                                                         fields={fields}
                                                         index={index}
                                                         form={form}
