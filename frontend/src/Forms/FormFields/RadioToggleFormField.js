@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import FileUploadFormField from './FileUploadFormField';
+import ImageUploadFormField from './ImageUploadFormField';
 import PasswordFormField from './PasswordFormField';
 import PhoneFormField from './PhoneFormField';
 import RadioFormField from './RadioFormField';
@@ -63,7 +65,27 @@ class RadioToggleFormField extends React.Component {
                                 <div className={classes.grid}>
                                     <Grid container spacing={2}>
                                         {fields.map((field, index) => (
-                                            <React.Fragment key={field.id}>
+                                            <React.Fragment key={`${field.id}_${index}`}>
+                                                {
+                                                (field.type === 'fileUpload') &&
+                                                    <FileUploadFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
+                                                {
+                                                (field.type === 'imageUpload') &&
+                                                    <ImageUploadFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
                                                 {
                                                 (field.type === 'password') &&
                                                     <PasswordFormField

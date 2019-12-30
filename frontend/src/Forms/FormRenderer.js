@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FormValidators from './FormValidators';
+import FileUploadFormField from './FormFields/FileUploadFormField';
+import ImageUploadFormField from './FormFields/ImageUploadFormField';
 import PasswordFormField from './FormFields/PasswordFormField';
 import PhoneFormField from './FormFields/PhoneFormField';
 import RadioFormField from './FormFields/RadioFormField';
@@ -97,6 +99,28 @@ class FormRenderer extends React.Component {
                                 {
                                 questionGroup.questions.map((question, index) => (
                                     <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${index}`}>
+                                        {
+                                        (question.type === 'fileUpload') &&
+                                            <FileUploadFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
+                                        {
+                                        (question.type === 'imageUpload') &&
+                                            <ImageUploadFormField
+                                                fields={questionGroup.questions}
+                                                index={index}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
                                         {
                                         (question.type === 'password') &&
                                             <PasswordFormField
