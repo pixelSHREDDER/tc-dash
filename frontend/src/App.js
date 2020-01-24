@@ -115,8 +115,8 @@ class App extends React.Component {
         await auth0Client.renewTokens();
         instanceId = await auth0Client.getProfile().sub;
         token = await auth0Client.getIdToken();
-        data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ instanceId }`,
-        { headers: { 'Authorization': `Bearer ${ token }`}}
+        data = (await axios.get(`http://${URLS.dataUrl}/instance/${instanceId}`,
+        { headers: { 'Authorization': `Bearer ${token}` }}
         )).data;
         console.log(data);
         setInstance(data.data[0]);

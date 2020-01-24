@@ -20,7 +20,7 @@
     "react-redux": "^7.1.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "^3.0.1",
+    "react-scripts": "^3.3.0",
     "react-sortable-tree": "^2.6.2",
     "react-sortable-tree-theme-file-explorer": "^2.0.0",
     "redux": "^4.0.4",
@@ -43,7 +43,12 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "cypress": "^3.4.0",
+    "@testing-library/react": "^9.4.0",
+    "chai-enzyme": "^1.0.0-beta.1",
+    "cypress": "^3.8.2",
+    "cypress-react-unit-test": "^2.4.3",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "react-test-renderer": "^16.8.6"
   }
 }

@@ -31,7 +31,7 @@ describe('instance', () => {
         cy.route('GET', `${ dataUrl }/instance/auth0|C5c95bb5c35fe964ea01ca7d3`, '@instanceJSON').as('getInstance');
         cy.visit('/');
         cy.wait('@getInstance');
-    });
+      });
     it('should add a new instance', () => {
         cy.server();
         //cy.route('GET', `${ dataUrl }/instance/abc123`, '@instanceJSON').as('getInstance');
