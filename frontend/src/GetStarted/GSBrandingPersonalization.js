@@ -1,6 +1,7 @@
 import React from 'react';
 import GSForm from '../Forms/GSForm';
 import {
+    chapterColorFormFields,
     chapterIconFormFields,
     chapterLogoFormFields,
     welcomePostImageFormFields,
@@ -26,6 +27,13 @@ const questionGroups = [
         description: 'Make sure these images are legible at small sizes (and avoid tiny text)!',
         questions: [
             ...welcomePostImageFormFields,
+        ],
+    },
+    {
+        title: 'Chapter Colors',
+        description: 'Make sure these images are legible at small sizes (and avoid tiny text)!',
+        questions: [
+            ...chapterColorFormFields,
         ],
     },
 ];

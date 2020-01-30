@@ -160,7 +160,7 @@ class ImageUploadFormField extends React.Component {
                 <FormControl error={field.id in errors} fullWidth>
                     <FormLabel component="legend" className={classes.legend}>{field.label}</FormLabel>
                     {/* TODO: Tie in label switching if img exists, to button and cardmedia image, set default image and use img url */}
-                    <CardMedia className={classes.cardMedia} title={field.label} image={img || 'https://ydwa.org/wp-content/uploads/2018/02/ydwa-header-logo.png'} />
+                    <CardMedia className={classes.cardMedia} title={field.label} image={img ? `${img.webkitRelativePath}${img.name}` : 'https://ydwa.org/wp-content/uploads/2018/02/ydwa-header-logo.png'} />
                     <Button variant="outlined" color="primary" onClick={() => this.handleClickOpen()}>Upload Image</Button>
                     <FormHelperText>{field.description}</FormHelperText>
                     <FormHelperText id={`${field.id}-helper-text`} className={(index === (fields.length - 1)) ? classes.formHelperText : ''}>

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ColorPickerFormField from './ColorPickerFormField';
 import FileUploadFormField from './FileUploadFormField';
 import ImageUploadFormField from './ImageUploadFormField';
 import PasswordFormField from './PasswordFormField';
@@ -66,6 +67,16 @@ class RadioToggleFormField extends React.Component {
                                     <Grid container spacing={2}>
                                         {fields.map((field, index) => (
                                             <React.Fragment key={`${field.id}_${index}`}>
+                                                {
+                                                (field.type === 'colorPicker') &&
+                                                    <ColorPickerFormField
+                                                        fields={fields}
+                                                        index={index}
+                                                        form={form}
+                                                        errors={errors}
+                                                        inputChangeHandler={inputChangeHandler}
+                                                    />
+                                                }
                                                 {
                                                 (field.type === 'fileUpload') &&
                                                     <FileUploadFormField

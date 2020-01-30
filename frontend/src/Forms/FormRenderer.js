@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FormValidators from './FormValidators';
+import ColorPickerFormField from './FormFields/ColorPickerFormField';
 import FileUploadFormField from './FormFields/FileUploadFormField';
 import ImageUploadFormField from './FormFields/ImageUploadFormField';
 import PasswordFormField from './FormFields/PasswordFormField';
@@ -89,21 +90,32 @@ class FormRenderer extends React.Component {
         return (
             <React.Fragment>
                 <div className={classes.root}>
-                    {questionGroups.map(questionGroup => (
-                        <React.Fragment key={('title' in questionGroup) ? questionGroup.title.toLowerCase().replace(' ', '') : 'questiongroup'}>
+                    {questionGroups.map((questionGroup, qgIndex) => (
+                        <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${qgIndex}`}>
                             <Paper className={`${classes.paper} ${(questionGroup.questions.length > 3) ? classes.large : null}`}>
                                 {
                                 ('title' in questionGroup) &&
                                     <Typography variant="h6" component="h2">{questionGroup.title}</Typography>
                                 }
                                 {
-                                questionGroup.questions.map((question, index) => (
-                                    <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${index}`}>
+                                questionGroup.questions.map((question, qIndex) => (
+                                    <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${qgIndex}_${qIndex}`}>
+                                        {
+                                        (question.type === 'colorPicker') &&
+                                            <ColorPickerFormField
+                                                fields={questionGroup.questions}
+                                                index={qIndex}
+                                                form={form}
+                                                errors={errors}
+                                                inputChangeHandler={this.handleInputChange}
+                                                //inputChangeHandler={data => this.handleInputChange(data, question.label.toLowerCase().replace(' ', ''), question.validators)}
+                                            />
+                                        }
                                         {
                                         (question.type === 'fileUpload') &&
                                             <FileUploadFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -114,7 +126,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'imageUpload') &&
                                             <ImageUploadFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -125,7 +137,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'password') &&
                                             <PasswordFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -136,7 +148,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'phone') &&
                                             <PhoneFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -147,7 +159,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'radio') &&
                                             <RadioFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -161,7 +173,7 @@ class FormRenderer extends React.Component {
                                                 description={question.description}
                                                 optionLabels={question.optionLabels}    
                                                 fields={question.fields}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 radioChangeHandler={radioChangeCallback}
@@ -179,7 +191,7 @@ class FormRenderer extends React.Component {
                                                 description={question.description}
                                                 choiceCount={question.choiceCount}
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeCallback={inputChangeCallback}
@@ -189,7 +201,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'select') &&
                                             <SelectFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -200,7 +212,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'state') &&
                                             <StateFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -211,7 +223,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'text') &&
                                             <TextFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -222,7 +234,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'textarea') &&
                                             <TextareaFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
@@ -233,7 +245,7 @@ class FormRenderer extends React.Component {
                                         (question.type === 'zip') &&
                                             <TextFormField
                                                 fields={questionGroup.questions}
-                                                index={index}
+                                                index={qIndex}
                                                 form={form}
                                                 errors={errors}
                                                 inputChangeHandler={this.handleInputChange}
