@@ -1,28 +1,22 @@
 const chapterColorFormFields = [
     {
         type: 'colorPicker',
-        id: 'color',
+        id: 'primary_color',
         label: 'Primary Color',
-        // Can I do this programmatically?
-        //description: 'If your image is smaller than the minimum size, please center the image.',
         description: 'Used for your Facebook Page, Google account profiles, Mailchimp profile, in search results, social sharing, and the "favicon" in browser tabs. Recommend a simple, shape-based logo with minimal text.',
         validators: ['required'],
     },
     {
         type: 'colorPicker',
-        id: 'color',
+        id: 'secondary_color',
         label: 'Secondary Color',
-        // Can I do this programmatically?
-        //description: 'If your image is smaller than the minimum size, please center the image.',
         description: 'Used for your Facebook Page, Google account profiles, Mailchimp profile, in search results, social sharing, and the "favicon" in browser tabs. Recommend a simple, shape-based logo with minimal text.',
         validators: ['required'],
     },
     {
         type: 'colorPicker',
-        id: 'color',
+        id: 'accent_color',
         label: 'Accent Color',
-        // Can I do this programmatically?
-        //description: 'If your image is smaller than the minimum size, please center the image.',
         description: 'Used for your Facebook Page, Google account profiles, Mailchimp profile, in search results, social sharing, and the "favicon" in browser tabs. Recommend a simple, shape-based logo with minimal text.',
         validators: ['required'],
     },
