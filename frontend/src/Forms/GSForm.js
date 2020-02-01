@@ -24,10 +24,11 @@ class GSForm extends React.Component {
   }
 
   render() {
-    const { questionGroups } = this.props;
+    const { blurb, questionGroups } = this.props;
 
     return (
         <FormRenderer
+            blurb={blurb}    
             questionGroups={questionGroups}
             radioChangeCallback={(data) => this.handleRadioChange(data)}
             inputChangeCallback={(data) => this.handleInputChange(data)}
@@ -37,6 +38,7 @@ class GSForm extends React.Component {
 }
 
 GSForm.propTypes = {
+    blurb: PropTypes.object,
     questionGroups: PropTypes.array.isRequired,
     onboardingProgress: PropTypes.object.isRequired,
     updateOnboardingProgress: PropTypes.func.isRequired,

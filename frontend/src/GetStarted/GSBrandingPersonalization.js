@@ -7,31 +7,32 @@ import {
     welcomePostImageFormFields,
 } from '../BrandingPersonalization/BrandingPersonalizationFormFields';
 
+const blurb = {
+    title: 'Branding Images',
+    paragraphs: [
+        'Make sure the images you use are legible at small sizes (and avoid tiny text)!',
+    ],
+};
+
 const questionGroups = [
     {
-        //title: 'Chapter Logos',
-        description: 'Make sure these images are legible at small sizes (and avoid tiny text)!',
         questions: [
             ...chapterLogoFormFields,
         ],
     },
     {
-        //title: 'Existing Email Accounts',
-        description: 'Make sure these images are legible at small sizes (and avoid tiny text)!',
         questions: [
             ...chapterIconFormFields,
         ],
     },
     {
-        //title: 'Misc',
-        description: 'Make sure these images are legible at small sizes (and avoid tiny text)!',
         questions: [
             ...welcomePostImageFormFields,
         ],
     },
     {
-        title: 'Chapter Colors',
-        description: 'Make sure these images are legible at small sizes (and avoid tiny text)!',
+        title: 'Branding Colors',
+        description: 'Use colors that make your chapter really stand out in the crowd!',
         questions: [
             ...chapterColorFormFields,
         ],
@@ -39,7 +40,8 @@ const questionGroups = [
 ];
 
 class GSBrandingPersonalization extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
+    
+  render = () => <GSForm blurb={blurb} questionGroups={questionGroups} />;
 }
 
 export default GSBrandingPersonalization;

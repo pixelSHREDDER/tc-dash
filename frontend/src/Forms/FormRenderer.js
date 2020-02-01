@@ -44,7 +44,10 @@ const styles = theme => ({
           gridRow: "none",
       },
     },
-  });
+    blurb: {
+        marginBottom: theme.spacing(2),
+    },
+});
 
 class FormRenderer extends React.Component {
     constructor() {
@@ -84,18 +87,33 @@ class FormRenderer extends React.Component {
     };
 
     render() {
-        const { classes, questionGroups, inputChangeCallback, radioChangeCallback } = this.props;
+        const { blurb, classes, questionGroups, inputChangeCallback, radioChangeCallback } = this.props;
         const { errors, form } = this.state;
     
         return (
             <React.Fragment>
+            {
+            blurb &&
+                <Paper className={`${classes.paper} ${classes.blurb}`}>
+                    <Typography variant="h6" component="h2">{blurb.title}</Typography>
+                    {
+                    blurb.paragraphs.map((paragraph, pIndex) => (
+                        <Typography key={pIndex} variant="caption" component="h3">{paragraph}</Typography>
+                    ))}
+                </Paper>
+            }
                 <div className={classes.root}>
-                    {questionGroups.map((questionGroup, qgIndex) => (
+                    {
+                    questionGroups.map((questionGroup, qgIndex) => (
                         <React.Fragment key={`${('title' in questionGroup ? questionGroup.title.toLowerCase().replace(' ', '') : 'question_group')}_${qgIndex}`}>
                             <Paper className={`${classes.paper} ${(questionGroup.questions.length > 3) ? classes.large : null}`}>
                                 {
                                 ('title' in questionGroup) &&
                                     <Typography variant="h6" component="h2">{questionGroup.title}</Typography>
+                                }
+                                {
+                                ('description' in questionGroup) &&
+                                    <Typography variant="caption" component="h3" className={classes.blurb}>{questionGroup.description}</Typography>
                                 }
                                 {
                                 questionGroup.questions.map((question, qIndex) => (
@@ -264,6 +282,7 @@ class FormRenderer extends React.Component {
 }
 
 FormRenderer.propTypes = {
+    blurb: PropTypes.object,
     questionGroups: PropTypes.array.isRequired,
     radioChangeCallback: PropTypes.func.isRequired,
     inputChangeCallback: PropTypes.func.isRequired,
