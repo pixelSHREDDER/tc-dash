@@ -8,6 +8,7 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
+        id: 'website',
         label: 'Do you currently have a website you want data migrated from?',
         //description: 'We\'ll set one up for you if you don\'t!',
         fields: websiteFormFields,
@@ -19,6 +20,7 @@ const questionGroups = [
     questions: [
       {
         type: 'rankedChoices',
+        id: 'domain',
         label: 'What would you like your new website\'s domain name to be?',
         description: 'Please enter 3 choices in order of preference, and we\'ll try our best to snag one of them for you!',
         choiceCount: 3,

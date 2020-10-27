@@ -79,6 +79,7 @@ const getTwoFactorFormFields = (prefix, labels = [
     return (
         [{
             type: 'radioToggle',
+            id: `${prefix}_2fa`,
             label: 'Do you have two-factor authentication (2FA) enabled?',
             fields: [
                 {

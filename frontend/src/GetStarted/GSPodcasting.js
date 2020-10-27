@@ -8,6 +8,7 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
+        id: 'podcast',
         label: 'Do you currently have a podcast?',
         fields: podcastFormFields.existing,
       },

@@ -187,6 +187,7 @@ class FormRenderer extends React.Component {
                                         {
                                         (question.type === 'radioToggle') &&
                                             <RadioToggleFormField
+                                                id={question.id}
                                                 label={question.label}
                                                 description={question.description}
                                                 optionLabels={question.optionLabels}    
@@ -205,6 +206,7 @@ class FormRenderer extends React.Component {
                                         {
                                         (question.type === 'rankedChoices') &&
                                             <RankedChoicesFormField
+                                                id={question.id}    
                                                 label={question.label}
                                                 description={question.description}
                                                 choiceCount={question.choiceCount}

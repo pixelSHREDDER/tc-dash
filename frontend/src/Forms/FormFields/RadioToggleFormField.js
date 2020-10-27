@@ -45,7 +45,7 @@ class RadioToggleFormField extends React.Component {
         radioChangeHandler({ field, value, fieldCount: 0 });
     };
 
-    renderRadioToggleField = (label, description, optionLabels, fields, index, form, errors) => {
+    renderRadioToggleField = (id, label, description, optionLabels, fields, index, form, errors) => {
         const { classes, inputChangeHandler } = this.props;
         const { openForms } = this.state;
         
@@ -56,11 +56,11 @@ class RadioToggleFormField extends React.Component {
                         label={label}
                         description={description || ''}
                         optionLabels={optionLabels || ['Yes', 'No']}
-                        inputKey={label.replace(/ /g, '_')}
-                        sendRadio={data => this.handleRadioToggle(data, label.replace(/ /g, '_'))}
+                        inputKey={id}
+                        sendRadio={data => this.handleRadioToggle(data, id)}
                     />
                     {
-                    ((label.replace(/ /g, '_') in openForms) && (openForms[label.replace(/ /g, '_')] === true)) &&
+                    ((id in openForms) && (openForms[id] === true)) &&
                         <React.Fragment>
                             <fieldset className={classes.fieldset}>
                                 <div className={classes.grid}>
@@ -130,7 +130,7 @@ class RadioToggleFormField extends React.Component {
                                                 {
                                                 (field.type === 'radioToggle') &&
                                                     <React.Fragment>
-                                                        {this.renderRadioToggleField(field.label, field.description, field.optionLabels, field.fields, index, form, errors)}
+                                                        {this.renderRadioToggleField(field.id, field.label, field.description, field.optionLabels, field.fields, index, form, errors)}
                                                     </React.Fragment>
                                                 }
                                                 {
@@ -209,26 +209,27 @@ class RadioToggleFormField extends React.Component {
     };
 
     render() {
-        const { label, description, optionLabels, fields, /*index,*/ form, errors } = this.props;
+        const { id, label, description, optionLabels, fields, /*index,*/ form, errors } = this.props;
     
         return (
             <React.Fragment>  
-                {this.renderRadioToggleField(label, description, optionLabels, fields, /*index*/0, form, errors)}
+                {this.renderRadioToggleField(id, label, description, optionLabels, fields, /*index*/0, form, errors)}
             </React.Fragment>
         );
     }
 }
 
 RadioToggleFormField.propTypes = {
-    label: PropTypes.string.isRequired,
     description: PropTypes.string,
-    optionLabels: PropTypes.array,
-    fields: PropTypes.array.isRequired,
-    //index: PropTypes.number.isRequired,
-    form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
-    radioChangeHandler: PropTypes.func.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
+    //index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired,
+    optionLabels: PropTypes.array,
+    radioChangeHandler: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(RadioToggleFormField);

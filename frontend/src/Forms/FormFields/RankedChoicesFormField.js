@@ -61,7 +61,7 @@ class RankedChoicesFormField extends React.Component {
         }
     };
 
-    renderChoices = (field) => {
+    renderChoices = (field, id) => {
         const { choiceCount, errors, form, label } = this.props;
         const { choiceErrors } = this.state;
 
@@ -75,7 +75,7 @@ class RankedChoicesFormField extends React.Component {
         for (let i = 1; i <= choiceCount; i++) {
             let choiceField = {
                 type: 'text',
-                id: `${label.replace(/ /g, '_')}_${i}`,
+                id: `${id}_${i}`,
                 label: `#${i} choice`,
                 validators: validators,
             };
@@ -98,27 +98,28 @@ class RankedChoicesFormField extends React.Component {
     }
 
     render() {
-        const { classes, choiceCount, description, errors, fields, index, label } = this.props;
+        const { classes, choiceCount, description, errors, fields, id, index, label } = this.props;
         const field = fields[index];
 
         return (
             <FormControl component="fieldset" className={classes.formControl} error={field.id in errors} fullWidth>
                 <FormLabel component="legend">{label}</FormLabel>
                 <FormHelperText>{description || `Please enter ${choiceCount} choices in order of preference.`}</FormHelperText>
-                {this.renderChoices(field)}
+                {this.renderChoices(field, id)}
             </FormControl>
         );
     }
 }
 
 RankedChoicesFormField.propTypes = {
-    label: PropTypes.string.isRequired,
-    description: PropTypes.string,
     choiceCount: PropTypes.number.isRequired,
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    form: PropTypes.object.isRequired,
+    description: PropTypes.string,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(RankedChoicesFormField);

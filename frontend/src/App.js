@@ -22,6 +22,7 @@ import ExportDonors from './Membership/ExportDonors';
 import ExportMembers from './Membership/ExportMembers';
 import ExportSustainers from './Membership/ExportSustainers';
 import GSAnalyticsSEO from './GetStarted/GSAnalyticsSEO';
+import GSBoard from './GetStarted/GSBoard';
 import GSBrandingPersonalization from './GetStarted/GSBrandingPersonalization';
 import GSBylawsConstitution from './GetStarted/GSBylawsConstitution';
 import GSEmail from './GetStarted/GSEmail';
@@ -45,12 +46,12 @@ import WriteWebsitePost from './Website/WriteWebsitePost';
 import Website from './Website/Website';
 //import Instances from './Instances/Instances';
 
-import { CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { deepPurple, green, red } from '@material-ui/core/colors';
 import {
   Button,
+  CircularProgress,
   CssBaseline,
   Typography
 } from '@material-ui/core';
@@ -337,6 +338,7 @@ class App extends React.Component {
                 <SecuredRoute path='/website/view-stats' component={ViewWebsiteStats} />
                 <SecuredRoute path='/website/write-post' component={WriteWebsitePost} />
                 <SecuredRoute path='/get-started/analytics-seo' component={GSAnalyticsSEO} onSubmit={this.updateInstance} />
+                <SecuredRoute path='/get-started/board' component={GSBoard} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/branding-personalization' component={GSBrandingPersonalization} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/bylaws-constitution' component={GSBylawsConstitution} onSubmit={this.updateInstance} />
                 <SecuredRoute path='/get-started/email' component={GSEmail} onSubmit={this.updateInstance} />

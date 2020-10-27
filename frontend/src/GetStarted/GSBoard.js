@@ -1,5 +1,6 @@
 import React from 'react';
-import GSForm from '../Forms/GSForm';
+import Board from '../Board/Board';
+/*import GSForm from '../Forms/GSForm';
 import {
   googleAnalyticsFormFields,
   googleSearchConsoleFormFields,
@@ -11,7 +12,7 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        id: 'google_analytics',
+        id: 'old_email',
         label: 'Do you already have a Google Analytics account?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: googleAnalyticsFormFields.existing,
@@ -23,17 +24,17 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        id: 'google_search_console',
+        id: 'old_email',
         label: 'Do you already have a Google Search Console account?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: googleSearchConsoleFormFields.existing,
       },
     ],
   },
-];
+];*/
 
-class GSAnalyticsSEO extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
+class GSBoard extends React.Component {
+  render = () => <Board />;
 }
 
-export default GSAnalyticsSEO;
+export default GSBoard;

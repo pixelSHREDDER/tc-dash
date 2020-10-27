@@ -2,6 +2,7 @@ const podcastFormFields = {
     'existing': [
         {
             type: 'radioToggle',
+            id: 'podcast_anchor',
             label: 'Is it hosted by Anchor?',
             fields: [
                 {
