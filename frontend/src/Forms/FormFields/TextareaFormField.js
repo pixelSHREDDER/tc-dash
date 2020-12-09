@@ -18,8 +18,21 @@ const styles = theme => ({
 });
 
 class TextareaFormField extends React.Component {
+    state = {
+        currentValue: null,
+    };
+
+    //TODO: Replace with real data
+    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+
+    handleOnBlur = (value, id, validators) => {
+        if (value === this.state.currentValue) return;
+        this.props.inputChangeHandler(value, id, validators);
+        this.setState({ currentValue: value });
+    };
+
     render() {
-        const { classes, fields, index, form, errors, inputChangeHandler } = this.props;
+        const { classes, errors, fields, index } = this.props;
         const field = fields[index];
     
         if (!('label' in field)) { field.label = 'Fill me!'; }
@@ -33,10 +46,9 @@ class TextareaFormField extends React.Component {
                         multiline
                         id={field.id}
                         label={field.label}
-                        defaultValue={form.text}
+                        defaultValue={this.state.currentValue}
                         rows={field.rows}
-                        //onBlur={e => this.handleFormChange(e.target.value, field.id, field.validators)}
-                        onBlur={e => inputChangeHandler(e.target.value, field.id, field.validators)}
+                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.validators)}
                         aria-describedby={`${field.id}-helper-text`}
                     />
                     {
@@ -53,10 +65,10 @@ class TextareaFormField extends React.Component {
 }
 
 TextareaFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

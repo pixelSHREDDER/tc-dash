@@ -17,25 +17,30 @@ const styles = theme => ({
 });
 
 class PasswordFormField extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      passIsMasked: true,
-      validators: ['required'],
-    };
-  }
-
-  togglePasswordMask = () => {
-    this.setState(prevState => ({
-      passIsMasked: !prevState.passIsMasked,
-    }));
+  state = {
+    currentConfirmValue: '',
+    currentValue: '',
+    passIsMasked: true,
   };
 
+  //TODO: Replace with real data
+  componentDidMount = () => this.setState({ currentValue: this.props.form.text || '' });
+
+  handleOnBlur = (value, id, validators) => {
+      if (value === this.state.currentValue) return;
+      this.props.inputChangeHandler(value, id, ['required', ...validators]);
+      this.setState({ currentValue: value });
+  };
+
+  handleConfirmOnBlur = value => value !== this.state.currentConfirmValue && this.setState({ currentConfirmValue: value });
+
+  togglePasswordMask = () => this.setState(prevState => ({ passIsMasked: !prevState.passIsMasked }));
+
   render() {
-    const { classes, fields, index, form, errors, inputChangeHandler } = this.props;
-    const { passIsMasked, validators } = this.state;
+    const { classes, errors, fields, index } = this.props;
+    const { currentConfirmValue, currentValue, passIsMasked } = this.state;
     const field = fields[index];
+    const noMatch = !!(currentValue.length && currentConfirmValue !== currentValue);
 
     if (!('label' in field)) { field.label = 'Password'; }
     if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
@@ -47,8 +52,8 @@ class PasswordFormField extends React.Component {
                 id={field.id}
                 type={passIsMasked ? 'password' : 'text'}
                 label={field.label}
-                defaultValue={form.text}
-                onBlur={e => inputChangeHandler(e.target.value, field.id, validators)}
+                defaultValue={currentValue}
+                onBlur={e => this.handleOnBlur(e.target.value, field.id, field.validators)}
                 aria-describedby={`${field.id}-helper-text`}
                 InputProps={{
                   endAdornment: (
@@ -75,13 +80,13 @@ class PasswordFormField extends React.Component {
                 {(field.id in errors) && <span>{errors[field.id]}</span>}
             </FormHelperText>
         </FormControl>
-        <FormControl error={`${field.id}_confirm` in errors} fullWidth>
+        <FormControl error={noMatch} fullWidth>
             <TextField
                 id={`${field.id}_confirm`}
                 type={passIsMasked ? 'password' : 'text'}
                 label={`Confirm ${field.label.charAt(0).toLowerCase()}${field.label.substring(1)}`}
-                defaultValue={form.text}
-                onBlur={e => inputChangeHandler(e.target.value, `${field.id}_confirm`, validators)}
+                defaultValue={''}
+                onBlur={e => this.handleConfirmOnBlur(e.target.value, `${field.id}_confirm`, field.validators)}
                 aria-describedby={`${field.id}_confirm-helper-text`}
                 InputProps={{
                   endAdornment: (
@@ -105,7 +110,7 @@ class PasswordFormField extends React.Component {
                 }}
             />
             <FormHelperText id={`${field.id}_confirm-helper-text`} className={(index === (fields.length - 1)) ? classes.formHelperText : ''}>
-                {(`${field.id}_confirm` in errors) && <span>{errors[`${field.id}_confirm`]}</span>}
+                {noMatch && <span>Passwords do not match</span>}
             </FormHelperText>
         </FormControl>
       </Grid>
@@ -114,10 +119,10 @@ class PasswordFormField extends React.Component {
 }
 
 PasswordFormField.propTypes = {
-  fields: PropTypes.array.isRequired,
-  index: PropTypes.number.isRequired,
-  form: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
+  fields: PropTypes.array.isRequired,
+  form: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
   inputChangeHandler: PropTypes.func.isRequired,
 };
 

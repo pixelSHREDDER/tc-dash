@@ -61,10 +61,10 @@ const RadioToggleControls = ({label, description, optionLabels = ['Yes', 'No'], 
 }
 
 RadioToggleControls.propTypes = {
-    label: PropTypes.string.isRequired,
     description: PropTypes.string,
-    optionLabels: PropTypes.array,
     inputKey: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired,
+    optionLabels: PropTypes.array,
     sendRadio: PropTypes.func.isRequired,
 };
 

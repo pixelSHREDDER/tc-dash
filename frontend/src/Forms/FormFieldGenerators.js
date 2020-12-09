@@ -34,42 +34,56 @@ const getIsPublicFormFields = (prefix, type = 'account') => {
     );
 };
 
-const getMailingAddressFormFields = (prefix, labels = [
-    'Address, line 1',
-    'Address, line 2 (optional)',
-    'Town/city',
-    'Zip code',
-]) => {
-    return (
-        [{
-            type: 'text',
-            id: `${prefix}_address_line_1`,
-            label: labels[0],
-            validators: ['required'],
-        },
-        {
-            type: 'text',
-            id: `${prefix}_address_line_2`,
-            label: labels[1],
-        },
-        {
-            type: 'text',
-            id: `${prefix}_city`,
-            label: labels[2],
-            validators: ['required'],
-        },
-        {
-            type: 'state',
-            id: `${prefix}_state`,
-            validators: ['required'],
-        },
-        {
-            type: 'zip',
-            id: `${prefix}_zip`,
-            label: labels[3],
-            validators: ['required'],
-        },]
-    );
+const getMailingAddressFormFields = (
+    prefix,
+    names,
+    labels = [
+        'Address, line 1',
+        'Address, line 2 (optional)',
+        'Town/city',
+        'Zip code',
+    ]
+) => {
+    try {
+        return (
+            [{
+                type: 'text',
+                name: names[0],
+                id: `${prefix}_address_line_1`,
+                label: labels[0],
+                validators: ['required'],
+            },
+            {
+                type: 'text',
+                name: names[1],
+                id: `${prefix}_address_line_2`,
+                label: labels[1],
+            },
+            {
+                type: 'text',
+                name: names[2],
+                id: `${prefix}_city`,
+                label: labels[2],
+                validators: ['required'],
+            },
+            {
+                type: 'state',
+                name: names[3],
+                id: `${prefix}_state`,
+                validators: ['required'],
+            },
+            {
+                type: 'zip',
+                name: names[4],
+                id: `${prefix}_zip`,
+                label: labels[3],
+                validators: ['required'],
+            },]
+        );
+    } catch(e) {
+        console.log(e);
+        return [];
+    }
 };
 
 const getTwoFactorFormFields = (prefix, labels = [

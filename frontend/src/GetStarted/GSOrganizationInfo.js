@@ -8,18 +8,21 @@ const questionGroups = [
     questions: [
       {
         type: 'text',
+        name: 'title',
         label: 'What\'s your organization\'s full name?',
         description: 'For official business purposes (and for the holiday cards).',
         validators: ['required'],
       },
       {
         type: 'text',
+        name: 'description',
         label: 'What\'s your organization\'s tagline?',
         description: 'It could be a slogan, a catchphrase, or just a brief description.',
         validators: ['required'],
       },
       {
         type: 'select',
+        name: 'type',
         label: 'What type of organization are you?',
         options: {
           'county': 'Chapter (County)',

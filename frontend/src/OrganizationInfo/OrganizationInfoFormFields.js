@@ -3,7 +3,16 @@ import {
 } from '../Forms/FormFieldGenerators';
 
 const organizationMailingAddressFormFields = [
-    ...getMailingAddressFormFields('organization'),
+    ...getMailingAddressFormFields(
+        'organization',
+        [
+            'line_1',
+            'line_2',
+            'city',
+            'state',
+            'zip',
+        ]
+    ),
 ];
 
 export {

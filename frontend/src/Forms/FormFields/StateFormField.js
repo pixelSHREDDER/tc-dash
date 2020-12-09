@@ -23,18 +23,20 @@ const styles = theme => ({
 
 class StateFormField extends React.Component {
     state = {
-        selectedValue: '',
+        currentValue: '',
     };
 
-    handleInputChange = (value, field, validators) => {
-        const { inputChangeHandler } = this.props;
-        this.setState({ selectedValue: value });
-        inputChangeHandler(value, field, validators);
+    //TODO: Replace with real data
+    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+
+    handleInput = (value, id, validators) => {
+        if (value === this.state.currentValue) return;
+        this.props.inputChangeHandler(value, id, validators);
+        this.setState({ currentValue: value });
     };
 
     render() {
-        const { fields, index, /*form,*/ errors } = this.props;
-        const { selectedValue } = this.state;
+        const { errors, fields, index } = this.props;
         const field = fields[index];
 
         if (!('label' in field)) { field.label = 'State'; }
@@ -47,9 +49,9 @@ class StateFormField extends React.Component {
                     <Select
                         labelid={`${field.id}_label`}
                         id={field.id}
-                        value={selectedValue}
-                        onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
-                        onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
+                        value={this.state.currentValue}
+                        onBlur={e => this.handleInput(e.target.value, field.id, field.validators)}
+                        onChange={e => this.handleInput(e.target.value, field.id, field.validators)}
                     >
                         <MenuItem value={'AL'}>Alabama</MenuItem>
                         <MenuItem value={'AK'}>Alaska</MenuItem>
@@ -122,10 +124,10 @@ class StateFormField extends React.Component {
 }
 
 StateFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    //form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

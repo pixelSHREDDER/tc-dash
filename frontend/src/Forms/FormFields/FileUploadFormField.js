@@ -53,7 +53,7 @@ class FileUploadFormField extends React.Component {
     }
 
     render() {
-        const { classes, fields, index, /*form,*/ errors, inputChangeHandler } = this.props;
+        const { classes, errors, fields, index, inputChangeHandler } = this.props;
         const { field, loading } = this.state;
 
         if (loading) { return <CircularProgress />; }
@@ -84,10 +84,10 @@ class FileUploadFormField extends React.Component {
 }
 
 FileUploadFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

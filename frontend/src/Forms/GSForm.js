@@ -1,21 +1,25 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import FormRenderer from '../Forms/FormRenderer';
-//import { updateOnboardingProgress } from '../redux/actions/instanceActions';
-import { updateInstance } from '../redux/actions/instanceActions';
+import {
+  updateInstance,
+  updateOnboardingProgress,
+} from '../redux/actions/instanceActions';
 
 class GSForm extends React.Component {
-  //constructor(props) {
-    //super(props);
-    //this.state = {
-    state = {
-      questionProgressValues: {},
-    }
-  //};
+  state = {
+    filledQuestions: {},
+    onboardingSection: null,
+    questionProgressValues: {},
+  }
   
   componentDidMount = () => {
     this.setProgressValues();
+    this.setState({
+      onboardingSection: this.props.location.pathname.replace('/get-started/', '').replace('-', '_'),
+    })
   }
 
   setProgressValues = () => {
@@ -30,26 +34,30 @@ class GSForm extends React.Component {
   }
 
   setQuestionProgressValues = (questionProgressValues, totalPoints, question) => {
-    questionProgressValues[question.id] = {
-      filled: false,
-      points: totalPoints,
-    };
+    questionProgressValues[question.id] = totalPoints;
     question.type === 'radioToggle' && question.fields.forEach(field => this.setQuestionProgressValues(questionProgressValues, totalPoints / question.fields.length, field))
   };
 
   //handleRadioChange = (data) => {
   handleInputChange = (data) => {
-    const { onboardingProgress, updateInstance } = this.props;
-    const {questionProgressValues } = this.state;
+    const { handleUpdateInstance, instance, onboardingProgress, updateOnboardingProgress } = this.props;
+    const { filledQuestions, onboardingSection, questionProgressValues } = this.state;
     let newOnboardingProgress = { ...onboardingProgress };
+    let newFilledQuestions = { ...filledQuestions };
 
-    console.log(data);
-    if (questionProgressValues[data.field].filled) { return }
-    questionProgressValues[data.field].filled = true;
-    
-    data.value !== null ? newOnboardingProgress.social_media += questionProgressValues[data.field].points : newOnboardingProgress.social_media -= questionProgressValues[data.field].points;
-    updateInstance({ onboardingProgress: newOnboardingProgress });
-    console.log(onboardingProgress, newOnboardingProgress);
+    if (!(data.field in filledQuestions)) {
+      filledQuestions[data.field] = true;
+      if (data.value) {
+        newOnboardingProgress[onboardingSection] += questionProgressValues[data.field];
+      }
+    } else if (!data.value) {
+      newOnboardingProgress[onboardingSection] -= questionProgressValues[data.field];
+      if (newOnboardingProgress[onboardingSection] < 0) { newOnboardingProgress[onboardingSection] = 0 }
+      delete newFilledQuestions[data.field];
+      this.setState({ filledQuestions: newFilledQuestions });
+  }
+    updateOnboardingProgress(newOnboardingProgress);
+    updateInstance(data);
   }
 
   /*handleInputChange = (data) => {
@@ -77,12 +85,23 @@ class GSForm extends React.Component {
 
 GSForm.propTypes = {
   blurb: PropTypes.object,
+  instance: PropTypes.object.isRequired,
   onboardingProgress: PropTypes.object.isRequired,
   questionGroups: PropTypes.array.isRequired,
-  //updateOnboardingProgress: PropTypes.func.isRequired,
   updateInstance: PropTypes.func.isRequired,
+  updateOnboardingProgress: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = state => ({ onboardingProgress: state.instance.onboarding_progress });
+const mapDispatchToProps = dispatch => {
+  return {
+    updateInstance: data => dispatch(updateInstance(data)),
+    updateOnboardingProgress: data => dispatch(updateOnboardingProgress(data))
+  }
+}
 
-export default connect(mapStateToProps, { /*updateOnboardingProgress*/updateInstance })(GSForm);
+const mapStateToProps = state => ({
+  instance: state.instance,
+  onboardingProgress: state.instance.onboarding_progress,
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GSForm));

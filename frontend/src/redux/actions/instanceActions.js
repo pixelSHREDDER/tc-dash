@@ -1,7 +1,8 @@
 import {
   TOGGLE_ISLIVE,
   TOGGLE_LOADING,
-  UPDATE_INSTANCE
+  UPDATE_INSTANCE,
+  UPDATE_ONBOARDING_PROGRESS,
 } from './types';
 
 export const setInstance = (data) => async (dispatch) => {
@@ -27,17 +28,17 @@ export const updateInstance = (data) => async (dispatch) => {
 }
 
 export const updateOnboardingProgress = (data) => async (dispatch) => {
-  //try {
+  try {
     
-    //console.log(event);
-    /*dispatch({
-        type: UPDATE_INSTANCE,
+    console.log('herp');
+    dispatch({
+        type: UPDATE_ONBOARDING_PROGRESS,
         payload: data
     });
   } catch (err) {
-    console.log(err);*/
+    console.log(err);
     //if (err.response.status===401 && err.config) {
 
     //}
-  //}
+  }
 };

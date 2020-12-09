@@ -24,21 +24,22 @@ const styles = theme => ({
 
 class SelectFormField extends React.Component {
     state = {
-        selectedValue: '',
+        currentValue: '',
         showOther: false,
     };
 
-    handleInputChange = (value, field, validators) => {
-        const { inputChangeHandler } = this.props;
+    //TODO: Replace with real data
+    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
 
-        this.setState({ selectedValue: value });
+    handleInput = (value, field, validators) => {
         if (value === 'other') { this.setState({ showOther: true }) }
-        else { inputChangeHandler(value, field, validators) }
+        else { this.props.inputChangeHandler(value, field, validators) }
+        this.setState({ currentValue: value });
     };
 
     render() {
-        const { fields, index, /*form,*/ errors, inputChangeHandler } = this.props;
-        const { selectedValue, showOther } = this.state;
+        const { errors, fields, index } = this.props;
+        const { currentValue, showOther } = this.state;
         const field = fields[index];
 
         if (!('label' in field)) { field.label = 'Please select an option'; }
@@ -51,9 +52,9 @@ class SelectFormField extends React.Component {
                     <Select
                         labelid={`${field.id}_label`}
                         id={field.id}
-                        value={selectedValue}
-                        //onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
-                        onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
+                        value={currentValue}
+                        onBlur={e => this.handleInput(e.target.value, field.id, field.validators)}
+                        onChange={e => this.handleInput(e.target.value, field.id, field.validators)}
                     >
                         {Object.entries(field.options).map(([key,value]) => (
                             <MenuItem key={key} value={key}>{value}</MenuItem>
@@ -68,7 +69,7 @@ class SelectFormField extends React.Component {
                         <Input
                             id={`${field.id}_other`}
                             placeholder="(please specify)"
-                            onBlur={e => inputChangeHandler(e.target.value, field.id, ['required', ...field.validators])}
+                            onBlur={e => this.handleInput(e.target.value, field.id, ['required', ...field.validators])}
                         />
                     }
                     <FormHelperText id={`${field.id}-helper-text`}>
@@ -81,10 +82,10 @@ class SelectFormField extends React.Component {
 }
 
 SelectFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    //form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

@@ -62,13 +62,12 @@ class RankedChoicesFormField extends React.Component {
     };
 
     renderChoices = (field, id) => {
-        const { choiceCount, errors, form, label } = this.props;
-        const { choiceErrors } = this.state;
+        const { choiceCount, errors, form } = this.props;
 
         let choiceFields = [];
         let choices = [];
         let validators = field.validators || [];
-        let allErrors = {...errors, ...choiceErrors};
+        let allErrors = {...errors, ...this.state.choiceErrors};
 
         if (validators.indexOf('required') === -1) { validators = ['required', ...validators] }
 

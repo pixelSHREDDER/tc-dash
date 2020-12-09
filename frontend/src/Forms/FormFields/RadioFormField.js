@@ -11,8 +11,21 @@ import {
 } from '@material-ui/core';
 
 class RadioFormField extends React.Component {
+    state = {
+        currentValue: null,
+    };
+
+    //TODO: Replace with real data
+    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+
+    handleOnChange = (value, id, validators) => {
+        if (value === this.state.currentValue) return;
+        this.props.inputChangeHandler(value, id, validators);
+        this.setState({ currentValue: value });
+    };
+
     render() {
-        const { fields, index, /*form,*/ errors, inputChangeHandler } = this.props;
+        const { errors, fields, index } = this.props;
         const field = fields[index];
 
         if (!('label' in field)) { field.label = 'Pick one!'; }
@@ -40,7 +53,7 @@ class RadioFormField extends React.Component {
                     <RadioGroup
                         aria-label={field.label}
                         name={field.id}
-                        onChange={e => inputChangeHandler(e.target.value, field.id, field.validators)}
+                        onChange={e => this.handleOnChange(e.target.value, field.id, field.validators)}
                         aria-describedby={`${field.id}-helper-text`}
                         row
                     >
@@ -49,6 +62,7 @@ class RadioFormField extends React.Component {
                             <FormControlLabel key={`${field.id}_${option.value}`}
                                 id={`${field.id}_${option.value}`}
                                 value={option.value}
+                                checked={this.state.currentValue === option.value}
                                 control={<Radio color="primary" />}
                                 label={option.label}
                             />
@@ -61,10 +75,10 @@ class RadioFormField extends React.Component {
 }
 
 RadioFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    //form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

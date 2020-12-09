@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/pixelSHREDDER/tc-dash#readme",
   "dependencies": {
-    "concurrently": "^4.1.0"
+    "concurrently": "^4.1.0",
+    "material-ui-phone-number": "^2.2.6"
   },
   "devDependencies": {}
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import MuiPhoneInput from 'material-ui-phone-number';
+import MuiPhoneNumber from 'material-ui-phone-number';
 import {
     FormControl,
     FormHelperText,
@@ -22,14 +22,21 @@ const styles = theme => ({
 });
 
 class PhoneFormField extends React.Component {
-    handleInputChange = (value) => {
-        const { fields, index, inputChangeHandler } = this.props;
-        console.log(value);
-        inputChangeHandler(value, fields[index].id, ['phone', ...fields[index].validators]);
+    state = {
+        currentValue: null,
+    };
+
+    //TODO: Replace with real data
+    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+
+    handleOnBlur = (value, id, validators) => {
+        if (value === this.state.currentValue) return;
+        this.props.inputChangeHandler(value, id, ['phone', ...validators]);
+        this.setState({ currentValue: value });
     };
 
     render() {
-        const { classes, fields, index, /*form,*/ errors } = this.props;
+        const { classes, errors, fields, index } = this.props;
         const field = fields[index];
 
         if (!('label' in field)) { field.label = 'Please enter a phone number'; }
@@ -42,13 +49,13 @@ class PhoneFormField extends React.Component {
                     field.label &&
                         <FormHelperText>{field.label}</FormHelperText>
                     }
-                    <MuiPhoneInput
+                    <MuiPhoneNumber
+                        defaultCountry={'us'}
                         onlyCountries={['us']}
                         id={field.id}
-                        //defaultValue={form.text}
-                        onChange={this.handleInputChange}
+                        defaultValue={this.state.currentValue}
+                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.validators)}
                         aria-describedby={`${field.id}-helper-text`}
-                        countryCodeEditable="false"
                         disableCountryCode
                         disableDropdown
                     />
@@ -66,10 +73,10 @@ class PhoneFormField extends React.Component {
 }
 
 PhoneFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

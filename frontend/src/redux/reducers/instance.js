@@ -1,4 +1,4 @@
-import { UPDATE_INSTANCE } from '../actions/types';
+import { UPDATE_INSTANCE, UPDATE_ONBOARDING_PROGRESS } from '../actions/types';
 
 const initialState = {
     domain: '',
@@ -21,6 +21,11 @@ export default function(state = initialState, action) {
         case UPDATE_INSTANCE:
             return {
                 ...action.payload
+            }
+        case UPDATE_ONBOARDING_PROGRESS:
+            return {
+                ...state,
+                onboarding_progress: action.payload,
             }
         default:
             return state;

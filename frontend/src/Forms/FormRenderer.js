@@ -55,6 +55,7 @@ class FormRenderer extends React.Component {
         this.state = {
             form: {
                 text: '',
+                dirtyFields: {},
             },
             errors: {},
         };

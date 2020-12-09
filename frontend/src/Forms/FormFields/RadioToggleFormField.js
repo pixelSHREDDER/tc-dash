@@ -209,7 +209,7 @@ class RadioToggleFormField extends React.Component {
     };
 
     render() {
-        const { id, label, description, optionLabels, fields, /*index,*/ form, errors } = this.props;
+        const { description, errors, fields, form, id, /*index,*/ label, optionLabels } = this.props;
     
         return (
             <React.Fragment>  

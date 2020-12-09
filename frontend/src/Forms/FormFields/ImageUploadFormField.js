@@ -98,7 +98,7 @@ class ImageUploadFormField extends React.Component {
     //editorRef = React.createRef();
 
     async componentDidMount() {
-        const { fields, index } = this.props;
+        const { fields, form, index } = this.props;
         const { acceptedFiles } = this.state;
         let newField = fields[index];
         let newFileUploadFields = [];
@@ -128,6 +128,8 @@ class ImageUploadFormField extends React.Component {
         this.setState({
             field: newField,
             fileUploadFields: newFileUploadFields,
+            // TODO: Replace with real data
+            //img: form.text || null,
             loading: false,
         });
     }
@@ -150,7 +152,7 @@ class ImageUploadFormField extends React.Component {
     }
 
     render() {
-        const { classes, fields, index, form, errors } = this.props;
+        const { classes, errors, fields, form, index } = this.props;
         const { dialogOpen, field, fileUploadFields, img, loading, rotate, scale } = this.state;
 
         if (loading) { return <CircularProgress />; }
@@ -187,10 +189,10 @@ class ImageUploadFormField extends React.Component {
                         <Grid container justify="center">
                             <Grid item xs={4} className={classes.slider}>
                                 <FileUploadFormField
-                                    fields={fileUploadFields}
-                                    index={0}
-                                    form={form}
                                     errors={errors}
+                                    fields={fileUploadFields}
+                                    form={form}
+                                    index={0}
                                     //inputChangeHandler={this.handleFileDrop}
                                 />
                             </Grid>
@@ -284,10 +286,10 @@ class ImageUploadFormField extends React.Component {
 }
 
 ImageUploadFormField.propTypes = {
-    fields: PropTypes.array.isRequired,
-    index: PropTypes.number.isRequired,
-    form: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired,
+    fields: PropTypes.array.isRequired,
+    form: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
 

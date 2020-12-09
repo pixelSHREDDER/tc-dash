@@ -12,7 +12,7 @@
     "joi-browser": "^13.4.0",
     "material-ui-color-picker": "^3.4.0",
     "material-ui-dropzone": "^2.4.7",
-    "material-ui-phone-number": "^2.2.5",
+    "material-ui-phone-number": "^2.2.6",
     "mdi-material-ui": "^6.11.0",
     "react": "^16.12.0",
     "react-avatar-editor": "^12.0.0-beta.0",
