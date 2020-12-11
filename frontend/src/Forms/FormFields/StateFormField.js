@@ -29,9 +29,9 @@ class StateFormField extends React.Component {
     //TODO: Replace with real data
     componentDidMount = () => this.setState({ currentValue: this.props.form.text });
 
-    handleInput = (value, id, validators) => {
+    handleInput = (value, id, name, validators) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, validators);
+        this.props.inputChangeHandler(value, id, name, ['required', ...validators]);
         this.setState({ currentValue: value });
     };
 
@@ -50,8 +50,8 @@ class StateFormField extends React.Component {
                         labelid={`${field.id}_label`}
                         id={field.id}
                         value={this.state.currentValue}
-                        onBlur={e => this.handleInput(e.target.value, field.id, field.validators)}
-                        onChange={e => this.handleInput(e.target.value, field.id, field.validators)}
+                        //onBlur={e => this.handleInput(e.target.value, field.id, field.name, field.validators)}
+                        onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators)}
                     >
                         <MenuItem value={'AL'}>Alabama</MenuItem>
                         <MenuItem value={'AK'}>Alaska</MenuItem>

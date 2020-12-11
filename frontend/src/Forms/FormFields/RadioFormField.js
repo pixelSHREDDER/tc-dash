@@ -18,9 +18,9 @@ class RadioFormField extends React.Component {
     //TODO: Replace with real data
     componentDidMount = () => this.setState({ currentValue: this.props.form.text });
 
-    handleOnChange = (value, id, validators) => {
+    handleOnChange = (value, id, name, validators) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, validators);
+        this.props.inputChangeHandler(value, id, name, validators);
         this.setState({ currentValue: value });
     };
 
@@ -53,7 +53,7 @@ class RadioFormField extends React.Component {
                     <RadioGroup
                         aria-label={field.label}
                         name={field.id}
-                        onChange={e => this.handleOnChange(e.target.value, field.id, field.validators)}
+                        onChange={e => this.handleOnChange(e.target.value, field.id, field.name, field.validators)}
                         aria-describedby={`${field.id}-helper-text`}
                         row
                     >

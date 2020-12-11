@@ -31,9 +31,9 @@ class SelectFormField extends React.Component {
     //TODO: Replace with real data
     componentDidMount = () => this.setState({ currentValue: this.props.form.text });
 
-    handleInput = (value, field, validators) => {
+    handleInput = (value, id, name, validators) => {
         if (value === 'other') { this.setState({ showOther: true }) }
-        else { this.props.inputChangeHandler(value, field, validators) }
+        else { this.props.inputChangeHandler(value, id, name, ['required', ...validators]) }
         this.setState({ currentValue: value });
     };
 
@@ -53,8 +53,8 @@ class SelectFormField extends React.Component {
                         labelid={`${field.id}_label`}
                         id={field.id}
                         value={currentValue}
-                        onBlur={e => this.handleInput(e.target.value, field.id, field.validators)}
-                        onChange={e => this.handleInput(e.target.value, field.id, field.validators)}
+                        //onBlur={e => this.handleInput(e.target.value, field.id, field.name,  field.validators)}
+                        onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators)}
                     >
                         {Object.entries(field.options).map(([key,value]) => (
                             <MenuItem key={key} value={key}>{value}</MenuItem>
@@ -71,6 +71,10 @@ class SelectFormField extends React.Component {
                             placeholder="(please specify)"
                             onBlur={e => this.handleInput(e.target.value, field.id, ['required', ...field.validators])}
                         />
+                    }
+                    {
+                    field.description &&
+                        <FormHelperText>{field.description}</FormHelperText>
                     }
                     <FormHelperText id={`${field.id}-helper-text`}>
                         {(field.id in errors) && <span>{errors[field.id]}</span>}

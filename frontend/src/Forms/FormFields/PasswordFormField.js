@@ -26,9 +26,9 @@ class PasswordFormField extends React.Component {
   //TODO: Replace with real data
   componentDidMount = () => this.setState({ currentValue: this.props.form.text || '' });
 
-  handleOnBlur = (value, id, validators) => {
+  handleOnBlur = (value, id, name, validators) => {
       if (value === this.state.currentValue) return;
-      this.props.inputChangeHandler(value, id, ['required', ...validators]);
+      this.props.inputChangeHandler(value, id, name, ['required', ...validators]);
       this.setState({ currentValue: value });
   };
 
@@ -53,7 +53,7 @@ class PasswordFormField extends React.Component {
                 type={passIsMasked ? 'password' : 'text'}
                 label={field.label}
                 defaultValue={currentValue}
-                onBlur={e => this.handleOnBlur(e.target.value, field.id, field.validators)}
+                onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
                 aria-describedby={`${field.id}-helper-text`}
                 InputProps={{
                   endAdornment: (

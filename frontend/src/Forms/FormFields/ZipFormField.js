@@ -31,9 +31,9 @@ class ZipFormField extends React.Component {
     //TODO: Replace with real data
     componentDidMount = () => this.setState({ currentValue: this.props.form.text });
 
-    handleOnBlur = (value, id, validators) => {
+    handleOnBlur = (value, id, name, validators) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, ['zip', ...validators]);
+        this.props.inputChangeHandler(value, id, name, ['zip', ...validators]);
         this.setState({ currentValue: value });
     };
 
@@ -54,7 +54,7 @@ class ZipFormField extends React.Component {
                             mask={[/^\d{5}(-\d{4})?$/]}
                             //maskPlaceholder="_____-____"
                             value={this.state.currentValue}
-                            onBlur={e => this.handleOnBlur(e.target.value, field.id, field.validators)}
+                            onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
                             //onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
                             //alwaysShowMask={true}
                     >

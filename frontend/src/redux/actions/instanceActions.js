@@ -28,9 +28,7 @@ export const updateInstance = (data) => async (dispatch) => {
 }
 
 export const updateOnboardingProgress = (data) => async (dispatch) => {
-  try {
-    
-    console.log('herp');
+  try {    
     dispatch({
         type: UPDATE_ONBOARDING_PROGRESS,
         payload: data

@@ -14,6 +14,9 @@ class Instance {
     //isCheckingSession = true;
   }
 
+  // Experimentally moved out of App.js, seems to work so far
+  componentDidUpdate() { this.forceUpdate() }
+
   init = async () => {
     let instanceId = null;
 

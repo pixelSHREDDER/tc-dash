@@ -25,10 +25,13 @@ class GSForm extends React.Component {
   setProgressValues = () => {
     const { questionGroups } = this.props;
     let newQuestionProgressValues = this.state.questionProgressValues;
+    let requiredQuestions;
 
     questionGroups.forEach(group => {
-      group.questions.forEach(question => {
-        this.setQuestionProgressValues(newQuestionProgressValues, (100 / questionGroups.length) / group.questions.length, question);
+      requiredQuestions = [ ...group.questions.filter(q => q.validators && q.validators.includes('required')) ];
+
+      requiredQuestions.forEach(question => {
+        this.setQuestionProgressValues(newQuestionProgressValues, (100 / questionGroups.length) / requiredQuestions.length, question);
       });
     });
   }
@@ -38,26 +41,36 @@ class GSForm extends React.Component {
     question.type === 'radioToggle' && question.fields.forEach(field => this.setQuestionProgressValues(questionProgressValues, totalPoints / question.fields.length, field))
   };
 
-  //handleRadioChange = (data) => {
-  handleInputChange = (data) => {
-    const { handleUpdateInstance, instance, onboardingProgress, updateOnboardingProgress } = this.props;
+  incrementOnboardingProgress = (value, id) => {
+    const { onboardingProgress, updateOnboardingProgress } = this.props;
     const { filledQuestions, onboardingSection, questionProgressValues } = this.state;
+
     let newOnboardingProgress = { ...onboardingProgress };
     let newFilledQuestions = { ...filledQuestions };
 
-    if (!(data.field in filledQuestions)) {
-      filledQuestions[data.field] = true;
-      if (data.value) {
-        newOnboardingProgress[onboardingSection] += questionProgressValues[data.field];
+    if (!(id in filledQuestions)) {
+      filledQuestions[id] = true;
+      if (value) {
+        newOnboardingProgress[onboardingSection] += questionProgressValues[id];
       }
-    } else if (!data.value) {
-      newOnboardingProgress[onboardingSection] -= questionProgressValues[data.field];
+    } else if (!value) {
+      newOnboardingProgress[onboardingSection] -= questionProgressValues[id];
       if (newOnboardingProgress[onboardingSection] < 0) { newOnboardingProgress[onboardingSection] = 0 }
-      delete newFilledQuestions[data.field];
+      delete newFilledQuestions[id];
       this.setState({ filledQuestions: newFilledQuestions });
   }
     updateOnboardingProgress(newOnboardingProgress);
-    updateInstance(data);
+    return newOnboardingProgress;
+  }
+
+  //handleRadioChange = (data) => {
+  handleInputChange = (value, id, name, isRequired) => {
+    const { instance, updateInstance } = this.props;
+    let newInstance = instance;
+
+    newInstance[name] = value;
+    if (isRequired) { newInstance['onboarding_progress'] = this.incrementOnboardingProgress(value, id) }
+    updateInstance(newInstance);
   }
 
   /*handleInputChange = (data) => {
@@ -76,8 +89,8 @@ class GSForm extends React.Component {
             blurb={blurb}    
             questionGroups={questionGroups}
             //radioChangeCallback={(data) => this.handleRadioChange(data)}
-            radioChangeCallback={(data) => this.handleInputChange(data)}
-            inputChangeCallback={(data) => this.handleInputChange(data)}
+            radioChangeCallback={data => this.handleInputChange(data.value, data.id, data.name, data.isRequired)}
+            inputChangeCallback={data => this.handleInputChange(data.value, data.id, data.name, data.isRequired)}
         />
     )
   }

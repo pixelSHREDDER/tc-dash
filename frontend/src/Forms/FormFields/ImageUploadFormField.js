@@ -98,7 +98,7 @@ class ImageUploadFormField extends React.Component {
     //editorRef = React.createRef();
 
     async componentDidMount() {
-        const { fields, form, index } = this.props;
+        const { fields/*, form*/, index } = this.props;
         const { acceptedFiles } = this.state;
         let newField = fields[index];
         let newFileUploadFields = [];

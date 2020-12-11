@@ -55,40 +55,44 @@ class FormRenderer extends React.Component {
         this.state = {
             form: {
                 text: '',
-                dirtyFields: {},
             },
             errors: {},
         };
     };
 
     validateProperty = (data, validators) => {
-        let errorMessage = '';
+        let message = '';
+        let isRequired = false;
 
         for (let v in validators) {
+            if (validators[v] === 'required') { isRequired = true }
             if (validators[v] in FormValidators) {
                 let error = FormValidators[validators[v]](data);
-                if (error.length) { errorMessage.length ? errorMessage += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : errorMessage += error }
+                if (error.length) { message.length ? message += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : message += error }
             }
         };
 
-        return errorMessage.length ? `${errorMessage} :(` : '';
+        return {
+            errorMessage: message.length ? `${message} :(` : '',
+            isRequired,
+        };
     }
 
-    handleInputChange = (value, field, validators) => {
+    handleInputChange = (value, id, name, validators) => {
         const { inputChangeCallback } = this.props;
         const { errors } = this.state;
-        const errorMessage = this.validateProperty(value, validators);
+        const { errorMessage, isRequired } = this.validateProperty(value, validators);
 
         let formErrors = {...errors};
 
-        if (errorMessage) { formErrors[field] = errorMessage }
-        else { delete formErrors[field] }
+        if (errorMessage) { formErrors[id] = errorMessage }
+        else { delete formErrors[id] }
+        if (!formErrors.length) { inputChangeCallback({ value, id, name, isRequired }) }
         this.setState({ errors: formErrors });
-        if (!formErrors.length) { inputChangeCallback({ field, value, fieldCount: 0 }) }
     };
 
     render() {
-        const { blurb, classes, questionGroups, inputChangeCallback, radioChangeCallback } = this.props;
+        const { blurb, classes, inputChangeCallback, questionGroups, radioChangeCallback } = this.props;
         const { errors, form } = this.state;
     
         return (
@@ -286,9 +290,9 @@ class FormRenderer extends React.Component {
 
 FormRenderer.propTypes = {
     blurb: PropTypes.object,
+    inputChangeCallback: PropTypes.func.isRequired,
     questionGroups: PropTypes.array.isRequired,
     radioChangeCallback: PropTypes.func.isRequired,
-    inputChangeCallback: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(FormRenderer);

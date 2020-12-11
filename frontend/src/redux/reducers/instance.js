@@ -1,18 +1,18 @@
 import { UPDATE_INSTANCE, UPDATE_ONBOARDING_PROGRESS } from '../actions/types';
 
 const initialState = {
-    domain: '',
+    //domain: '',
     onboarding_progress: {
         'organization_info': 0,
-        'website': 100,
-        'board': 60,
-        'email': 25,
-        'social_media': 10,
+        'website': 0,
+        'board': 0,
+        'email': 0,
+        'social_media': 0,
         'payments_finances': 0,
-        'analytics_seo': 100,
-        'podcasting': 40,
-        'bylaws_constitution': 10,
-        'branding_personalization': 80,
+        'analytics_seo': 0,
+        'podcasting': 0,
+        'bylaws_constitution': 0,
+        'branding_personalization': 0,
     },
 };
 

@@ -43,6 +43,7 @@ const questionGroups = [
     questions: [
       {
         type: 'phone',
+        name: 'phone_number',
         label: 'What\'s your organization\'s phone number?',
         description: 'Can be either a landline or a board member\'s cellphone number (will be displayed publicly).',
         validators: ['required'],

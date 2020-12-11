@@ -26,9 +26,9 @@ class TextFormField extends React.Component {
     //TODO: Replace with real data
     componentDidMount = () => this.setState({ currentValue: this.props.form.text });
 
-    handleOnBlur = (value, id, validators) => {
+    handleOnBlur = (value, id, name, validators) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, validators);
+        this.props.inputChangeHandler(value, id, name, validators);
         this.setState({ currentValue: value });
     }
 
@@ -47,7 +47,7 @@ class TextFormField extends React.Component {
                         id={field.id}
                         name={field.name}
                         defaultValue={this.state.currentValue}
-                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.validators)}
+                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
                         aria-describedby={`${field.id}-helper-text`}
                     />
                     {

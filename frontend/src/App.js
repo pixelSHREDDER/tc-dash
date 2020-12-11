@@ -103,9 +103,9 @@ class App extends React.Component {
     this.getInstance();
   }
 
-  componentWillReceiveProps(nextProps) {
+  /*componentWillReceiveProps(nextProps) {
     if (nextProps.instance) this.forceUpdate();
-  }
+  }*/
 
   getInstance = async () => {
     const { addError, setInstance } = this.props;

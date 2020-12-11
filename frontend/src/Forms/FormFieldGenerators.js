@@ -49,33 +49,33 @@ const getMailingAddressFormFields = (
             [{
                 type: 'text',
                 name: names[0],
-                id: `${prefix}_address_line_1`,
+                id: `${prefix}_${names[0]}`,
                 label: labels[0],
                 validators: ['required'],
             },
             {
                 type: 'text',
                 name: names[1],
-                id: `${prefix}_address_line_2`,
+                id: `${prefix}_${names[1]}`,
                 label: labels[1],
             },
             {
                 type: 'text',
                 name: names[2],
-                id: `${prefix}_city`,
+                id: `${prefix}_${names[2]}`,
                 label: labels[2],
                 validators: ['required'],
             },
             {
                 type: 'state',
                 name: names[3],
-                id: `${prefix}_state`,
+                id: `${prefix}_${names[3]}`,
                 validators: ['required'],
             },
             {
                 type: 'zip',
                 name: names[4],
-                id: `${prefix}_zip`,
+                id: `${prefix}_${names[4]}`,
                 label: labels[3],
                 validators: ['required'],
             },]

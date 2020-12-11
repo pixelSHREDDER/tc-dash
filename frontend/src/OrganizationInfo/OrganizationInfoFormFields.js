@@ -6,11 +6,11 @@ const organizationMailingAddressFormFields = [
     ...getMailingAddressFormFields(
         'organization',
         [
-            'line_1',
-            'line_2',
-            'city',
-            'state',
-            'zip',
+            'mailing_address_line_1',
+            'mailing_address_line_2',
+            'mailing_address_city',
+            'mailing_address_state',
+            'mailing_address_zip',
         ]
     ),
 ];
