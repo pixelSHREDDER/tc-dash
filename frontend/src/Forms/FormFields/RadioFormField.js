@@ -13,25 +13,16 @@ import {
 class RadioFormField extends React.Component {
     state = {
         currentValue: null,
+        options: [],
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
-
-    handleOnChange = (value, id, name, validators) => {
-        if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, name, validators);
-        this.setState({ currentValue: value });
-    };
-
-    render() {
-        const { errors, fields, index } = this.props;
-        const field = fields[index];
-
-        if (!('label' in field)) { field.label = 'Pick one!'; }
-        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
-        if (!field.options) {
-            field.options = [
+    componentDidMount = () => {
+        const { fields, index } = this.props;
+        
+        this.setState({
+            currentValue: fields[index].value,
+            options: fields[index].options || [
                 {
                     label: 'Yes',
                     value: 'true',
@@ -39,8 +30,19 @@ class RadioFormField extends React.Component {
                     label: 'No',
                     value: 'false',
                 }
-            ];
-        }
+            ],
+        });
+    }
+
+    handleOnChange = (value, id, name, validators, parents) => {
+        if (value === this.state.currentValue) return;
+        this.props.inputChangeHandler(value, id, name, validators, parents);
+        this.setState({ currentValue: value });
+    };
+
+    render() {
+        const { errors, fields, index } = this.props;
+        const field = fields[index];
     
         return (
             <Grid item sm={12}>
@@ -53,12 +55,12 @@ class RadioFormField extends React.Component {
                     <RadioGroup
                         aria-label={field.label}
                         name={field.id}
-                        onChange={e => this.handleOnChange(e.target.value, field.id, field.name, field.validators)}
+                        onChange={e => this.handleOnChange(e.target.value, field.id, field.name, field.validators, field.parents)}
                         aria-describedby={`${field.id}-helper-text`}
                         row
                     >
                         {
-                        field.options.map(option => (
+                        this.state.options.map(option => (
                             <FormControlLabel key={`${field.id}_${option.value}`}
                                 id={`${field.id}_${option.value}`}
                                 value={option.value}
@@ -77,7 +79,6 @@ class RadioFormField extends React.Component {
 RadioFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

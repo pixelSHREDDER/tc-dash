@@ -6,13 +6,13 @@ import {
 const websiteFormFields = [
     {
         type: 'text',
-        id: 'website_url',
+        name: 'website_url',
         label: 'Website URL',
         description: 'The website\'s homepage.',
         validators: ['required', 'url'],
     },{
         type: 'select',
-        id: 'website_hosting_provider',
+        name: 'website_hosting_provider',
         label: 'Hosting provider',
         description: 'Who do you pay to host this website?',
         options: {

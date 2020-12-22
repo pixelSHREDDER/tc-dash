@@ -29,20 +29,17 @@ class ZipFormField extends React.Component {
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+    componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
-    handleOnBlur = (value, id, name, validators) => {
+    handleOnBlur = (value, id, name, validators, parents) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, name, ['zip', ...validators]);
+        this.props.inputChangeHandler(value, id, name, ['zip', ...validators], parents);
         this.setState({ currentValue: value });
     };
 
     render() {
         const { classes, errors, fields, index } = this.props;
         const field = fields[index];
-
-        if (!('label' in field)) { field.label = 'Zip Code'; }
-        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
     
         return (
             <Grid item xs={12}>
@@ -54,13 +51,13 @@ class ZipFormField extends React.Component {
                             mask={[/^\d{5}(-\d{4})?$/]}
                             //maskPlaceholder="_____-____"
                             value={this.state.currentValue}
-                            onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
+                            onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators, field.parents)}
                             //onChange={e => this.handleInputChange(e.target.value, field.id, field.validators)}
                             //alwaysShowMask={true}
                     >
                         {/* {() => <TextField
                             id={field.id}
-                            //defaultValue={form.text}
+                            //defaultValue={this.state.currentValue}
                             //value={currentValue}
                             //onBlur={e => this.handleFormChange(e.target.value, field.id, field.validators)}
                             *//*onBlur={e => this.handleInputChange(e.target.value, field.id, field.validators)}
@@ -84,7 +81,6 @@ class ZipFormField extends React.Component {
 ZipFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

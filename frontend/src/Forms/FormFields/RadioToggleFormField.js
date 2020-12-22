@@ -29,207 +29,224 @@ const styles = theme => ({
 });
 
 class RadioToggleFormField extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            openForms: {},
-        };
-        this.renderRadioToggleField = this.renderRadioToggleField.bind(this);
+    state = {
+        //id: null,
+        sections: {},
     };
 
-    handleRadioToggle = (value, field) => {
-        const { radioChangeHandler } = this.props;
-        const { openForms } = this.state;
+    componentDidMount = () => {
+        const { description, fields, id, label, optionLabels } = this.props;
+        //const id = label.replace(/ /g, '_');
+
+        this.setState({
+            //id,
+            sections: this.populateSections(this.state.sections, fields, id, optionLabels, label, description, []),
+        });
+    }
+
+    populateSections = (sections, fields, id, optionLabels, label, description, parents) => {
+        const childSections = fields.filter(field => field.type === 'radioToggle');
+
+        let newFields = [ ...fields ];
+        let newSections = { ...sections };
+
+        newFields.forEach(field => {
+            //field.id = field.label.replace(/ /g, '_');
+            field.parents = [ ...parents, id];
+        })
+
+        newSections[id] = {
+            description: description || '',
+            fields: newFields,
+            label,
+            open: false,
+            optionLabels: optionLabels || ['Yes', 'No'],
+            parents: parents,
+        }
+
+        childSections.forEach(childSection => newSections = this.populateSections(newSections, childSection.fields, /*childSection.label.replace(/ /g, '_')*/childSection.id, childSection.optionLabels, childSection.label, childSection.description, [ ...parents, id ]));
+
+        return newSections;
+    }
+
+    handleRadioToggle = (value, id, fields, parents) => {
+        let sections = { ...this.state.sections };
+
         value = (value === 'true') ? true : (value === 'false') ? false : null;
-        this.setState({ openForms: { ...openForms, [field]: value } });
-        radioChangeHandler({ field, value, fieldCount: 0 });
+        sections[id].open = value;
+        this.props.radioToggleChangeHandler({ value, id, fields, parents });
+
+        this.setState({ sections });
     };
 
-    renderRadioToggleField = (id, label, description, optionLabels, fields, index, form, errors) => {
-        const { classes, inputChangeHandler } = this.props;
-        const { openForms } = this.state;
+    renderRadioToggleField = (section, id) => {
+        const { classes, errors, inputChangeHandler } = this.props;
         
         return (
-            <Grid item xs={12}>
-                <React.Fragment>
-                    <RadioToggleControls
-                        label={label}
-                        description={description || ''}
-                        optionLabels={optionLabels || ['Yes', 'No']}
-                        inputKey={id}
-                        sendRadio={data => this.handleRadioToggle(data, id)}
-                    />
-                    {
-                    ((id in openForms) && (openForms[id] === true)) &&
-                        <React.Fragment>
-                            <fieldset className={classes.fieldset}>
-                                <div className={classes.grid}>
-                                    <Grid container spacing={2}>
-                                        {fields.map((field, index) => (
-                                            <React.Fragment key={`${field.id}_${index}`}>
-                                                {
-                                                (field.type === 'colorPicker') &&
-                                                    <ColorPickerFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'fileUpload') &&
-                                                    <FileUploadFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'imageUpload') &&
-                                                    <ImageUploadFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'password') &&
-                                                    <PasswordFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'phone') &&
-                                                    <PhoneFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'radio') &&
-                                                    <RadioFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'radioToggle') &&
-                                                    <React.Fragment>
-                                                        {this.renderRadioToggleField(field.id, field.label, field.description, field.optionLabels, field.fields, index, form, errors)}
-                                                    </React.Fragment>
-                                                }
-                                                {
-                                                (field.type === 'rankedChoices') &&
-                                                    <RankedChoicesFormField
-                                                        label={field.label}
-                                                        description={field.description}
-                                                        choiceCount={field.choiceCount}
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'select') &&
-                                                    <SelectFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'state') &&
-                                                    <StateFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'text') &&
-                                                    <TextFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={data => inputChangeHandler(data, field.id, field.validators)}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'textarea') &&
-                                                    <TextareaFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={data => inputChangeHandler(data, field.id, field.validators)}
-                                                    />
-                                                }
-                                                {
-                                                (field.type === 'zip') &&
-                                                    <TextFormField
-                                                        fields={fields}
-                                                        index={index}
-                                                        form={form}
-                                                        errors={errors}
-                                                        inputChangeHandler={inputChangeHandler}
-                                                    />
-                                                }
-                                            </React.Fragment>
-                                        ))}
-                                    </Grid>
-                                </div>
-                            </fieldset>
-                        </React.Fragment>
-                    }
-                </React.Fragment>
-            </Grid>
+            <React.Fragment>
+                <Grid item xs={12}>
+                    <React.Fragment>
+                        <RadioToggleControls
+                            label={section.label}
+                            description={section.description}
+                            optionLabels={section.optionLabels}
+                            inputKey={id}
+                            sendRadio={data => this.handleRadioToggle(data, id, section.fields, section.parents)}
+                        />
+                        { section.open &&
+                            <React.Fragment>
+                                <fieldset className={classes.fieldset}>
+                                    <div className={classes.grid}>
+                                        <Grid container spacing={2}>
+                                            { section.fields && section.fields.map((field, index) => (
+                                                <React.Fragment key={`${field.id}_${index}`}>
+                                                    {
+                                                    (field.type === 'colorPicker') &&
+                                                        <ColorPickerFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'fileUpload') &&
+                                                        <FileUploadFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'imageUpload') &&
+                                                        <ImageUploadFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'password') &&
+                                                        <PasswordFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'phone') &&
+                                                        <PhoneFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'radio') &&
+                                                        <RadioFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'radioToggle') &&
+                                                        <React.Fragment>
+                                                            {this.renderRadioToggleField(this.state.sections[field.id], field.id)}
+                                                        </React.Fragment>
+                                                    }
+                                                    {
+                                                    (field.type === 'rankedChoices') &&
+                                                        <RankedChoicesFormField
+                                                            label={field.label}
+                                                            description={field.description}
+                                                            choiceCount={field.choiceCount}
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'select') &&
+                                                        <SelectFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'state') &&
+                                                        <StateFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'text') &&
+                                                        <TextFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'textarea') &&
+                                                        <TextareaFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                    {
+                                                    (field.type === 'zip') &&
+                                                        <TextFormField
+                                                            fields={section.fields}
+                                                            index={index}
+                                                            errors={errors}
+                                                            inputChangeHandler={inputChangeHandler}
+                                                        />
+                                                    }
+                                                </React.Fragment>
+                                            ))}
+                                        </Grid>
+                                    </div>
+                                </fieldset>
+                            </React.Fragment>
+                        }
+                    </React.Fragment>
+                </Grid>
+            </React.Fragment>
         );
     };
 
     render() {
-        const { description, errors, fields, form, id, /*index,*/ label, optionLabels } = this.props;
-    
-        return (
-            <React.Fragment>  
-                {this.renderRadioToggleField(id, label, description, optionLabels, fields, /*index*/0, form, errors)}
-            </React.Fragment>
-        );
-    }
+        const { id } = this.props;
+        const { /*id, */sections } = this.state;
+        // TODO: Add loader?
+        return (id in sections) ? this.renderRadioToggleField(sections[id], id) : '';
+    };
 }
 
 RadioToggleFormField.propTypes = {
     description: PropTypes.string,
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     id: PropTypes.string.isRequired,
-    //index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
     label: PropTypes.string.isRequired,
     optionLabels: PropTypes.array,
-    radioChangeHandler: PropTypes.func.isRequired,
+    radioToggleChangeHandler: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(RadioToggleFormField);

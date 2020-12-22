@@ -73,7 +73,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ColorPickerFormField = ({fields, index, form, errors, inputChangeHandler}) => {
+const ColorPickerFormField = ({fields, index, errors, inputChangeHandler}) => {
     const [dialogOpen, setDialogOpen] = useState(null);
     const [fileUploadFields, setFileUploadFields] = useState([]);
     const [field, setField] = useState(null);
@@ -87,9 +87,6 @@ const ColorPickerFormField = ({fields, index, form, errors, inputChangeHandler})
         if ((typeof(fields) === 'undefined') || (typeof(index) === 'undefined') || fileUploadFields.length) return;
         let newFieldDescription = 'You can choose a color manually, or upload an image to extract colors from.';
         let newField = fields[index];
-    
-        if (!('label' in newField)) { newField.label = 'Pick a Color'; }
-        if (!('id' in newField)) { newField.id = newField.label.replace(/ /g, '_'); }
 
         newField.description = `${('description' in newField && newField.description.length) ? newField.description : ''} ${newFieldDescription}`;
 
@@ -155,7 +152,6 @@ const ColorPickerFormField = ({fields, index, form, errors, inputChangeHandler})
                             <FileUploadFormField
                                 fields={fileUploadFields}
                                 index={0}
-                                form={form}
                                 errors={errors}
                             />
                         </Grid>
@@ -215,7 +211,6 @@ const ColorPickerFormField = ({fields, index, form, errors, inputChangeHandler})
 ColorPickerFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

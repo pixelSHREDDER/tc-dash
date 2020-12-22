@@ -27,20 +27,17 @@ class PhoneFormField extends React.Component {
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+    componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
-    handleOnBlur = (value, id, name, validators) => {
+    handleOnBlur = (value, id, name, validators, parents) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, name, ['phone', ...validators]);
+        this.props.inputChangeHandler(value, id, name, ['phone', ...validators], parents);
         this.setState({ currentValue: value });
     };
 
     render() {
         const { classes, errors, fields, index } = this.props;
         const field = fields[index];
-
-        if (!('label' in field)) { field.label = 'Please enter a phone number'; }
-        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
     
         return (
             <Grid item xs={12}>
@@ -53,7 +50,7 @@ class PhoneFormField extends React.Component {
                         defaultCountry={'us'}
                         onlyCountries={['us']}
                         id={field.id}
-                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
+                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators, field.parents)}
                         aria-describedby={`${field.id}-helper-text`}
                         disableCountryCode
                         disableDropdown
@@ -74,7 +71,6 @@ class PhoneFormField extends React.Component {
 PhoneFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

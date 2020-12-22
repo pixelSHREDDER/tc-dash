@@ -98,13 +98,11 @@ class ImageUploadFormField extends React.Component {
     //editorRef = React.createRef();
 
     async componentDidMount() {
-        const { fields/*, form*/, index } = this.props;
+        const { fields, index } = this.props;
         const { acceptedFiles } = this.state;
         let newField = fields[index];
         let newFileUploadFields = [];
 
-        if (!('label' in newField)) { newField.label = 'Upload an Image'; }
-        if (!('id' in newField)) { newField.id = newField.label.replace(/ /g, '_'); }
         if (!('imgWidth' in newField)) { newField.imgWidth = 500; }
         if (!('imgHeight' in newField)) { newField.imgHeight = 500; }
         if (!('fileType' in newField)) { newField.fileType = 'images'; }
@@ -129,7 +127,7 @@ class ImageUploadFormField extends React.Component {
             field: newField,
             fileUploadFields: newFileUploadFields,
             // TODO: Replace with real data
-            //img: form.text || null,
+            //img: fields[index].value || null,
             loading: false,
         });
     }
@@ -152,7 +150,7 @@ class ImageUploadFormField extends React.Component {
     }
 
     render() {
-        const { classes, errors, fields, form, index } = this.props;
+        const { classes, errors, fields, index } = this.props;
         const { dialogOpen, field, fileUploadFields, img, loading, rotate, scale } = this.state;
 
         if (loading) { return <CircularProgress />; }
@@ -191,7 +189,6 @@ class ImageUploadFormField extends React.Component {
                                 <FileUploadFormField
                                     errors={errors}
                                     fields={fileUploadFields}
-                                    form={form}
                                     index={0}
                                     //inputChangeHandler={this.handleFileDrop}
                                 />
@@ -288,7 +285,6 @@ class ImageUploadFormField extends React.Component {
 ImageUploadFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

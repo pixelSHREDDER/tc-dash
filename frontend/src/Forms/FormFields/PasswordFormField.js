@@ -24,11 +24,11 @@ class PasswordFormField extends React.Component {
   };
 
   //TODO: Replace with real data
-  componentDidMount = () => this.setState({ currentValue: this.props.form.text || '' });
+  componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value || '' });
 
-  handleOnBlur = (value, id, name, validators) => {
+  handleOnBlur = (value, id, name, validators, parents) => {
       if (value === this.state.currentValue) return;
-      this.props.inputChangeHandler(value, id, name, ['required', ...validators]);
+      this.props.inputChangeHandler(value, id, name, ['required', ...validators], parents);
       this.setState({ currentValue: value });
   };
 
@@ -42,9 +42,6 @@ class PasswordFormField extends React.Component {
     const field = fields[index];
     const noMatch = !!(currentValue.length && currentConfirmValue !== currentValue);
 
-    if (!('label' in field)) { field.label = 'Password'; }
-    if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
-
     return (
       <Grid item xs={12}>
         <FormControl error={field.id in errors} fullWidth>
@@ -53,7 +50,7 @@ class PasswordFormField extends React.Component {
                 type={passIsMasked ? 'password' : 'text'}
                 label={field.label}
                 defaultValue={currentValue}
-                onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
+                onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators, field.parents)}
                 aria-describedby={`${field.id}-helper-text`}
                 InputProps={{
                   endAdornment: (
@@ -86,7 +83,7 @@ class PasswordFormField extends React.Component {
                 type={passIsMasked ? 'password' : 'text'}
                 label={`Confirm ${field.label.charAt(0).toLowerCase()}${field.label.substring(1)}`}
                 defaultValue={''}
-                onBlur={e => this.handleConfirmOnBlur(e.target.value, `${field.id}_confirm`, field.validators)}
+                onBlur={e => this.handleConfirmOnBlur(e.target.value, `${field.id}_confirm`, field.validators, field.parents)}
                 aria-describedby={`${field.id}_confirm-helper-text`}
                 InputProps={{
                   endAdornment: (
@@ -121,7 +118,6 @@ class PasswordFormField extends React.Component {
 PasswordFormField.propTypes = {
   errors: PropTypes.object.isRequired,
   fields: PropTypes.array.isRequired,
-  form: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
   inputChangeHandler: PropTypes.func.isRequired,
 };

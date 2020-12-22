@@ -23,21 +23,18 @@ class TextFormField extends React.Component {
         currentValue: null,
     }
 
-    //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+    //TODO: Replace with real data 
+    componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
-    handleOnBlur = (value, id, name, validators) => {
+    handleOnBlur = (value, id, name, validators, parents) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, name, validators);
+        this.props.inputChangeHandler(value, id, name, validators, parents);
         this.setState({ currentValue: value });
     }
 
     render() {
         const { classes, errors, fields, index } = this.props;
         const field = fields[index];
-    
-        if (!('label' in field)) { field.label = 'Fill me!'; }
-        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
 
         return (
             <Grid item xs={12}>
@@ -46,8 +43,8 @@ class TextFormField extends React.Component {
                     <Input
                         id={field.id}
                         name={field.name}
-                        defaultValue={this.state.currentValue}
-                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
+                        defaultValue={field.value}
+                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators, field.parents)}
                         aria-describedby={`${field.id}-helper-text`}
                     />
                     {
@@ -66,7 +63,6 @@ class TextFormField extends React.Component {
 TextFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

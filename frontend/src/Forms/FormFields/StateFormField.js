@@ -27,20 +27,17 @@ class StateFormField extends React.Component {
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+    componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
-    handleInput = (value, id, name, validators) => {
+    handleInput = (value, id, name, validators, parents) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, name, ['required', ...validators]);
+        this.props.inputChangeHandler(value, id, name, ['required', ...validators], parents);
         this.setState({ currentValue: value });
     };
 
     render() {
         const { errors, fields, index } = this.props;
         const field = fields[index];
-
-        if (!('label' in field)) { field.label = 'State'; }
-        if (!('id' in field)) { field.id = 'state'; }
     
         return (
             <Grid item sm={12}>
@@ -50,8 +47,7 @@ class StateFormField extends React.Component {
                         labelid={`${field.id}_label`}
                         id={field.id}
                         value={this.state.currentValue}
-                        //onBlur={e => this.handleInput(e.target.value, field.id, field.name, field.validators)}
-                        onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators)}
+                        onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators, field.parents)}
                     >
                         <MenuItem value={'AL'}>Alabama</MenuItem>
                         <MenuItem value={'AK'}>Alaska</MenuItem>
@@ -126,7 +122,6 @@ class StateFormField extends React.Component {
 StateFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

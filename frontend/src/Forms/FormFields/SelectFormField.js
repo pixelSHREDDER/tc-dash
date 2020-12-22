@@ -29,11 +29,11 @@ class SelectFormField extends React.Component {
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+    //componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
-    handleInput = (value, id, name, validators) => {
+    handleInput = (value, id, name, validators, parents) => {
         if (value === 'other') { this.setState({ showOther: true }) }
-        else { this.props.inputChangeHandler(value, id, name, ['required', ...validators]) }
+        else { this.props.inputChangeHandler(value, id, name, ['required', ...validators], parents) }
         this.setState({ currentValue: value });
     };
 
@@ -41,9 +41,6 @@ class SelectFormField extends React.Component {
         const { errors, fields, index } = this.props;
         const { currentValue, showOther } = this.state;
         const field = fields[index];
-
-        if (!('label' in field)) { field.label = 'Please select an option'; }
-        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
     
         return (
             <Grid item sm={12}>
@@ -53,8 +50,7 @@ class SelectFormField extends React.Component {
                         labelid={`${field.id}_label`}
                         id={field.id}
                         value={currentValue}
-                        //onBlur={e => this.handleInput(e.target.value, field.id, field.name,  field.validators)}
-                        onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators)}
+                        onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators, field.parents)}
                     >
                         {Object.entries(field.options).map(([key,value]) => (
                             <MenuItem key={key} value={key}>{value}</MenuItem>
@@ -69,7 +65,7 @@ class SelectFormField extends React.Component {
                         <Input
                             id={`${field.id}_other`}
                             placeholder="(please specify)"
-                            onBlur={e => this.handleInput(e.target.value, field.id, ['required', ...field.validators])}
+                            onBlur={e => this.handleInput(e.target.value, field.id, ['required', ...field.validators], field.parents)}
                         />
                     }
                     {
@@ -88,7 +84,6 @@ class SelectFormField extends React.Component {
 SelectFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };

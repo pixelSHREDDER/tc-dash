@@ -26,43 +26,51 @@ class RankedChoicesFormField extends React.Component {
     };
 
     validateProperty = (data, validators) => {
-        let errorMessage = '';
+        let message = '';
+        let isRequired = false;
 
         for (let v in validators) {
+            if (validators[v] === 'required') { isRequired = true }
             if (validators[v] in FormValidators) {
                 let error = FormValidators[validators[v]](data);
-                if (error.length) { errorMessage.length ? errorMessage += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : errorMessage += error }
+                if (error.length) { message.length ? message += `, and ${error.replace(/^\w/, c => c.toLowerCase())}` : message += error }
             }
         };
 
-        return errorMessage.length ? `${errorMessage} :(` : '';
+        return {
+            errorMessage: message.length ? `${message} :(` : '',
+            isRequired,
+        };
     }
 
-    handleInputChange = (value, field, validators) => {
+    handleInputChange = (value, id, name, validators, parents) => {
+        console.log(value, id, name, validators, parents);
         const { inputChangeCallback } = this.props;
         const { choiceErrors, rankedChoices } = this.state;
-        const currentChoice = parseInt(field.split('_').pop());
+        const currentChoice = parseInt(id.split('_').pop());
+        const { errorMessage, isRequired } = this.validateProperty(value, validators);
 
         let newChoices = {...rankedChoices};
         let newChoiceErrors = {...choiceErrors};
-        let errorMessage = '';
 
-        errorMessage = this.validateProperty(value, validators);
+        if (errorMessage) { newChoiceErrors[id] = errorMessage }
+        else { delete newChoiceErrors[id] }
 
-        if (errorMessage) { newChoiceErrors[field] = errorMessage }
-        else { delete newChoiceErrors[field] }
-
-        newChoices[currentChoice] = value;
-        this.setState({ choiceErrors: newChoiceErrors });
-
-        if (!newChoiceErrors.length) {
-            this.setState({ rankedChoices: newChoices });
-            inputChangeCallback({ field, rankedChoices, fieldCount: 0 });
+        //if (!newChoiceErrors.length) {
+        if (!(id in newChoiceErrors)) {
+            newChoices[currentChoice] = value;
+            inputChangeCallback({ newChoices, id, name, validators, isRequired, parents });
+            this.setState({
+                choiceErrors: newChoiceErrors,
+                rankedChoices: newChoices,
+            });
+        } else {
+            this.setState({ choiceErrors: newChoiceErrors });
         }
     };
 
-    renderChoices = (field, id) => {
-        const { choiceCount, errors, form } = this.props;
+    renderChoices = field => {
+        const { choiceCount, errors } = this.props;
 
         let choiceFields = [];
         let choices = [];
@@ -74,18 +82,18 @@ class RankedChoicesFormField extends React.Component {
         for (let i = 1; i <= choiceCount; i++) {
             let choiceField = {
                 type: 'text',
-                id: `${id}_${i}`,
+                name: field.name,
+                id: `${field.id}_${i}`,
                 label: `#${i} choice`,
                 validators: validators,
             };
             choiceFields.push(choiceField);
 
             choices.push(
-                <React.Fragment key={i}>
+                <React.Fragment key={`${field.id}_${i}`}>
                     <TextFormField
                         fields={choiceFields}
                         index={i - 1}
-                        form={form}
                         errors={allErrors}
                         inputChangeHandler={this.handleInputChange}
                     />
@@ -97,14 +105,14 @@ class RankedChoicesFormField extends React.Component {
     }
 
     render() {
-        const { classes, choiceCount, description, errors, fields, id, index, label } = this.props;
+        const { classes, choiceCount, description, errors, fields, index, label } = this.props;
         const field = fields[index];
 
         return (
             <FormControl component="fieldset" className={classes.formControl} error={field.id in errors} fullWidth>
                 <FormLabel component="legend">{label}</FormLabel>
                 <FormHelperText>{description || `Please enter ${choiceCount} choices in order of preference.`}</FormHelperText>
-                {this.renderChoices(field, id)}
+                {this.renderChoices(field)}
             </FormControl>
         );
     }
@@ -115,8 +123,6 @@ RankedChoicesFormField.propTypes = {
     description: PropTypes.string,
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired,
     index: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
 };

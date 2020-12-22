@@ -23,20 +23,18 @@ class TextareaFormField extends React.Component {
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.form.text });
+    componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
-    handleOnBlur = (value, id, name, validators) => {
+    handleOnBlur = (value, id, name, validators, parents) => {
         if (value === this.state.currentValue) return;
-        this.props.inputChangeHandler(value, id, name, validators);
+        this.props.inputChangeHandler(value, id, name, validators, parents);
         this.setState({ currentValue: value });
     };
 
     render() {
         const { classes, errors, fields, index } = this.props;
         const field = fields[index];
-    
-        if (!('label' in field)) { field.label = 'Fill me!'; }
-        if (!('id' in field)) { field.id = field.label.replace(/ /g, '_'); }
+
         if (!('rows' in field)) { field.rows = 4; }
 
         return (
@@ -48,7 +46,7 @@ class TextareaFormField extends React.Component {
                         label={field.label}
                         defaultValue={this.state.currentValue}
                         rows={field.rows}
-                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators)}
+                        onBlur={e => this.handleOnBlur(e.target.value, field.id, field.name, field.validators, field.parents)}
                         aria-describedby={`${field.id}-helper-text`}
                     />
                     {
@@ -67,7 +65,6 @@ class TextareaFormField extends React.Component {
 TextareaFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
-    form: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     inputChangeHandler: PropTypes.func.isRequired,
 };
