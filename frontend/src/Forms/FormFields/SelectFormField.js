@@ -41,7 +41,7 @@ class SelectFormField extends React.Component {
         const { errors, fields, index } = this.props;
         const { currentValue, showOther } = this.state;
         const field = fields[index];
-    
+
         return (
             <Grid item sm={12}>
                 <FormControl component="fieldset" error={field.id in errors} fullWidth>

@@ -87,7 +87,8 @@ class ExternalLinkPanel extends React.Component {
                             panel.useDates &&
                                 <Grid container justify="center" spacing={2}>
                                     <Grid item md={4}>
-                                        <DateRange sendDateRange={(data) => this.setDates(index, data)} />
+                                        {/* TODO: Fix infinite loop */} 
+                                        {/*<DateRange sendDateRange={(data) => this.setDates(index, data)} />*/}
                                     </Grid>
                                     <Grid item md={8}>
                                         <Button onClick={() => {panel.linkFn(domain, panel.from, panel.to)}} size="large" color="primary" autoFocus>

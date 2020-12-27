@@ -27,7 +27,7 @@ class StateFormField extends React.Component {
     };
 
     //TODO: Replace with real data
-    componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
+    //componentDidMount = () => this.setState({ currentValue: this.props.fields[this.props.index].value });
 
     handleInput = (value, id, name, validators, parents) => {
         if (value === this.state.currentValue) return;

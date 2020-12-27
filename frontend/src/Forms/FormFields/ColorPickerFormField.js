@@ -96,7 +96,7 @@ const ColorPickerFormField = ({fields, index, errors, inputChangeHandler}) => {
             filesLimit: 1,
             showPreviews: false,
             extraAttrs: {
-                onDrop: data => setImg(URL.createObjectURL(data)),
+                onDrop: data => setImg(URL.createObjectURL(data[0])),
             },
         }]);
         setField(newField);

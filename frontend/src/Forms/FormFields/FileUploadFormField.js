@@ -82,7 +82,7 @@ FileUploadFormField.propTypes = {
     errors: PropTypes.object.isRequired,
     fields: PropTypes.array.isRequired,
     index: PropTypes.number.isRequired,
-    inputChangeHandler: PropTypes.func.isRequired,
+    inputChangeHandler: PropTypes.func,
 };
 
 export default withStyles(styles, { withTheme: true })(FileUploadFormField);

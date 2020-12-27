@@ -54,7 +54,10 @@ class GSForm extends React.Component {
 
     if (parents && parents.length) {
       if (parents[0] in questionClearQueue) {
-        if (filled === true) { newOnboardingProgress[onboardingSection] += questionProgressValues[id] }
+        if (filled === true) {
+          newOnboardingProgress[onboardingSection] += questionProgressValues[id];
+          if (newOnboardingProgress[onboardingSection] > 99.9) { newOnboardingProgress[onboardingSection] = 100 }
+        }
         else {
           newOnboardingProgress[onboardingSection] -= questionProgressValues[id];
           if (newOnboardingProgress[onboardingSection] < 0) { newOnboardingProgress[onboardingSection] = 0 }
@@ -62,7 +65,10 @@ class GSForm extends React.Component {
 
         return newOnboardingProgress;
       }
-    } else if (filled === true) { newOnboardingProgress[onboardingSection] += questionProgressValues[id] }
+    } else if (filled === true) {
+      newOnboardingProgress[onboardingSection] += questionProgressValues[id];
+      if (newOnboardingProgress[onboardingSection] > 99.9) { newOnboardingProgress[onboardingSection] = 100 }
+    }
     else {
       newOnboardingProgress[onboardingSection] -= questionProgressValues[id];
       if (newOnboardingProgress[onboardingSection] < 0) { newOnboardingProgress[onboardingSection] = 0 }
@@ -153,7 +159,7 @@ class GSForm extends React.Component {
       }, newOnboardingProgress, newQuestionClearQueue);
       
       parents.forEach(parent => {
-        newQuestionClearQueue[parent].fields.forEach(field => {
+        newQuestionClearQueue[parent].fields && newQuestionClearQueue[parent].fields.forEach(field => {
           field.name && delete newInstance[field.name];
           newQuestionClearQueue = this.updateQuestionClearQueue(field.id, field, [ parent ], newQuestionClearQueue);
           if (field.isRequired) { newOnboardingProgress = this.incrementOnboardingProgress(field, newOnboardingProgress, newQuestionClearQueue) }
