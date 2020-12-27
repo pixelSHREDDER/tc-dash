@@ -120,7 +120,6 @@ class App extends React.Component {
         data = (await axios.get(`http://${URLS.dataUrl}/instance/${instanceId}`,
         { headers: { 'Authorization': `Bearer ${token}` }}
         )).data;
-        console.log(data);
         setInstance(data.data[0]);
     } catch (e) {
         addError(e);
@@ -138,7 +137,6 @@ class App extends React.Component {
         { data: update },
         { headers: { 'Authorization': `Bearer ${ token }` }}
       )).data.data;
-      console.log(data);
       updateInstance(data);
     } catch (err) {
       console.log(err);
@@ -152,8 +150,7 @@ class App extends React.Component {
     const token = await auth0Client.getIdToken();
     const data = (await axios.get(`http://${ URLS.dataUrl }/getData`,
     { headers: { 'Authorization': `Bearer ${ token }` }}
-    )).data;
-    console.log(data);*/
+    )).data;*/
     /*fetch(`http://${ URLS.dataUrl }/getData`, {
       method: 'GET',
       withCredentials: true,
@@ -219,7 +216,6 @@ class App extends React.Component {
   }*/
 
   /*async saveInstance(instance) {
-    console.log(instance);
     await axios.put(`http://${ URLS.dataUrl }/${ instance.id }`, {
       instance,
     }, {

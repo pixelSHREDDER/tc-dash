@@ -60,8 +60,6 @@ app.use(logger('dev'));
 const desanitizeURLs = obj => {  
   //TODO: Refactor this bruteforced nonsense, integrate with express get function's foreach or something
   obj.forEach((val, key) => {
-    console.log(key);
-    console.log(val);
     if (key === 'domain') obj[key] = obj[key].replace('_-_', '.');
     else if (key === 'domain_choices') obj[key].forEach((dVal, dKey) => obj[key][dKey] = dVal.replace('_-_', '.'));
     else if (key === 'podcast') {

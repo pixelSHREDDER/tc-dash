@@ -55,7 +55,6 @@ class Instance {
     )).data;
     this.data = data.data[0];
     //TODO: Add isLive setting based on data
-    console.log(this.data);
   };
 
   updateData = async (owner, update) => {

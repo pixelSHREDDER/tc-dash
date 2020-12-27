@@ -1,4 +1,5 @@
 import {
+    AccountBalanceWallet as PayPalIcon,
     Add as AddIcon,
     ShowChart as AnalyticsIcon,
     AssignmentInd as BoardIcon,
@@ -55,7 +56,6 @@ import {
     Account as MemberIcon,
     FacebookMessenger as MessengerIcon,
     MessageProcessing as OtherSocialMediaIcon,
-    Paypal as PayPalIcon,
     Dialpad as PhoneNumberIcon,
     Podcast as PodcastIcon,
     FileDocument as PostsIcon,
