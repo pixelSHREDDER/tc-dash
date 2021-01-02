@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const Schema = mongoose.Schema;
 
-let typeValidation = {
-  values: ['county', 'college', 'high_school', 'parent', 'demo', 'stage'],
-  message: 'Not a valid instance type'
-};
-
 function domainValidator(v) {
   //let re = new RegExp('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|COM|ORG|NET|MIL|EDU)$');
   let re = new RegExp('^[a-zA-Z0-9\-\.]+\.org$');
@@ -48,8 +43,13 @@ function emailValidator(v) {
   return re.test(v);
 };
 
-function twitterValidator(v) {
-  let re = new RegExp('^@?(\w){1,15}$');
+function noAtmarkValidator(v) {
+  let re = new RegExp('^[^@]?(\w){1,50}$');
+  return re.test(v);
+};
+
+function noHashtagValidator(v) {
+  let re = new RegExp('^[^#]?(\w){1,7}$');
   return re.test(v);
 };
 
@@ -62,16 +62,10 @@ function iframeValidator(v) {
   return re.test(v);
 };
 
-function hexValidator (v) {
-  if (v.indexOf('#') == 0) {
-      if (v.length == 7) {  // #f0f0f0
-          return true;
-      } else if (v.length == 4) {  // #fff
-          return true;
-      }
-  }
-  return false;
-};
+const usernameValidators = [
+  { validator: noAtmarkValidator, msg: 'Don\'t include the @' },
+  { validator: !urlValidator, msg: 'Don\'t pass the full URL' },
+];
 
 let InstanceSchema = new Schema(
   {
@@ -86,43 +80,52 @@ let InstanceSchema = new Schema(
     },
     title: String,
     description: String,
-    type: {
-      type: String,
-      enum: typeValidation,
+    instance_type: {
+      type: Number,
+        min: [0, 'Not a valid instance type'],
+        max: [6, 'Not a valid instance type'],
     },
-    mailing_address: {
-      line_1: String,
-      line_2: String,
-      city: String,
-      state: {
-        type: String,
-        uppercase: true,
-        minlength: [2, 'Not a valid state'],
-        maxlength: [2, 'Not a valid state'],
-      },
-      zip: {
-        type: String,
-        minlength: [5, 'Not a valid zipcode'],
-        maxlength: [10, 'Not a valid zipcode'],
-        validate: [zipValidator, 'Not a valid zipcode'],
-      },
-      phone: {
-        type: String,
-        minlength: [12, 'Not a valid phone number'],
-        maxlength: [12, 'Not a valid phone number'],
-        validate: [phoneValidator, 'Not a valid phone number'],
-      },
+    mailing_address_line_1: String,
+    mailing_address_line_2: String,
+    mailing_address_city: String,
+    mailing_address_state: {
+      type: String,
+      uppercase: true,
+      minlength: [2, 'Not a valid state'],
+      maxlength: [2, 'Not a valid state'],
+    },
+    mailing_address_zip: {
+      type: String,
+      minlength: [5, 'Not a valid zipcode'],
+      maxlength: [10, 'Not a valid zipcode'],
+      validate: [zipValidator, 'Not a valid zipcode'],
+    },
+    phone_number: {
+      type: String,
+      minlength: [12, 'Not a valid phone number'],
+      maxlength: [12, 'Not a valid phone number'],
+      validate: [phoneValidator, 'Not a valid phone number'],
     },
     old_website: {
       url: {
         type: String,
         validate: [urlValidator, 'Not a valid URL'],
       },
-      hosting_provider: String,
-      hosting_username: String,
-      pwpush_url: {
+      admin_username: String,
+      admin_pwpush_id: {
         type: String,
         validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
+      hosting_provider: String,
+      hosting_username: String,
+      hosting_pwpush_id: {
+        type: String,
+        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+      },
+      hosting_2fa_name: String,
+      hosting_2fa_email_address: {
+        type: String,
+        validate: [emailValidator, 'Not a valid email address'],
       },
     },
     domain_choices: {
@@ -142,20 +145,21 @@ let InstanceSchema = new Schema(
     board: Schema.Types.ObjectId,
     old_emails: {
       type: [{
-        email_address: {
-          type: String,
-          validate: [emailValidator, 'Not a valid email address'],
-        },
-        forwarding_to: String,
-        email_pwpush_url: {
+        old_email_pwpush_id: {
           type: String,
           validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+        },
+        old_email_forwarding_position: String,
+        old_email_2fa_name: String,
+        old_email_2fa_email_address: {
+          type: String,
+          validate: [emailValidator, 'Not a valid email address'],
         },
       }],
     },
     mailchimp: {
       username: String,
-      pwpush_url: {
+      pwpush_id: {
         type: String,
         validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
       },
@@ -167,270 +171,242 @@ let InstanceSchema = new Schema(
         },
       },
     },
-    social_media: {
-      facebook: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        optimize: Boolean,
-      },
-      twitter: {
-        username: {
-          type: String,
-          validate: [twitterValidator, 'Not a valid Twitter username'],
-        },
-        optimize: Boolean,
-        optimize_info: {
-          email_address: {
-            type: String,
-            validate: [emailValidator, 'Not a valid email address'],
-          },
-          pwpush_url: {
-            type: String,
-            validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
-          },
-          two_factor: {
-            name: String,
-            email_address: {
-              type: String,
-              validate: [emailValidator, 'Not a valid email address'],
-            },
-          },
-        },
-        username_choices: {
-          type: [{
-            type: String,
-            validate: [twitterValidator, 'Not a valid Twitter username'],
-          }],
-          validate: [choicesValidator, 'Please include at least 3 {PATH}s'],
-        },
-      },
-      discord: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        access_levels: {
-          type: [{
-            type: String,
-          }],
-          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-        },
-      },
-      flickr: {
-        username: String,
-      },
-      github: {
-        username: String,
-      },
-      instagram: {
-        username: String,
-      },
-      linkedin: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        access_levels: {
-          type: [{
-            type: String,
-          }],
-          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-        },
-      },
-      meetup: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-      },
-      medium: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-      },
-      messenger: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        access_levels: {
-          type: [{
-            type: String,
-          }],
-          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-        },
-      },
-      pinterest: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-      },
-      reddit: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        access_levels: {
-          type: [{
-            type: String,
-          }],
-          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-        },
-      },
-      slack: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        access_levels: {
-          type: [{
-            type: String,
-          }],
-          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-        },
-      },
-      snapchat: {
-        username: String,
-      },
-      tumblr: {
-        username: String,
-      },
-      twitch: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-      },
-      whatsapp: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-        access_levels: {
-          type: [{
-            type: String,
-          }],
-          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-        },
-      },
-      youtube: {
-        url: {
-          type: String,
-          validate: [urlValidator, 'Not a valid URL'],
-        },
-      },
-      other: {
-        type: [{
-          name: {
-            type: String,
-          },
-          url: {
-            type: String,
-            validate: [urlValidator, 'Not a valid URL'],
-          },
-          access_levels: {
-            type: [{
-              type: String,
-            }],
-            validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
-          },
-        }],
-      },
+    facebook_page_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
     },
-    paypal: {
-      email_address: {
-        type: String,
-        validate: [emailValidator, 'Not a valid email address'],
-      },
-      pwpush_url: {
-        type: String,
-        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
-      },
-      two_factor: {
-        name: {
-          type: String,
-        },
-        email_address: {
-          type: String,
-          validate: [emailValidator, 'Not a valid email address'],
-        },
-        linked_to_bank: Boolean,
-      },
+    twitter_username: {
+      type: String,
+      maxlength: [15, 'Twitter usernames are 15 characters or less'],
+      validate: usernameValidators,
     },
-    google_analytics: {
-      email_address: {
-        type: String,
-        validate: [emailValidator, 'Not a valid email address'],
-      },
-      pwpush_url: {
-        type: String,
-        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
-      },
-      two_factor: {
-        name: {
-          type: String,
-        },
-        email_address: {
-          type: String,
-          validate: [emailValidator, 'Not a valid email address'],
-        },
-        linked_to_bank: Boolean,
-      },
+    twitter_pwpush_id: {
+      type: String,
+      validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
     },
-    google_search_console: {
-      email_address: {
-        type: String,
-        validate: [emailValidator, 'Not a valid email address'],
-      },
-      pwpush_url: {
-        type: String,
-        validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
-      },
-      two_factor: {
-        name: {
-          type: String,
-        },
-        email_address: {
-          type: String,
-          validate: [emailValidator, 'Not a valid email address'],
-        },
-        linked_to_bank: Boolean,
-      },
+    twitter_2fa_name: String,
+    twitter_2fa_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
     },
-    podcast: {
-      anchor: Boolean,
-      url: {
-        type: String,
-        validate: [urlValidator, 'Not a valid URL'],
-      },
-      embed: {
-        type: String,
-        validate: [iframeValidator, 'Not a valid embed code'],
-      },
+    discord_channel_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
     },
-    bylaws: {
+    discord_channel_public: Boolean,
+    /*discord_channel_access_levels: {
+      type: [{
+        type: String,
+      }],
+      validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+    },*/
+    flickr_username: {
+      type: String,
+      validate: usernameValidators,
+    },
+    github_username: {
+      type: String,
+      maxlength: [39, 'GitHub usernames are 39 characters or less'],
+      validate: usernameValidators,
+    },
+    instagram_username: {
+      type: String,
+      maxlength: [30, 'Instagram usernames are 30 characters or less'],
+      validate: usernameValidators,
+    },
+    linkedin_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    linkedin_public: Boolean,
+    /*linkedin_access_levels: {
+      type: [{
+        type: String,
+      }],
+      validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+    },*/
+    meetup_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    medium_profile_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    messenger_group_chat_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    messenger_group_chat_public: Boolean,
+    /*messenger_group_chat_access_levels: {
+      type: [{
+        type: String,
+      }],
+      validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+    },*/
+    pinterest_url: {
       type: String,
       validate: [urlValidator, 'Not a valid URL'],
     },
-    branding: [{
+    reddit_sub_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    reddit_sub_public: Boolean,
+    /*reddit_sub_access_levels: {
+      type: [{
+        type: String,
+      }],
+      validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+    },*/
+    slack_workspace_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    slack_workspace_public: Boolean,
+    /*slack_workspace_access_levels: {
+      type: [{
+        type: String,
+      }],
+      validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+    },*/
+    snapchat_username: {
+      type: String,
+      maxlength: [15, 'Snapchat usernames are 15 characters or less'],
+      validate: usernameValidators,
+    },
+    tumblr_username: {
+      type: String,
+      maxlength: [32, 'Tumblr usernames are 32 characters or less'],
+      validate: usernameValidators,
+    },
+    twitch_channel_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    whatsapp_chat_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    whatsapp_chat_public: Boolean,
+    /*whatsapp_chat_access_levels: {
+      type: [{
+        type: String,
+      }],
+      validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+    },*/
+    youtube_channel_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    other_social: {
+      type: [{
+        name: {
+          type: String,
+        },
+        url: {
+          type: String,
+          validate: [urlValidator, 'Not a valid URL'],
+        },
+        public: Boolean,
+        /*access_levels: {
+          type: [{
+            type: String,
+          }],
+          validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
+        },*/
+      }],
+    },
+    paypal_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
+    },
+    paypal_pwpush_id: {
+      type: String,
+      validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+    },
+    paypal_2fa_name: {
+        type: String,
+    },
+    paypal_2fa_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
+    },
+    paypal_bank_linked: Boolean,
+    google_analytics_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
+    },
+    google_analytics_pwpush_id: {
+      type: String,
+      validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+    },
+    google_analytics_2fa_name: {
+      type: String,
+    },
+    google_analytics_2fa_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
+    },
+    google_search_console_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
+    },
+    google_search_console_pwpush_id: {
+      type: String,
+      validate: [pwpushValidator, 'Not a valid PasswordPusher link'],
+    },
+    google_search_console_2fa_name: {
+      type: String,
+    },
+    google_search_console_2fa_email_address: {
+      type: String,
+      validate: [emailValidator, 'Not a valid email address'],
+    },
+    podcast_anchor_url_sub: {
+      type: String,
+      validate: [!urlValidator, 'Don\'t pass the full URL'],
+    },
+    podcast_embed_code: {
+      type: String,
+      validate: [iframeValidator, 'Not a valid embed code'],
+    },
+    bylaws_constitution: {
       type: String,
       validate: [urlValidator, 'Not a valid URL'],
-    }],
+    },
     primary_color: {
       type: String,
-      validate: [hexValidator, 'Not a valid color']
+      length: [6, 'Hex colors are 6 digits long'],
+      validate: [noHashtagValidator, 'Don\'t include the #']
     },
     secondary_color: {
       type: String,
-      validate: [hexValidator, 'Not a valid color']
+      length: [6, 'Hex colors are 6 digits long'],
+      validate: [noHashtagValidator, 'Don\'t include the #']
     },
     tertiary_color: {
       type: String,
-      validate: [hexValidator, 'Not a valid color']
+      length: [6, 'Hex colors are 6 digits long'],
+      validate: [noHashtagValidator, 'Don\'t include the #']
+    },
+    icon: {
+      type: String,
+    },
+    website_logo: {
+      type: String,
+    },
+    website_mobile_logo: {
+      type: String,
+    },
+    paypal_invoice_logo: {
+      type: String,
+    },
+    paypal_payment_logo: {
+      type: String,
+    },
+    website_welcome_post_image: {
+      type: String,
     },
     onboarding_progress: {
       organization_info: {

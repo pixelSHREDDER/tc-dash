@@ -31,7 +31,7 @@ const flickrFormFields = {
             type: 'text',
             name: 'flickr_username',
             label: 'Username',
-            validators: ['required', 'notURL'],
+            validators: ['required', 'flickrUsername'],
         },
     ],
 };
@@ -42,7 +42,7 @@ const gitHubFormFields = {
             type: 'text',
             name: 'github_username',
             label: 'Username',
-            validators: ['required', 'notURL'],
+            validators: ['required', 'gitHubUsername'],
         },
     ],
 };
@@ -53,7 +53,7 @@ const instagramFormFields = {
             type: 'text',
             name: 'instagram_username',
             label: 'Username',
-            validators: ['required', 'notURL'],
+            validators: ['required', 'instagramUsername'],
         },
     ],
 };
@@ -76,7 +76,7 @@ const mediumFormFields = {
             type: 'text',
             name: 'medium_profile_url',
             label: 'Profile URL',
-            validators: ['required', 'atmarkUsername'],
+            validators: ['required', 'mediumProfileURL'],
         },
     ],
 };
@@ -145,7 +145,7 @@ const snapchatFormFields = {
             type: 'text',
             name: 'snapchat_username',
             label: 'Username',
-            validators: ['required', 'notURL'],
+            validators: ['required', 'snapchatUsername'],
         },
     ],
 };
@@ -156,7 +156,7 @@ const tumblrFormFields = {
             type: 'text',
             name: 'tumblr_username',
             label: 'Username',
-            validators: ['required', 'notURL'],
+            validators: ['required', 'tumblrUsername'],
         },
     ],
 };
@@ -178,7 +178,7 @@ const twitterFormFields = {
             type: 'text',
             name: 'twitter_username',
             label: 'Username (@Username)',
-            validators: ['required', 'atmarkUsername'],
+            validators: ['required', 'twitterUsername'],
         },{
             type: 'password',
             name: 'twitter_password',

@@ -22,7 +22,7 @@ const questionGroups = [
       },
       {
         type: 'select',
-        name: 'type',
+        name: 'instance_type',
         label: 'What type of organization are you?',
         options: {
           0: 'Chapter (County)',
