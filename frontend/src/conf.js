@@ -10,8 +10,8 @@ const DATA_URLS = {
     'local': 'localhost:3001/api',
 };
 
-export default {
-    AUTH0: {
+const config = {
+    AUTH0: {    
         domain: AUTH0_DOMAIN,
         audience: `https://${AUTH0_DOMAIN}/userinfo`,
         clientID: AUTH0_CLIENT_ID,
@@ -19,8 +19,11 @@ export default {
         returnTo: `${window.location.origin}`,
         responseType: 'token id_token',
         scope: 'openid profile email',
-    },
+    }
 };
+
+export default config;
+
 export const URLS = {
     baseUrl: BASE_URLS[ENV],
     dataUrl: DATA_URLS[ENV]

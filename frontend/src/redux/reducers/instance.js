@@ -16,7 +16,7 @@ const initialState = {
     },
 };
 
-export default function(state = initialState, action) {
+const handleInstance = (state = initialState, action) => {
     switch (action.type) {
         case UPDATE_INSTANCE:
             return {
@@ -30,4 +30,6 @@ export default function(state = initialState, action) {
         default:
             return state;
     }
-}
+};
+
+export default handleInstance;

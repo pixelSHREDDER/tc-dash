@@ -7,7 +7,7 @@ const discordFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'discord_channel_url',
+            name: 'discord_channel_url',
             label: 'Channel URL',
             validators: ['required', 'discordChannelURL'],
         },
@@ -18,7 +18,7 @@ const facebookPageFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'facebook_page_url',
+            name: 'facebook_page_url',
             label: 'Page URL',
             validators: ['required', 'facebookPageURL'],
         },
@@ -29,7 +29,7 @@ const flickrFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'flickr_username',
+            name: 'flickr_username',
             label: 'Username',
             validators: ['required', 'notURL'],
         },
@@ -40,7 +40,7 @@ const gitHubFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'github_username',
+            name: 'github_username',
             label: 'Username',
             validators: ['required', 'notURL'],
         },
@@ -51,7 +51,7 @@ const instagramFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'instagram_username',
+            name: 'instagram_username',
             label: 'Username',
             validators: ['required', 'notURL'],
         },
@@ -62,7 +62,7 @@ const linkedInFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'linkedin_group_url',
+            name: 'linkedin_group_url',
             label: 'Group URL',
             validators: ['required', 'linkedInGroupURL'],
         },
@@ -74,7 +74,7 @@ const mediumFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'medium_profile_url',
+            name: 'medium_profile_url',
             label: 'Profile URL',
             validators: ['required', 'atmarkUsername'],
         },
@@ -85,7 +85,7 @@ const messengerFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'messenger_group_chat_url',
+            name: 'messenger_group_chat_url',
             label: 'Group Chat URL',
             validators: ['required', 'MessengerGroupChatURL'],
         },
@@ -97,7 +97,7 @@ const meetupFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'meetup_group_url',
+            name: 'meetup_group_url',
             label: 'Group URL',
             validators: ['required', 'meetupGroupURL'],
         },
@@ -108,7 +108,7 @@ const pinterestFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'pinterest_url',
+            name: 'pinterest_url',
             label: 'Pinterest URL',
             validators: ['required', 'pinterestURL'],
         },
@@ -119,7 +119,7 @@ const redditSubFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'reddit_sub_url',
+            name: 'reddit_sub_url',
             label: 'Subreddit URL',
             validators: ['required', 'redditSubURL'],
         },
@@ -131,7 +131,7 @@ const slackWorkspaceFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'slack_workspace_url',
+            name: 'slack_workspace_url',
             label: 'Workspace URL',
             validators: ['required', 'slackWorkspaceURL'],
         },
@@ -143,7 +143,7 @@ const snapchatFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'snapchat_username',
+            name: 'snapchat_username',
             label: 'Username',
             validators: ['required', 'notURL'],
         },
@@ -154,7 +154,7 @@ const tumblrFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'tumblr_username',
+            name: 'tumblr_username',
             label: 'Username',
             validators: ['required', 'notURL'],
         },
@@ -165,7 +165,7 @@ const twitchFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'twitch_channel_url',
+            name: 'twitch_channel_url',
             label: 'Channel URL',
             validators: ['required', 'twitchChannelURL'],
         },
@@ -176,12 +176,12 @@ const twitterFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'twitter_username',
+            name: 'twitter_username',
             label: 'Username (@Username)',
             validators: ['required', 'atmarkUsername'],
         },{
             type: 'password',
-            id: 'twitter_password',
+            name: 'twitter_password',
             label: 'Password',
             validators: ['required'],
         },
@@ -193,7 +193,7 @@ const whatsAppChatFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'whatsapp_chat_url',
+            name: 'whatsapp_chat_url',
             label: 'Chat URL',
             validators: ['required', 'whatsAppChatURL'],
         },
@@ -205,7 +205,7 @@ const youTubeFormFields = {
     'existing': [
         {
             type: 'text',
-            id: 'youtube_channel_url',
+            name: 'youtube_channel_url',
             label: 'Channel URL',
             validators: ['required', 'youTubeChannelURL'],
         },

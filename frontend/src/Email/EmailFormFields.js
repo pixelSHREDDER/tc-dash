@@ -9,7 +9,7 @@ const emailFormFields = {
         ...getEmailPasswordFormFields('old_email', ['Email account address', 'Email account password']),
         {
             type: 'text',
-            id: 'old_email_forwarding_position',
+            name: 'old_email_forwarding_position',
             label: 'Whom should we forward incoming mail to? (replace me with Board select)',
             validators: ['required'],
         },

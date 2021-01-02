@@ -11,7 +11,6 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        id: 'google_analytics',
         label: 'Do you already have a Google Analytics account?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: googleAnalyticsFormFields.existing,
@@ -23,7 +22,6 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        id: 'google_search_console',
         label: 'Do you already have a Google Search Console account?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: googleSearchConsoleFormFields.existing,

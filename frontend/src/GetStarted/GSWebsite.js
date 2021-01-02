@@ -1,6 +1,6 @@
 import React from 'react';
 import GSForm from '../Forms/GSForm';
-import { websiteFormFields } from '../Website/WebsiteFormFields';
+import { oldWebsiteFormFields } from '../Website/WebsiteFormFields';
 
 const questionGroups = [
   {
@@ -8,10 +8,8 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        //id: 'website',
         label: 'Do you currently have a website you want data migrated from?',
-        //description: 'We\'ll set one up for you if you don\'t!',
-        fields: websiteFormFields,
+        fields: oldWebsiteFormFields,
       },
     ],
   },

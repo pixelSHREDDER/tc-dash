@@ -1,21 +1,21 @@
 const chapterColorFormFields = [
     {
         type: 'colorPicker',
-        id: 'primary_color',
+        name: 'primary_color',
         label: 'Primary Color',
         description: 'Used for the header and main buttons on your website, as well as on other platforms and services where custom colors are used. Recommend a medium to dark shade.',
         validators: ['required'],
     },
     {
         type: 'colorPicker',
-        id: 'secondary_color',
+        name: 'secondary_color',
         label: 'Secondary Color',
         description: 'Used for the menu bar and additional buttons on your website. Recommend a medium to dark shade which stands out against your Primary Color.',
         validators: ['required'],
     },
     {
         type: 'colorPicker',
-        id: 'accent_color',
+        name: 'accent_color',
         label: 'Accent Color',
         description: 'Used for accents and other details on your website. Recommend a light to medium shade.',
         validators: ['required'],
@@ -25,7 +25,7 @@ const chapterColorFormFields = [
 const chapterIconFormFields = [
     /*{
         type: 'fileUpload',
-        id: 'website_up',
+        name: 'website_up',
         label: 'Website URL',
         fileType: 'documents',
         filesLimit: 10,
@@ -33,7 +33,7 @@ const chapterIconFormFields = [
     },*/
     {
         type: 'imageUpload',
-        id: 'icon',
+        name: 'icon',
         label: 'Chapter Icon',
         // Can I do this programmatically?
         //description: 'If your image is smaller than the minimum size, please center the image.',
@@ -48,7 +48,7 @@ const chapterIconFormFields = [
 const chapterLogoFormFields = [
     {
         type: 'imageUpload',
-        id: 'logo_bg',
+        name: 'website_logo',
         label: 'Chapter Logo',
         // Can I do this programmatically?
         //description: 'If your image is smaller than the minimum size, please align the image to the left and centered vertically.',
@@ -60,7 +60,7 @@ const chapterLogoFormFields = [
     },
     {
         type: 'imageUpload',
-        id: 'mobile_logo',
+        name: 'website_mobile_logo',
         label: 'Chapter Logo For Mobile Devices',
         // Can I do this programmatically?
         //description: 'If your image is smaller than the minimum size, please align the image to the left and centered vertically.',
@@ -72,7 +72,7 @@ const chapterLogoFormFields = [
     },
     {
         type: 'imageUpload',
-        id: 'paypal_express_logo',
+        name: 'paypal_payment_logo',
         label: 'Chapter Logo For Payment Screens',
         // Can I do this programmatically?
         //description: 'If your image is smaller than the minimum size, please align the image to the left and centered vertically.',
@@ -84,7 +84,7 @@ const chapterLogoFormFields = [
     },
     {
         type: 'imageUpload',
-        id: 'paypal_logo',
+        name: 'paypal_invoice_logo',
         label: 'Chapter Logo For Invoices',
         // Can I do this programmatically?
         //description: 'If your image is smaller than the minimum size, please align the image to the left and centered vertically.',
@@ -98,7 +98,7 @@ const chapterLogoFormFields = [
     /* Not needed anymore
     {
         type: 'imageUpload',
-        id: 'footer_logo',
+        name: 'website_footer_logo',
         label: 'Chapter Footer Logo',
         description: '',
         imgWidth: 960,
@@ -110,7 +110,7 @@ const chapterLogoFormFields = [
 const welcomePostImageFormFields = [
     {
         type: 'imageUpload',
-        id: 'hello_world',
+        name: 'welcome_post_image',
         label: 'Welcome Post Image',
         description: 'Used for the very first blog post on your new website, welcoming visitors. Recommend a group photo, or a relevant stock image. Make sure you scale this image right to the edges!',
         imgWidth: 3000,

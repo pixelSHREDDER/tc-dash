@@ -52,7 +52,7 @@ class SelectFormField extends React.Component {
                         value={currentValue}
                         onChange={e => this.handleInput(e.target.value, field.id, field.name, field.validators, field.parents)}
                     >
-                        {Object.entries(field.options).map(([key,value]) => (
+                        {Object.entries(field.options).map(([key, value]) => (
                             <MenuItem key={key} value={key}>{value}</MenuItem>
                         ))}
                         {

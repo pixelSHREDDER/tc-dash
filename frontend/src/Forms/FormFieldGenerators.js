@@ -2,12 +2,12 @@ const getEmailPasswordFormFields = (prefix, labels = ['Email address', 'Password
     return (
         [{
             type: 'text',
-            id: `${prefix}_email_address`,
+            name: `${prefix}_email_address`,
             label: labels[0],
             validators: ['required', 'email'],
         },{
             type: 'password',
-            id: `${prefix}_password`,
+            name: `${prefix}_password`,
             label: labels[1],
             validators: ['required'],
         }]
@@ -18,7 +18,7 @@ const getIsPublicFormFields = (prefix, type = 'account') => {
     return (
         [{
             type: 'radio',
-            id: `${prefix}_public`,
+            name: `${prefix}_public`,
             label: `Is your ${type} public, or for internal use only?`,
             options: [
                 {
@@ -93,17 +93,16 @@ const getTwoFactorFormFields = (prefix, labels = [
     return (
         [{
             type: 'radioToggle',
-            id: `${prefix}_2fa`,
             label: 'Do you have two-factor authentication (2FA) enabled?',
             fields: [
                 {
                     type: 'text',
-                    id: `${prefix}_2fa_name`,
+                    name: `${prefix}_2fa_name`,
                     label: labels[0],
                     validators: ['required'],
                 },{
                     type: 'text',
-                    id: `${prefix}_2fa_email_address`,
+                    name: `${prefix}_2fa_email_address`,
                     label: labels[1],
                     validators: ['required', 'email'],
                 },
@@ -116,12 +115,12 @@ const getUsernamePasswordFormFields = (prefix, labels = ['Username', 'Password']
     return (
         [{
             type: 'text',
-            id: `${prefix}_username`,
+            name: `${prefix}_username`,
             label: labels[0],
             validators: ['required'],
         },{
             type: 'password',
-            id: `${prefix}_password`,
+            name: `${prefix}_password`,
             label: labels[1],
             validators: ['required'],
         }]

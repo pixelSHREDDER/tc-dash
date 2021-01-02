@@ -3,16 +3,19 @@ import {
     getTwoFactorFormFields,
 } from '../Forms/FormFieldGenerators';
 
-const websiteFormFields = [
+const oldWebsiteFormFields = [
     {
         type: 'text',
-        name: 'website_url',
+        name: 'url',
         label: 'Website URL',
         description: 'The website\'s homepage.',
         validators: ['required', 'url'],
-    },{
+    },
+    ...getUsernamePasswordFormFields('admin', ['Website admin username/email', 'Website admin password']),
+    ...getTwoFactorFormFields('admin'),
+    {
         type: 'select',
-        name: 'website_hosting_provider',
+        name: 'hosting_provider',
         label: 'Hosting provider',
         description: 'Who do you pay to host this website?',
         options: {
@@ -28,10 +31,10 @@ const websiteFormFields = [
           other: true,
           validators: ['required'],
     },
-    ...getUsernamePasswordFormFields('website_hosting', ['Hosting username/email', 'Hosting password']),
-    ...getTwoFactorFormFields('website_hosting'),
+    ...getUsernamePasswordFormFields('hosting', ['Hosting username/email', 'Hosting password']),
+    ...getTwoFactorFormFields('hosting'),
 ];
 
 export {
-    websiteFormFields,
+    oldWebsiteFormFields,
 };

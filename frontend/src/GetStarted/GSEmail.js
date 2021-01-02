@@ -11,9 +11,8 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        id: 'old_email',
         label: 'Do you have any existing email accounts you want to transfer over mail from?',
-        description: '(Add adding more option, storing as array or object!)',
+        description: '(Add adding more option, storing as object of objects with email address as key!)',
         fields: emailFormFields.existing,
       },
     ],
@@ -23,7 +22,6 @@ const questionGroups = [
     questions: [
       {
         type: 'radioToggle',
-        id: 'mailchimp',
         label: 'Do you already have a Mailchimp account?',
         description: 'We\'ll set one up for you if you don\'t!',
         fields: mailchimpFormFields.existing,

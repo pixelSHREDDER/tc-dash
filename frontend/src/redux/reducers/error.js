@@ -2,7 +2,7 @@ import { ADD_ERROR } from '../actions/types';
 
 const initialState = {};
 
-export default function(state = initialState, action) {
+const handleError = (state = initialState, action) => {
     switch (action.type) {
         case ADD_ERROR:
             return {
@@ -12,3 +12,5 @@ export default function(state = initialState, action) {
             return state;
     }
 }
+
+export default handleError;
