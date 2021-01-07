@@ -117,10 +117,12 @@ class App extends React.Component {
         await auth0Client.renewTokens();
         instanceId = await auth0Client.getProfile().sub;
         token = await auth0Client.getIdToken();
+        //token = await auth0Client.getAccessToken();
         data = (await axios.get(`http://${URLS.dataUrl}/instance/${instanceId}`,
         { headers: { 'Authorization': `Bearer ${token}` }}
         )).data;
         setInstance(data.data[0]);
+        console.log(data.data[0]);
     } catch (e) {
         addError(e);
     }
@@ -300,6 +302,7 @@ class App extends React.Component {
                 <Route exact path='/' component={Instances}/>
                 <Route exact path='/instance/:instanceId' component={Instance}/>*/}
                 {/*<Route exact path='/callback' component={Callback}/>*/}
+
                 <Route path="/callback" render={ (props) => {
                   this.checkAuthentication(props);
                   return (<Callback />);

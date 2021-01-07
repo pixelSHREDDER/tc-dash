@@ -92,6 +92,7 @@ router.get("/instance/:owner", checkJwt, (req, res) => {
     //const { owner } = req.body;
     const owner = req.params.owner;
     Data.find({ 'owner': owner }, (err, data) => {
+      console.log(err, data);
       if (err) return res.json({ success: false, error: err });
       // Fix before uncommenting
       //data.data[0] = desanitizeURLs(data.data[0]);

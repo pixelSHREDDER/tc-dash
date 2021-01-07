@@ -33,6 +33,11 @@ function urlValidator(v) {
   return re.test(v);
 };
 
+function notUrlValidator(v) {
+  let re = new RegExp('^(((ht|f)tp(s?))\://)?(www.|[a-zA-Z].)[a-zA-Z0-9\-\.]+\.(com|edu|gov|mil|net|org|biz|info|name|museum|us)(\:[0-9]+)*(/($|[a-zA-Z0-9\.\,\;\?\'\\\+&amp;%\$#\=~_\-]+))*$');
+  return !re.test(v);
+};
+
 function pwpushValidator(v) {
   let re = new RegExp('^https:\/\/pwpush\.com\/p\/.*$');
   return re.test(v);
@@ -53,6 +58,11 @@ function noHashtagValidator(v) {
   return re.test(v);
 };
 
+function noLeadingOrTrailingSlashesValidator(v) {
+  let re = new RegExp('/^\/|\/$/');
+  return !re.test(v);
+};
+
 function requiredArrayLengthValidator(v) {
   return v.length > 0;
 }
@@ -64,7 +74,12 @@ function iframeValidator(v) {
 
 const usernameValidators = [
   { validator: noAtmarkValidator, msg: 'Don\'t include the @' },
-  { validator: !urlValidator, msg: 'Don\'t pass the full URL' },
+  { validator: notUrlValidator, msg: 'Don\'t pass the full URL' },
+];
+
+const urlSubValidators = [
+  { validator: noLeadingOrTrailingSlashesValidator, msg: 'Don\'t include the slashes at the beginning or the end' },
+  { validator: notUrlValidator, msg: 'Don\'t pass the full URL' },
 ];
 
 let InstanceSchema = new Schema(
@@ -173,7 +188,7 @@ let InstanceSchema = new Schema(
     },
     facebook_page_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     twitter_username: {
       type: String,
@@ -191,7 +206,7 @@ let InstanceSchema = new Schema(
     },
     discord_channel_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     discord_channel_public: Boolean,
     /*discord_channel_access_levels: {
@@ -216,7 +231,7 @@ let InstanceSchema = new Schema(
     },
     linkedin_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     linkedin_public: Boolean,
     /*linkedin_access_levels: {
@@ -227,15 +242,15 @@ let InstanceSchema = new Schema(
     },*/
     meetup_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     medium_profile_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     messenger_group_chat_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     messenger_group_chat_public: Boolean,
     /*messenger_group_chat_access_levels: {
@@ -244,13 +259,13 @@ let InstanceSchema = new Schema(
       }],
       validate: [requiredArrayLengthValidator, 'Please select one or more {PATH}'],
     },*/
-    pinterest_url: {
+    pinterest_url_sub: {
       type: String,
-      validate: [urlValidator, 'Not a valid URL'],
+      validate: urlSubValidators,
     },
     reddit_sub_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     reddit_sub_public: Boolean,
     /*reddit_sub_access_levels: {
@@ -261,7 +276,7 @@ let InstanceSchema = new Schema(
     },*/
     slack_workspace_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     slack_workspace_public: Boolean,
     /*slack_workspace_access_levels: {
@@ -282,11 +297,11 @@ let InstanceSchema = new Schema(
     },
     twitch_channel_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     whatsapp_chat_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     whatsapp_chat_public: Boolean,
     /*whatsapp_chat_access_levels: {
@@ -297,7 +312,7 @@ let InstanceSchema = new Schema(
     },*/
     youtube_channel_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     other_social: {
       type: [{
@@ -365,7 +380,7 @@ let InstanceSchema = new Schema(
     },
     podcast_anchor_url_sub: {
       type: String,
-      validate: [!urlValidator, 'Don\'t pass the full URL'],
+      validate: urlSubValidators,
     },
     podcast_embed_code: {
       type: String,
@@ -377,18 +392,21 @@ let InstanceSchema = new Schema(
     },
     primary_color: {
       type: String,
-      length: [6, 'Hex colors are 6 digits long'],
-      validate: [noHashtagValidator, 'Don\'t include the #']
+      minlength: [6, 'Hex colors are 6 digits long'],
+      maxlength: [6, 'Hex colors are 6 digits long'],
+      validate: [noHashtagValidator, 'Don\'t include the #'],
     },
     secondary_color: {
       type: String,
-      length: [6, 'Hex colors are 6 digits long'],
-      validate: [noHashtagValidator, 'Don\'t include the #']
+      minlength: [6, 'Hex colors are 6 digits long'],
+      maxlength: [6, 'Hex colors are 6 digits long'],
+      validate: [noHashtagValidator, 'Don\'t include the #'],
     },
     tertiary_color: {
       type: String,
-      length: [6, 'Hex colors are 6 digits long'],
-      validate: [noHashtagValidator, 'Don\'t include the #']
+      minlength: [6, 'Hex colors are 6 digits long'],
+      maxlength: [6, 'Hex colors are 6 digits long'],
+      validate: [noHashtagValidator, 'Don\'t include the #'],
     },
     icon: {
       type: String,

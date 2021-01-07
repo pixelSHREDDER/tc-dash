@@ -50,8 +50,8 @@ class Instance {
 
   getData = async (owner) => {
     const token = await auth0Client.getIdToken();
-    const data = (await axios.get(`http://${ URLS.dataUrl }/instance/${ owner }`,
-    { headers: { 'Authorization': `Bearer ${ token }`}}
+    const data = (await axios.get(`http://${URLS.dataUrl}/instance/${owner}`,
+    { headers: { 'Authorization': `Bearer ${token}` }}
     )).data;
     this.data = data.data[0];
     //TODO: Add isLive setting based on data

@@ -3,3 +3,4 @@ node_modules
 frontend/cypress.env.json
 frontend/.env
 .DS_Store
+backend/.env

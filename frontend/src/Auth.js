@@ -7,7 +7,7 @@ class Auth {
     this.clientID = config.clientID;
     this.auth0 = new auth0.WebAuth({
       domain: config.domain,
-      //audience: config.audience,
+      audience: config.audience,
       clientID: config.clientID,
       redirectUri: config.callbackUrl,
       responseType: config.responseType,
@@ -66,6 +66,7 @@ class Auth {
     this.checkingSession = false;
     // set the time that the id token will expire at
     this.expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+    console.log(this);
     this.scheduleTokenRenewal();
   }
   /*setSession(authResult) {
@@ -119,6 +120,7 @@ class Auth {
 
   scheduleTokenRenewal = () => {
     const delay = this.expiresAt - Date.now();
+    console.log(delay);
     if (delay > 0) {
       this.tokenRenewalTimeout = setTimeout(() => {
         this.renewTokens();
