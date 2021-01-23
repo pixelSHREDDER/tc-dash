@@ -1,19 +1,19 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from "react-redux";
 import PropTypes from 'prop-types';
-import auth0Client from '../Auth';
+import { useAuth0 } from "@auth0/auth0-react";
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 const SecuredRoute = props => {
-  const { component: Component, loading, path, onSubmit } = props;
+  const { component: Component, path, onSubmit } = props;
+  const { isAuthenticated } = useAuth0();
+  const isLoading = useSelector(state => state.isLoading);
+
   return (
     <Route path={path} render={() => {
-        if (loading) return <CircularProgress />;
-        if (!auth0Client.isAuthenticated()) {
-          auth0Client.signIn();
-          return <div></div>;
-        }
+        if (isLoading) return <CircularProgress />;
+        if (!isAuthenticated) return;
         return <Component onSubmit={onSubmit} />
     }} />
   );
@@ -21,11 +21,8 @@ const SecuredRoute = props => {
 
 SecuredRoute.propTypes = {
   component: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
-  loading: PropTypes.bool.isRequired,
   path: PropTypes.string.isRequired,
   onSubmit: PropTypes.func,
 };
 
-const mapStateToProps = state => ({ loading: state.loading });
-
-export default connect(mapStateToProps, {})(SecuredRoute);
+export default SecuredRoute;

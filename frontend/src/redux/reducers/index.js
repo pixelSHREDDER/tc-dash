@@ -1,11 +1,10 @@
 import { combineReducers } from 'redux';
-import error from './error';
+import errors from './errors';
 import instance from './instance';
-import { TOGGLE_ISLIVE, TOGGLE_LOADING } from '../actions/types';
+import isLoading from './isLoading';
 
 export default combineReducers({
-    error,
+    errors,
     instance,
-    isLive: (state = false, action) => { return (action.type === TOGGLE_ISLIVE) ? action.payload : state; },
-    loading: (state = true, action) => { return (action.type === TOGGLE_LOADING) ? action.payload : state; },
+    isLoading,
 });

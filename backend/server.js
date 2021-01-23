@@ -28,7 +28,10 @@ const checkJwt = jwt({
   audience: Config.auth0[env].audience,
   issuer: `https://${Config.auth0[env].domain}/`,
   algorithms: ['RS256']
+//});
 });
+
+app.use(checkJwt);
 
 const router = express.Router();
 

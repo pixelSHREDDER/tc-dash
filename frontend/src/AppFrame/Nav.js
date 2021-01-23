@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import auth0Client from '../Auth';
+import { withAuth0 } from '@auth0/auth0-react';
 import { routes } from '../Routes/Routes';
 import ReviewModal from '../ReviewModal/ReviewModal';
 import { withStyles } from '@material-ui/core/styles';
@@ -92,17 +92,18 @@ class Nav extends React.Component {
     };
 
     renderDrawer = () => {
-        const { classes, handleLogOut, isLive, loading, onboardingProgress } = this.props;
+        const { classes, handleLogOut, isLive, isLoading, onboardingProgress } = this.props;
         const { anchorEl } = this.state;
         const { pathname } = this.props.location;
+        const { isAuthenticated, /*loginWithRedirect,*/ user } = this.props.auth0;
         const open = Boolean(anchorEl);
         let header;
         let drawerList;
 
-        if (!auth0Client.isAuthenticated()) {
+        if (!isAuthenticated) {
             header = (
                 <div className={classes.toolbar}>
-                    {/*<Button onClick={auth0Client.signIn}>Login</Button>*/}
+                    {/*<Button onClick={() => loginWithRedirect()}>Login</Button>*/}
                 </div>
             );
             return (
@@ -111,29 +112,29 @@ class Nav extends React.Component {
                     <Divider />
                 </React.Fragment>
             );
-        } else if (auth0Client.isAuthenticated()) {
+        } else if (isAuthenticated) {
             header = (
                 <div className={classes.toolbar}>
                     <React.Fragment>
                         <List className={classes.root}>
                             <ListItem>
                                 <ListItemAvatar>
-                                    <Avatar alt={auth0Client.getProfile().nickname}
-                                        src={auth0Client.getProfile().picture}
+                                    <Avatar alt={user.nickname}
+                                        src={user.picture}
                                         className={classes.avatar}
                                         aria-owns={open ? 'menu-appbar' : undefined}
                                         aria-haspopup="true"
                                         onClick={this.handleMenuOpen}
                                     />
                                 </ListItemAvatar>
-                                <ListItemText primary={"Hi, " + auth0Client.getProfile().nickname + "!"}/>
+                                <ListItemText primary={"Hi, " + user.nickname + "!"}/>
                                 {/*<AccountCircle button
                                     aria-owns={open ? 'menu-appbar' : undefined}
                                     aria-haspopup="true"
                                     onClick={this.handleMenuOpen}
                                     color="inherit"
                                 />
-                                <ListItemText primary={"Hi, " + auth0Client.getProfile().nickname + "!"}/>*/}
+                                <ListItemText primary={"Hi, " + user.nickname + "!"}/>*/}
                             </ListItem>
                             <Menu id="menu-appbar"
                                     anchorEl={anchorEl}
@@ -167,7 +168,7 @@ class Nav extends React.Component {
                 drawerList = (
                     <List component="nav" className={classes.drawerList} subheader={<li />}>
                         {routes.live.map((sectionId, index) => (
-                            <Slide direction="right" in={!loading} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
+                            <Slide direction="right" in={!isLoading} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
                                 <ul className={classes.drawerListUl}>
                                     {
                                     ('topLevel' in sectionId) && (index !== 0) &&
@@ -239,7 +240,7 @@ class Nav extends React.Component {
                 drawerList = (
                     <List component="nav" className={classes.drawerList} subheader={<li />}>
                         {routes.onboarding.map(sectionId => (
-                            <Slide direction="right" in={!loading} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
+                            <Slide direction="right" in={!isLoading} mountOnEnter unmountOnExit key={`section-${sectionId.url}`}>
                                 <ul className={classes.drawerListUl}>
                                     <ListSubheader className={classes.listSubheader} elevation={24}>{sectionId.title}</ListSubheader>
                                     <List component="div" disablePadding>
@@ -334,16 +335,16 @@ class Nav extends React.Component {
 Nav.propTypes = {
     classes: PropTypes.object.isRequired,
     handleDrawerToggle: PropTypes.func.isRequired,
-    isLive: PropTypes.bool.isRequired,
-    loading: PropTypes.bool.isRequired,
+    isLive: PropTypes.bool,
+    isLoading: PropTypes.bool.isRequired,
     mobileOpen: PropTypes.bool.isRequired,
     onboardingProgress: PropTypes.object.isRequired,
 };
   
 const mapStateToProps = state => ({
-    isLive: state.isLive,
-    loading: state.loading,
+    isLive: state.instance.isLive,
+    isLoading: state.isLoading,
     onboardingProgress: state.instance.onboarding_progress,
 });
 
-export default withRouter(connect(mapStateToProps, {})(withStyles(styles, { withTheme: true })(Nav)));
+export default withAuth0(withRouter(connect(mapStateToProps, {})(withStyles(styles, { withTheme: true })(Nav))));

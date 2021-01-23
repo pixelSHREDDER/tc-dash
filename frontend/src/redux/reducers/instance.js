@@ -1,7 +1,11 @@
-import { UPDATE_INSTANCE, UPDATE_ONBOARDING_PROGRESS } from '../actions/types';
+import {
+    SET_INSTANCE,
+    UPDATE_INSTANCE,
+    UPDATE_ONBOARDING_PROGRESS,
+} from '../actions/types';
 
 const initialState = {
-    //domain: '',
+    isLive: false,
     onboarding_progress: {
         'organization_info': 0,
         'website': 0,
@@ -18,6 +22,10 @@ const initialState = {
 
 const handleInstance = (state = initialState, action) => {
     switch (action.type) {
+        case SET_INSTANCE:
+            return {
+                ...action.payload
+            }
         case UPDATE_INSTANCE:
             return {
                 ...action.payload

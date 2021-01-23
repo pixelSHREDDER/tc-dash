@@ -6,6 +6,9 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
+const Config = require('./configuration.json');
+
+const env = Config.env;
 
 // define the Express app
 const app = express();
@@ -30,12 +33,12 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://dev-l142vg-3.auth0.com/.well-known/jwks.json`
+    jwksUri: `https://${Config.auth0[env].domain}/.well-known/jwks.json`
   }),
 
   // Validate the audience and the issuer.
-  audience: 'tRG_31KtrHRR0PbHTP7dsWg9RWDEKxqO',
-  issuer: `https://dev-l142vg-3.auth0.com/`,
+  audience: `https://${Config.auth0[env].domain}/api/v2/`,
+  issuer: `https://${Config.auth0[env].domain}/`,
   algorithms: ['RS256']
 });
 

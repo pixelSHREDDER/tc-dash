@@ -301,9 +301,9 @@ class ReviewModal extends React.Component {
 
 ReviewModal.propTypes = {
     classes: PropTypes.object.isRequired,
-    isLive: PropTypes.bool.isRequired,
+    isLive: PropTypes.bool,
 };
 
-const mapStateToProps = state => ({ isLive: state.isLive });
+const mapStateToProps = state => ({ isLive: state.instance.isLive });
 
 export default connect(mapStateToProps, {})(withStyles(styles, { withTheme: true })(ReviewModal));

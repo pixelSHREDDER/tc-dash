@@ -1,40 +1,58 @@
 import {
-  TOGGLE_ISLIVE,
-  TOGGLE_LOADING,
+  ADD_ERROR,
+  SET_INSTANCE,
   UPDATE_INSTANCE,
   UPDATE_ONBOARDING_PROGRESS,
 } from './types';
 
 export const setInstance = (data) => async (dispatch) => {
+  try {  
     dispatch({
-        type: UPDATE_INSTANCE,
-        payload: data
+      type: SET_INSTANCE,
+      payload: data
     });
+  } catch (e) {
     dispatch({
-        type: TOGGLE_ISLIVE,
-        payload: false
+      type: ADD_ERROR,
+      payload: e
     });
-    dispatch({
-        type: TOGGLE_LOADING,
-        payload: false
-    });
+    console.error(e);
+    //if (err.response.status===401 && err.config) {
+
+    //}
+  }
 }
 
 export const updateInstance = (data) => async (dispatch) => {
-  dispatch({
+  try {  
+    dispatch({
       type: UPDATE_INSTANCE,
       payload: data
-  });
+    });
+  } catch (e) {
+    dispatch({
+      type: ADD_ERROR,
+      payload: e
+    });
+    console.error(e);
+    //if (err.response.status===401 && err.config) {
+
+    //}
+  }
 }
 
 export const updateOnboardingProgress = (data) => async (dispatch) => {
   try {    
     dispatch({
-        type: UPDATE_ONBOARDING_PROGRESS,
-        payload: data
+      type: UPDATE_ONBOARDING_PROGRESS,
+      payload: data
     });
-  } catch (err) {
-    console.log(err);
+  } catch (e) {
+    dispatch({
+      type: ADD_ERROR,
+      payload: e
+    });
+    console.error(e);
     //if (err.response.status===401 && err.config) {
 
     //}

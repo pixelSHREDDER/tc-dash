@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from "react-redux";
 import PropTypes from 'prop-types';
 import { pageTitles } from '../Routes/Routes';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,7 +34,9 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TopBar = ({pathname, handleDrawerToggle, isLive, onboardingProgress}) => {
+const TopBar = ({pathname, handleDrawerToggle}) => {
+    const isLive = useSelector(state => state.instance.isLive || false);
+    const onboardingProgress = useSelector(state => state.instance.onboardingProgress || {});
     const classes = useStyles();
     const onboardingSection = pathname.replace('/get-started/', '').replace('-', '_');
 
@@ -64,13 +66,6 @@ const TopBar = ({pathname, handleDrawerToggle, isLive, onboardingProgress}) => {
 TopBar.propTypes = {
     pathname: PropTypes.string.isRequired,
     handleDrawerToggle: PropTypes.func.isRequired,
-    isLive: PropTypes.bool.isRequired,
-    onboardingProgress: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
-    isLive: state.isLive,
-    onboardingProgress: state.instance.onboarding_progress,
-});
-
-export default connect(mapStateToProps, {})(TopBar);
+export default TopBar;
