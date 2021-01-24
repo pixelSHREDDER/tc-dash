@@ -16,8 +16,6 @@ const questionGroups = [
   },
 ];
 
-class GSPaymentsFinances extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
-}
+function GSPaymentsFinances(props) { return <GSForm questionGroups={questionGroups} />; }
 
 export default GSPaymentsFinances;

@@ -1,3 +1,5 @@
+import { DEBUG } from '../conf';
+
 const getEmailPasswordFormFields = (prefix, labels = ['Email address', 'Password']) => {
     return (
         [{
@@ -81,7 +83,7 @@ const getMailingAddressFormFields = (
             },]
         );
     } catch(e) {
-        console.log(e);
+        DEBUG && console.log(e);
         return [];
     }
 };

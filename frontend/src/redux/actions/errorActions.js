@@ -1,10 +1,11 @@
 import { ADD_ERROR, REMOVE_ERROR } from './types';
+import { DEBUG } from '../../conf';
   
 export const addError = (data) => async (dispatch) => {
-    console.error(data);
+    DEBUG && console.error(data.response);
     dispatch({
         type: ADD_ERROR,
-        payload: data
+        payload: data.response.status
     });
 };
 

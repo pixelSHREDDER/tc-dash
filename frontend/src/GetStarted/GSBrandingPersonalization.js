@@ -39,9 +39,6 @@ const questionGroups = [
     },
 ];
 
-class GSBrandingPersonalization extends React.Component {
-    
-  render = () => <GSForm blurb={blurb} questionGroups={questionGroups} />;
-}
+function GSBrandingPersonalization(props) { return <GSForm blurb={blurb} questionGroups={questionGroups} />; }
 
 export default GSBrandingPersonalization;

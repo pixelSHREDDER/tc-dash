@@ -30,8 +30,6 @@ const questionGroups = [
   },
 ];
 
-class GSAnalyticsSEO extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
-}
+function GSAnalyticsSEO(props) { return <GSForm questionGroups={questionGroups} />; }
 
 export default GSAnalyticsSEO;

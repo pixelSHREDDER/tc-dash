@@ -30,8 +30,6 @@ const questionGroups = [
   },
 ];
 
-class GSEmail extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
-}
+function GSEmail(props) { return <GSForm questionGroups={questionGroups} />; }
 
 export default GSEmail;

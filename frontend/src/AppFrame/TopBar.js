@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from "react-redux";
 import PropTypes from 'prop-types';
 import { pageTitles } from '../Routes/Routes';
+import Alerts from '../Alerts/Alerts';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     AppBar,
@@ -59,6 +60,7 @@ const TopBar = ({pathname, handleDrawerToggle}) => {
                     <LinearProgress className={classes.progressBar} color="secondary" variant="determinate" value={onboardingProgress[onboardingSection]} />
                 }
             </Toolbar>
+            <Alerts />
         </AppBar>
     );
 };

@@ -33,8 +33,6 @@ const questionGroups = [
   },
 ];*/
 
-class GSBoard extends React.Component {
-  render = () => <Board />;
-}
+function GSBoard(props) { return <Board />; }
 
 export default GSBoard;

@@ -52,8 +52,6 @@ const questionGroups = [
   },
 ];
 
-class GSOrganizationInfo extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
-}
+function GSOrganizationInfo(props) { return <GSForm questionGroups={questionGroups} />; }
 
 export default GSOrganizationInfo;

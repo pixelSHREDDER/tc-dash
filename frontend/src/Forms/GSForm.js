@@ -1,32 +1,33 @@
-import React from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from 'prop-types';
+import { useInstance } from '../CustomHooks';
 import FormRenderer from '../Forms/FormRenderer';
-import {
-  updateInstance,
-  updateOnboardingProgress,
-} from '../redux/actions/instanceActions';
-//import { Null } from 'mdi-material-ui';
+import { updateInstance } from '../redux/actions/instanceActions';
 
-class GSForm extends React.Component {
-  state = {
-    filledToggles: {},
-    onboardingSection: null,
-    questionClearQueue: {},
-    questionProgressValues: {},
-  }
-  
-  componentDidMount = () => {
-    this.setProgressValues();
-    this.setState({
-      onboardingSection: this.props.location.pathname.replace('/get-started/', '').replace('-', '_'),
-    })
+function GSForm(props) {
+  const { blurb, location, questionGroups } = props;
+  const skipEffect = useRef(null);
+  const { handleSaveInstance } = useInstance();
+  const instance = useSelector(state => state.instance);
+  const [filledToggles, setFilledToggles] = useState({});
+  const [onboardingSection, setOnboardingSection] = useState(null);
+  const [questionClearQueue, setQuestionClearQueue] = useState({});
+  const [questionProgressValues, setQuestionProgressValues] = useState({});
+  const dispatch = useDispatch();
+
+  const saveInstance = data => {
+    dispatch(updateInstance(data));
+    handleSaveInstance();
   }
 
-  setProgressValues = () => {
-    const { questionGroups } = this.props;
-    const { questionProgressValues } = this.state;
+  const updateQuestionProgressValues = useCallback((values, totalPoints, question) => {
+    values[question.id] = totalPoints;
+    question.type === 'radioToggle' && question.fields.forEach(field => updateQuestionProgressValues(values, totalPoints / question.fields.length, field))
+  }, []);
+
+  const setProgressValues = useCallback(() => {
     let newQuestionProgressValues = { ...questionProgressValues };
     let requiredQuestions;
 
@@ -34,26 +35,20 @@ class GSForm extends React.Component {
       requiredQuestions = [ ...group.questions.filter(q => q.type === 'radioToggle' || (q.validators && q.validators.includes('required'))) ];
 
       requiredQuestions.forEach(question => {
-        this.setQuestionProgressValues(newQuestionProgressValues, (100 / questionGroups.length) / requiredQuestions.length, question);
+        updateQuestionProgressValues(newQuestionProgressValues, (100 / questionGroups.length) / requiredQuestions.length, question);
       });
     });
 
-    this.setState({ questionProgressValues: newQuestionProgressValues });
-  }
+    setQuestionProgressValues(newQuestionProgressValues);
+  }, [questionGroups, questionProgressValues, updateQuestionProgressValues]);
 
-  setQuestionProgressValues = (questionProgressValues, totalPoints, question) => {
-    questionProgressValues[question.id] = totalPoints;
-    question.type === 'radioToggle' && question.fields.forEach(field => this.setQuestionProgressValues(questionProgressValues, totalPoints / question.fields.length, field))
-  };
-
-  incrementOnboardingProgress = (question, onboardingProgress, questionClearQueue) => {
-    const { onboardingSection, questionProgressValues } = this.state;
+  const incrementOnboardingProgress = (question, progress, queue) => {
     const { filled, id, parents } = question;
 
-    let newOnboardingProgress = { ...onboardingProgress };
+    let newOnboardingProgress = { ...progress };
 
     if (parents && parents.length) {
-      if (parents[0] in questionClearQueue) {
+      if (parents[0] in queue) {
         if (filled === true) {
           newOnboardingProgress[onboardingSection] += questionProgressValues[id];
           if (newOnboardingProgress[onboardingSection] > 99.9) { newOnboardingProgress[onboardingSection] = 100 }
@@ -77,7 +72,7 @@ class GSForm extends React.Component {
     return newOnboardingProgress;
   }
 
-  updateQuestionClearQueue = (id, question, parents, questionClearQueue) => {
+  const updateQuestionClearQueue = (id, question, parents, queue) => {
     let parentId;
 
     if (!('filled' in question)) { question.filled = (('value' in question) && question.value) ? true : false }
@@ -91,7 +86,7 @@ class GSForm extends React.Component {
     }
 
     if (!parents || !parents.length) { return {
-      ...questionClearQueue,
+      ...queue,
       [id]: [{
         id: question.id,
         isRequired: question.isRequired,
@@ -103,14 +98,14 @@ class GSForm extends React.Component {
 
     parentId = parents[0];
 
-    if (parentId in questionClearQueue) {
-      for (let i = 0; i < questionClearQueue[parentId].length; i++) {
-        if (questionClearQueue[parentId][i].id === id) {
-          questionClearQueue[parentId][i].filled = question.filled;
-          return questionClearQueue; 
+    if (parentId in queue) {
+      for (let i = 0; i < queue[parentId].length; i++) {
+        if (queue[parentId][i].id === id) {
+          queue[parentId][i].filled = question.filled;
+          return queue; 
         }
       }
-      questionClearQueue[parentId].push({
+      queue[parentId].push({
         id: question.id,
         isRequired: question.isRequired,
         name: question.name,
@@ -118,19 +113,16 @@ class GSForm extends React.Component {
         filled: question.filled,
       });
 
-      return questionClearQueue;
+      return queue;
     }
 
-    return questionClearQueue;
+    return queue;
   }
 
-  handleRadioToggleChange = (value, id, fields, parents) => {
-    const { instance, onboardingProgress, updateInstance } = this.props;
-    const { filledToggles, questionClearQueue } = this.state;
-
+  const handleRadioToggleChange = (value, id, fields, parents) => {
     let newFilledToggles = { ...filledToggles };
     let newInstance = { ...instance };
-    let newOnboardingProgress = { ...onboardingProgress };
+    let newOnboardingProgress = { ...newInstance['onboarding_progress'] };
     let newQuestionClearQueue = { ...questionClearQueue };
 
     newFilledToggles[id] = value;
@@ -150,10 +142,10 @@ class GSForm extends React.Component {
     if ((value === false) && (filledToggles[id] === true)) {
       fields.forEach(field => {
         field.name && delete newInstance[field.name];
-        newQuestionClearQueue = this.updateQuestionClearQueue(field.id, field, field.parents, newQuestionClearQueue);
-        if (field.isRequired) { newOnboardingProgress = this.incrementOnboardingProgress(field, newOnboardingProgress, newQuestionClearQueue) }
+        newQuestionClearQueue = updateQuestionClearQueue(field.id, field, field.parents, newQuestionClearQueue);
+        if (field.isRequired) { newOnboardingProgress = incrementOnboardingProgress(field, newOnboardingProgress, newQuestionClearQueue) }
       });
-      newOnboardingProgress = this.incrementOnboardingProgress({
+      newOnboardingProgress = incrementOnboardingProgress({
         filled: true,
         id,
       }, newOnboardingProgress, newQuestionClearQueue);
@@ -161,45 +153,39 @@ class GSForm extends React.Component {
       parents.forEach(parent => {
         newQuestionClearQueue[parent].fields && newQuestionClearQueue[parent].fields.forEach(field => {
           field.name && delete newInstance[field.name];
-          newQuestionClearQueue = this.updateQuestionClearQueue(field.id, field, [ parent ], newQuestionClearQueue);
-          if (field.isRequired) { newOnboardingProgress = this.incrementOnboardingProgress(field, newOnboardingProgress, newQuestionClearQueue) }
+          newQuestionClearQueue = updateQuestionClearQueue(field.id, field, [ parent ], newQuestionClearQueue);
+          if (field.isRequired) { newOnboardingProgress = incrementOnboardingProgress(field, newOnboardingProgress, newQuestionClearQueue) }
         });
-        newOnboardingProgress = this.incrementOnboardingProgress({
+        newOnboardingProgress = incrementOnboardingProgress({
           filled: newFilledToggles[parent] || false,
           id,
         }, newOnboardingProgress, newQuestionClearQueue);
       });
 
-      updateInstance({
+      saveInstance({
         ...newInstance,
         'onboarding_progress': newOnboardingProgress,
       });
 
-      this.setState({
-        filledToggles: newFilledToggles,
-        questionClearQueue: newQuestionClearQueue,
-      });
+      setFilledToggles(newFilledToggles);
+      setQuestionClearQueue(newQuestionClearQueue);
     } else {
-      newOnboardingProgress = this.incrementOnboardingProgress({
+      newOnboardingProgress = incrementOnboardingProgress({
         filled: !(id in filledToggles) && (value === false),
         id,
       }, newOnboardingProgress, newQuestionClearQueue);
 
-      updateInstance({
+      saveInstance({
         ...newInstance,
         'onboarding_progress': newOnboardingProgress,
       });
 
-      this.setState({
-        filledToggles: newFilledToggles,
-        questionClearQueue: newQuestionClearQueue,
-      });
+      setFilledToggles(newFilledToggles);
+      setQuestionClearQueue(newQuestionClearQueue);
     }
   }
 
-  handleInputChange = (value, id, name, isRequired, parents) => {
-    const { instance, onboardingProgress, updateInstance } = this.props;
-    const { questionClearQueue } = this.state;
+  const handleInputChange = (value, id, name, isRequired, parents) => {
     let newOnboardingProgress;
     let newInstance = { ...instance };
     let question = {
@@ -214,64 +200,52 @@ class GSForm extends React.Component {
 
     if (value) {
       if (name) { newInstance[name] = value }
-      newQuestionClearQueue = this.updateQuestionClearQueue(id, question, parents, questionClearQueue);
+      newQuestionClearQueue = updateQuestionClearQueue(id, question, parents, questionClearQueue);
 
       if (isRequired) {
-        newOnboardingProgress = this.incrementOnboardingProgress(question, onboardingProgress, newQuestionClearQueue);
+        newOnboardingProgress = incrementOnboardingProgress(question, newInstance['onboarding_progress'], newQuestionClearQueue);
         newInstance['onboarding_progress'] = newOnboardingProgress;
-        updateInstance(newInstance);
+        saveInstance(newInstance);
       } else {
-        name && updateInstance(newInstance);
+        name && saveInstance(newInstance);
       }
 
-      this.setState({ questionClearQueue: newQuestionClearQueue });
+      setQuestionClearQueue(newQuestionClearQueue);
     } else {
       if (name in newInstance) { delete newInstance[name] }
-      newQuestionClearQueue = this.updateQuestionClearQueue(id, question, parents, questionClearQueue);
+      newQuestionClearQueue = updateQuestionClearQueue(id, question, parents, questionClearQueue);
 
       if (isRequired) {
-        newOnboardingProgress = this.incrementOnboardingProgress(question, onboardingProgress, newQuestionClearQueue);
+        newOnboardingProgress = incrementOnboardingProgress(question, newInstance['onboarding_progress'], newQuestionClearQueue);
         newInstance['onboarding_progress'] = newOnboardingProgress;
-        updateInstance(newInstance);
+        saveInstance(newInstance);
       }
 
-      this.setState({ questionClearQueue: newQuestionClearQueue });
+      setQuestionClearQueue(newQuestionClearQueue);
     }
   }
 
-  render() {
-    const { blurb, questionGroups } = this.props;
+  useEffect(() => {
+    if (!skipEffect.current) {
+      setProgressValues();
+      setOnboardingSection(location.pathname.replace('/get-started/', '').replace('-', '_'));
+      skipEffect.current = true;
+    }
+  }, [location, setProgressValues]);
 
-    return (
-        <FormRenderer
-            blurb={blurb}    
-            questionGroups={questionGroups}
-            radioToggleChangeCallback={data => this.handleRadioToggleChange(data.value, data.id, data.fields, data.parents)}
-            inputChangeCallback={data => this.handleInputChange(data.value, data.id, data.name, data.isRequired, data.parents)}
-        />
-    )
-  }
+  return (
+      <FormRenderer
+          blurb={blurb}    
+          questionGroups={questionGroups}
+          radioToggleChangeCallback={data => handleRadioToggleChange(data.value, data.id, data.fields, data.parents)}
+          inputChangeCallback={data => handleInputChange(data.value, data.id, data.name, data.isRequired, data.parents)}
+      />
+  )
 }
 
 GSForm.propTypes = {
   blurb: PropTypes.object,
-  instance: PropTypes.object.isRequired,
-  onboardingProgress: PropTypes.object.isRequired,
   questionGroups: PropTypes.array.isRequired,
-  updateInstance: PropTypes.func.isRequired,
-  updateOnboardingProgress: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateInstance: data => dispatch(updateInstance(data)),
-    updateOnboardingProgress: data => dispatch(updateOnboardingProgress(data))
-  }
-}
-
-const mapStateToProps = state => ({
-  instance: state.instance,
-  onboardingProgress: state.instance.onboarding_progress,
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GSForm));
+export default withRouter(GSForm);

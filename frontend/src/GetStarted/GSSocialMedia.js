@@ -146,8 +146,6 @@ const questionGroups = [
   },
 ];
 
-class GSSocialMedia extends React.Component {
-  render = () => <GSForm questionGroups={questionGroups} />;
-}
+function GSSocialMedia(props) { return <GSForm questionGroups={questionGroups} />; }
 
 export default GSSocialMedia;

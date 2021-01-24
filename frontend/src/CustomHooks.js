@@ -5,7 +5,7 @@ import { setInstance } from "./redux/actions/instanceActions";
 import PropTypes from 'prop-types';
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios';
-import config, { URLS } from './conf';
+import { AUTH0, URLS } from './conf';
 
 const useInstance = () => {
   const { getAccessTokenSilently, user } = useAuth0();
@@ -21,7 +21,7 @@ const useInstance = () => {
   const handleGetInstance = async (callback = () => {}) => {
     try {
       const token = await getAccessTokenSilently({
-        audience: config.AUTH0.audience,
+        audience: AUTH0.audience,
         scope: 'read:current_user',
       });
       //const response = await fetch(`http://${URLS.dataUrl}/instance/${user.sub}`, {
@@ -39,17 +39,17 @@ const useInstance = () => {
     }
   };
 
-  const handleSaveInstance = async (data, callback = () => {}) => {
+  const handleSaveInstance = async (callback = () => {}) => {
     try {
       const token = await getAccessTokenSilently({
-        audience: config.AUTH0.audience,
+        audience: AUTH0.audience,
         scope: 'read:current_user',
       });
-      await axios.push(`http://${URLS.dataUrl}/saveInstance/${user.sub}`, {
+      await axios.put(`http://${URLS.dataUrl}/updateInstance/${user.sub}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        data
+        data: currentInstance
       });
       callback();
     } catch (e) {
@@ -113,7 +113,7 @@ const useForm = (initialValues, inputChangeCallback, submitCallback, skipFirstEf
     useEffect(() => {
         if (inputChangeCallback && !skipEffect.current) {
             inputChangeCallback(inputs);
-        } else skipEffect.current = false;
+        } else { skipEffect.current = false }
     }, [inputs, inputChangeCallback]);
 
     const handleSubmit = event => {

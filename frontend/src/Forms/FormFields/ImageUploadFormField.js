@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import AcceptedFiles from '../AcceptedFiles';
 import FileUploadFormField from './FileUploadFormField';
 import { CloseIcon } from '../../Icons';
+import { DEBUG } from '../../conf';
 import AvatarEditor from 'react-avatar-editor'
 //import 'tui-image-editor/dist/tui-image-editor.css';
 //import ImageEditor from '@toast-ui/react-image-editor';
@@ -145,7 +146,7 @@ class ImageUploadFormField extends React.Component {
     handleFileDrop = data => {
         //const { fields, index } = this.props;
         // TODO: add validation/size checking logic here
-        console.log(data);
+        DEBUG && console.log(data);
         this.setState({ img: data });
     }
 
